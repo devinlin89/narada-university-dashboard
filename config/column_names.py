@@ -23,5 +23,6 @@ COLUMN_MAPPING = {
     "Are you okay with your anonymized data being used for this project?": "consent"
 }
 
-
 DROPPED_COLUMNS = ["timestamp", "requirements_met", "name", "class", "consent"]
+
+FREE_RESPONSE_COLUMNS = ["institution", "campus", "city", "major", "scholarship_description"]
