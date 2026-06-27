@@ -1,4 +1,5 @@
 import pandas as pd
+from titlecase import titlecase
 
 from config.column_names import COLUMN_MAPPING
 from config.column_names import DROPPED_COLUMNS
@@ -23,6 +24,14 @@ df["received_scholarship?"] = df["received_scholarship?"].replace({
 })
 
 df["decision_factors"] = df["decision_factors"].str.split(",")
+
+df["campus"] = df["campus"].fillna("Main").replace({"-": "Main"})
+
+columns_to_capitalize = ["institution", "campus", "city", "major"]
+
+for column in columns_to_capitalize:
+    df[column] = df[column].apply(titlecase)
+
 
 
 df.to_csv("data/processed/output_2026_06_26.csv", index=False)
