@@ -38,7 +38,7 @@ def main():
 
 
     # Exports cleaned dataframe to CSV
-    df.to_csv("data/processed/output_2026_06_26.csv", index=False)
+    df.to_csv("data/processed/students.csv", index=False)
 
 if __name__ == "__main__":
     main()
