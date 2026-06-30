@@ -1,3 +1,5 @@
+# config/column_names.py
+
 COLUMN_MAPPING = {
     "Timestamp": "timestamp",
     """Please check the box below to confirm that:
