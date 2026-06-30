@@ -28,3 +28,5 @@ COLUMN_MAPPING = {
 DROPPED_COLUMNS = ["timestamp", "requirements_met", "name", "class", "consent"]
 
 FREE_RESPONSE_COLUMNS = ["institution", "campus", "city", "major", "scholarship_description"]
+
+LIST_RESPONSE_COLUMNS = ["decision_factors"]

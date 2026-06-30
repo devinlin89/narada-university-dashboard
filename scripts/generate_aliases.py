@@ -6,7 +6,7 @@ import argparse
 from config.aliases import ALIAS_FILES
 
 
-# Files Configuration
+# Path Configuration
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
