@@ -15,14 +15,10 @@ from config.replacements import (
     DEFAULT_VALUES
 )
 
-
-# Path Configurations
-
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-
-RAW_DATA = PROJECT_ROOT / "data" / "raw" / "export_2026_06_26.csv"
-PROCESSED_DATA = PROJECT_ROOT / "data" / "processed" / "students.csv"
-
+from config.paths import (
+    RAW_DATA,
+    PROCESSED_DATA
+)
 
 # Pipeline Stages
 

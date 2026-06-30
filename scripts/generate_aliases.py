@@ -3,18 +3,13 @@ from pathlib import Path
 import pandas as pd
 import argparse
 
+from config.paths import (
+    PROCESSED_DATA,
+    REFERENCE_DIR,
+    TODO_DIR,
+)
+
 from config.aliases import ALIAS_FILES
-
-
-# Path Configuration
-
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-
-PROCESSED_DATA = PROJECT_ROOT / "data" / "processed" / "students.csv"
-
-REFERENCE_DIR = PROJECT_ROOT / "data" / "reference"
-TODO_DIR = REFERENCE_DIR / "todo"
-
 
 # CLI
 
