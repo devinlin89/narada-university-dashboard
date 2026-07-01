@@ -1,29 +1,35 @@
-from pathlib import Path
-
-import pandas as pd
 from titlecase import titlecase
+import pandas as pd
+
+from config.logger import (
+    configure_logging,
+    get_logger,
+)
 
 from config.column_names import (
     COLUMN_MAPPING,
     DROPPED_COLUMNS,
     FREE_RESPONSE_COLUMNS,
-    LIST_RESPONSE_COLUMNS
+    LIST_RESPONSE_COLUMNS,
 )
 
 from config.replacements import (
+    DEFAULT_VALUES,
     VALUE_MAPPINGS,
-    DEFAULT_VALUES
 )
 
 from config.paths import (
+    PROCESSED_DATA,
     RAW_DATA,
-    PROCESSED_DATA
 )
+
+logger = get_logger("scripts.clean_data")
+
 
 # Pipeline Stages
 
 def load_data() -> pd.DataFrame:
-    # Load the raw Google Forms export into a Pandas df
+    # Load the raw Google Forms export into a DataFrame
     return pd.read_csv(RAW_DATA)
 
 
@@ -67,16 +73,20 @@ def apply_defaults(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def clean_free_response(value: object) -> object:
+    # Normalize a free-response string by trimming whitespace and applying title case
+
+    if not isinstance(value, str):
+        return value
+
+    return titlecase(value.strip())
+
+
 def normalize_text(df: pd.DataFrame) -> pd.DataFrame:
     # Standardize free-response text
 
     for column in FREE_RESPONSE_COLUMNS:
-        df[column] = (
-            df[column]
-            .str.strip()
-            .apply(lambda x: titlecase(x.strip())
-                   if isinstance(x, str) else x)
-        )
+        df[column] = df[column].apply(clean_free_response)
 
     return df
 
@@ -91,19 +101,38 @@ def export_data(df: pd.DataFrame) -> None:
 # Main Function
 
 def main() -> None:
-    df = load_data()
+    configure_logging()
 
-    df = apply_schema(df)
-    df = normalize_values(df)
-    df = normalize_lists(df)
-    df = apply_defaults(df)
-    df = normalize_text(df)
+    try:
+        logger.info("Loading raw dataset...")
+        df = load_data()
 
-    export_data(df)
+        logger.info("Loaded %d rows.", len(df))
+
+        logger.info("Applying schema...")
+        df = apply_schema(df)
+
+        logger.info("Normalizing values...")
+        df = normalize_values(df)
+
+        logger.info("Converting list fields...")
+        df = normalize_lists(df)
+
+        logger.info("Applying default values...")
+        df = apply_defaults(df)
+
+        logger.info("Normalizing text...")
+        df = normalize_text(df)
+
+        export_data(df)
+
+        logger.info("Exported cleaned dataset to %s", PROCESSED_DATA)
+        logger.info("Data cleaning completed successfully.")
+
+    except Exception:
+        logger.exception("Data cleaning failed.")
+        raise
 
 
 if __name__ == "__main__":
     main()
-
-'''hello
-'''
