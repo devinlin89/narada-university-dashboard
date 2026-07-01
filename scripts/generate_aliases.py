@@ -3,12 +3,10 @@ import argparse
 import pandas as pd
 
 from config.aliases import ALIAS_FILES
-
 from config.logger import (
     configure_logging,
     get_logger,
 )
-
 from config.paths import (
     PROCESSED_DATA,
     REFERENCE_DIR,

@@ -1,10 +1,5 @@
-from titlecase import titlecase
 import pandas as pd
-
-from config.logger import (
-    configure_logging,
-    get_logger,
-)
+from titlecase import titlecase
 
 from config.column_names import (
     COLUMN_MAPPING,
@@ -12,15 +7,17 @@ from config.column_names import (
     FREE_RESPONSE_COLUMNS,
     LIST_RESPONSE_COLUMNS,
 )
-
-from config.replacements import (
-    DEFAULT_VALUES,
-    VALUE_MAPPINGS,
+from config.logger import (
+    configure_logging,
+    get_logger,
 )
-
 from config.paths import (
     PROCESSED_DATA,
     RAW_DATA,
+)
+from config.replacements import (
+    DEFAULT_VALUES,
+    VALUE_MAPPINGS,
 )
 
 logger = get_logger("scripts.clean_data")
