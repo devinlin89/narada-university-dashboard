@@ -4,6 +4,7 @@ import argparse
 import pandas as pd
 
 from config.aliases import ALIAS_FILES
+from config.cli import parse_alias_column_args
 from config.logger import (
     configure_logging,
     get_logger,
@@ -101,7 +102,9 @@ def main() -> None:
     start_time = perf_counter()
 
     try:
-        args = parse_args()
+        args = args = parse_alias_column_args(
+            "Generate TODO alias files from processed data.",
+        )
         column = args.column.lower()
 
         logger.info("Loading processed dataset...")
