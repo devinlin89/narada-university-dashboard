@@ -1,3 +1,4 @@
+from time import perf_counter
 import argparse
 
 import pandas as pd
@@ -97,6 +98,8 @@ def export_todo(column: str, missing: list[str]) -> None:
 def main() -> None:
     configure_logging()
 
+    start_time = perf_counter()
+
     try:
         args = parse_args()
         column = args.column.lower()
@@ -120,6 +123,10 @@ def main() -> None:
     except Exception:
         logger.exception("Alias generation failed.")
         raise
+
+    finally:
+        elapsed = perf_counter() - start_time
+        logger.info("Total execution time: %.3f s.", elapsed)
 
 if __name__ == "__main__":
     main()

@@ -1,3 +1,5 @@
+from time import perf_counter
+
 import pandas as pd
 from titlecase import titlecase
 
@@ -100,6 +102,8 @@ def export_data(df: pd.DataFrame) -> None:
 def main() -> None:
     configure_logging()
 
+    start_time = perf_counter()
+
     try:
         logger.info("Loading raw dataset...")
         df = load_data()
@@ -129,6 +133,10 @@ def main() -> None:
     except Exception:
         logger.exception("Data cleaning failed.")
         raise
+
+    finally:
+        elapsed = perf_counter() - start_time
+        logger.info("Total execution time: %.3f s.", elapsed)
 
 
 if __name__ == "__main__":
