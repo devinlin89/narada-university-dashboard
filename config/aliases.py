@@ -1,4 +1,4 @@
-# config/aliases.py
+# config/alias.py
 
 ALIAS_FILES = {
     "institution": "institution_aliases.csv",
