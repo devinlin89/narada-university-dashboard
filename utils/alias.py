@@ -6,7 +6,6 @@ import pandas as pd
 
 from config.aliases import ALIAS_FILES
 from config.paths import (
-    PROCESSED_DATA,
     REFERENCE_DIR,
     TODO_DIR,
 )
