@@ -1,37 +1,20 @@
 from time import perf_counter
-import argparse
 
 import pandas as pd
 
+from utils.cli import parse_alias_column_args
+from utils.alias import load_alias_table
 from config.aliases import ALIAS_FILES
-from config.cli import parse_alias_column_args
 from config.logger import (
     configure_logging,
     get_logger,
 )
 from config.paths import (
     PROCESSED_DATA,
-    REFERENCE_DIR,
     TODO_DIR,
 )
 
 logger = get_logger("scripts.generate_aliases")
-
-
-def parse_args() -> argparse.Namespace:
-    # Parse command-line arguments
-
-    parser = argparse.ArgumentParser(
-        description="Generate TODO alias files from processed data."
-    )
-
-    parser.add_argument(
-        "column",
-        choices=ALIAS_FILES.keys(),
-        help="Column to generate aliases for."
-    )
-
-    return parser.parse_args()
 
 
 def load_students() -> pd.DataFrame:
@@ -43,12 +26,7 @@ def load_students() -> pd.DataFrame:
 def load_existing_aliases(column: str) -> set[str]:
     # Load the existing aliases for the specified column
 
-    alias_path = REFERENCE_DIR / ALIAS_FILES[column]
-
-    if not alias_path.exists():
-        return set()
-
-    alias_df = pd.read_csv(alias_path)
+    alias_df = load_alias_table(column)
 
     return set(
         alias_df["alias"]
