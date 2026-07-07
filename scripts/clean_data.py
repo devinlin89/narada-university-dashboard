@@ -28,6 +28,12 @@ from utils.alias import (
     apply_alias_table,
 )
 from utils.campus import clean_campus_name
+from utils.validation import (
+    validate_aliases,
+    validate_boolean_columns,
+    validate_list_columns,
+    validate_required_fields
+)
 
 logger = get_logger("scripts.clean_data")
 
@@ -127,6 +133,15 @@ def apply_aliases(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def validate_dataset(df: pd.DataFrame) -> None:
+    # Validate the cleaned dataset before export
+
+    validate_required_fields(df)
+    validate_boolean_columns(df)
+    validate_list_columns(df)
+    validate_aliases(df)
+
+
 def export_data(df: pd.DataFrame) -> None:
     # Save the cleaned dataset CSV file
 
@@ -170,6 +185,9 @@ def main() -> None:
 
         logger.info("Applying aliases...")
         df = apply_aliases(df)
+
+        logger.info("Validating dataset...")
+        validate_dataset(df)
 
         logger.info("Exporting cleaned dataset...")
         export_data(df)

@@ -112,3 +112,15 @@ FREE_RESPONSE_COLUMNS = [
 LIST_RESPONSE_COLUMNS = [
     "decision_factors"
 ]
+
+REQUIRED_COLUMNS = (
+    "institution",
+    "country",
+    "major",
+    "academic_field",
+)
+
+BOOLEAN_COLUMNS = (
+    "within_jabodetabek",
+    "received_scholarship?",
+)
