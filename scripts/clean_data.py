@@ -31,7 +31,6 @@ from utils.campus import clean_campus_name
 
 logger = get_logger("scripts.clean_data")
 
-
 # Pipeline Stages
 
 def load_data() -> pd.DataFrame:
@@ -177,6 +176,13 @@ def main() -> None:
 
         logger.info("Exported cleaned dataset to %s", PROCESSED_DATA)
         logger.info("Data cleaning completed successfully.")
+
+        logger.info(
+            "Dataset summary: %d students, %d institutions, %d majors.",
+            len(df),
+            df["institution"].nunique(),
+            df["major"].nunique(),
+        )
 
     except Exception:
         logger.exception("Data cleaning failed.")
