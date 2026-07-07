@@ -3,6 +3,7 @@ from time import perf_counter
 import pandas as pd
 from titlecase import titlecase
 
+from config.aliases import ALIAS_FILES
 from config.column_names import (
     COLUMN_MAPPING,
     DROPPED_COLUMNS,
@@ -20,8 +21,12 @@ from config.paths import (
 from config.replacements import (
     DEFAULT_VALUES,
     VALUE_MAPPINGS,
+    MAJOR_TO_ACADEMIC_FIELD,
 )
-from utils.alias import load_institution_names
+from utils.alias import (
+    load_institution_names,
+    apply_alias_table,
+)
 from utils.campus import clean_campus_name
 
 logger = get_logger("scripts.clean_data")
@@ -104,6 +109,15 @@ def normalize_campuses(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def apply_aliases(df: pd.DataFrame) -> pd.DataFrame:
+    # Apply alias mappings to configured columns
+
+    for column in ALIAS_FILES:
+        df[column] = apply_alias_table(df[column], column)
+
+    return df
+
+
 def export_data(df: pd.DataFrame) -> None:
     # Save the cleaned dataset CSV file
 
@@ -142,6 +156,10 @@ def main() -> None:
         logger.info("Normalizing campus names...")
         df = normalize_campuses(df)
 
+        logger.info("Applying aliases...")
+        df = apply_aliases(df)
+
+        logger.info("Exporting cleaned dataset...")
         export_data(df)
 
         logger.info("Exported cleaned dataset to %s", PROCESSED_DATA)
