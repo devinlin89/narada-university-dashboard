@@ -21,12 +21,12 @@ from config.paths import (
 )
 from config.replacements import (
     DEFAULT_VALUES,
-    VALUE_MAPPINGS,
     MAJOR_TO_ACADEMIC_FIELD,
+    VALUE_MAPPINGS,
 )
 from utils.alias import (
-    load_institution_names,
     apply_alias_table,
+    load_institution_names,
 )
 from utils.campus import clean_campus_name
 from utils.validation import (
@@ -153,15 +153,10 @@ def export_data(df: pd.DataFrame) -> None:
 
 # Pipeline Definition
 
-StageFunction = Callable[
-    [pd.DataFrame],
-    pd.DataFrame,
-]
+StageFunction = Callable[[pd.DataFrame], pd.DataFrame]
+PipelineStage = tuple[str, StageFunction]
 
-PIPELINE: tuple[
-    tuple[str, StageFunction],
-    ...,
-] = (
+PIPELINE: tuple[PipelineStage, ...] = (
     # (Log message, pipeline stage)
     ("Applying schema...", apply_schema),
     ("Normalizing values...", normalize_values),
@@ -175,7 +170,7 @@ PIPELINE: tuple[
 
 
 def run_pipeline(df: pd.DataFrame) -> pd.DataFrame:
-    # Run the data cleaning pipeline.
+    # Run the data cleaning pipeline
 
     for message, stage in PIPELINE:
         logger.info(message)
