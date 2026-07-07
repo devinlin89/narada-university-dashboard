@@ -1,3 +1,4 @@
+from collections.abc import Callable
 from time import perf_counter
 
 import pandas as pd
@@ -32,10 +33,11 @@ from utils.validation import (
     validate_aliases,
     validate_boolean_columns,
     validate_list_columns,
-    validate_required_fields
+    validate_required_fields,
 )
 
 logger = get_logger("scripts.clean_data")
+
 
 # Pipeline Stages
 
@@ -72,7 +74,7 @@ def normalize_lists(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def apply_defaults(df: pd.DataFrame) -> pd.DataFrame:
-    # Apply default values
+    # Apply configured default values
 
     for column, default in DEFAULT_VALUES.items():
         df[column] = (
@@ -149,6 +151,39 @@ def export_data(df: pd.DataFrame) -> None:
     df.to_csv(PROCESSED_DATA, index=False)
 
 
+# Pipeline Definition
+
+StageFunction = Callable[
+    [pd.DataFrame],
+    pd.DataFrame,
+]
+
+PIPELINE: tuple[
+    tuple[str, StageFunction],
+    ...,
+] = (
+    # (Log message, pipeline stage)
+    ("Applying schema...", apply_schema),
+    ("Normalizing values...", normalize_values),
+    ("Converting list fields...", normalize_lists),
+    ("Applying default values...", apply_defaults),
+    ("Normalizing text...", normalize_text),
+    ("Normalizing campus names...", normalize_campuses),
+    ("Normalizing academic fields...", normalize_academic_fields),
+    ("Applying aliases...", apply_aliases),
+)
+
+
+def run_pipeline(df: pd.DataFrame) -> pd.DataFrame:
+    # Run the data cleaning pipeline.
+
+    for message, stage in PIPELINE:
+        logger.info(message)
+        df = stage(df)
+
+    return df
+
+
 # Main Function
 
 def main() -> None:
@@ -162,29 +197,7 @@ def main() -> None:
 
         logger.info("Loaded %d rows.", len(df))
 
-        logger.info("Applying schema...")
-        df = apply_schema(df)
-
-        logger.info("Normalizing values...")
-        df = normalize_values(df)
-
-        logger.info("Converting list fields...")
-        df = normalize_lists(df)
-
-        logger.info("Applying default values...")
-        df = apply_defaults(df)
-
-        logger.info("Normalizing text...")
-        df = normalize_text(df)
-
-        logger.info("Normalizing campus names...")
-        df = normalize_campuses(df)
-
-        logger.info("Normalizing academic fields...")
-        df = normalize_academic_fields(df)
-
-        logger.info("Applying aliases...")
-        df = apply_aliases(df)
+        df = run_pipeline(df)
 
         logger.info("Validating dataset...")
         validate_dataset(df)
@@ -193,7 +206,6 @@ def main() -> None:
         export_data(df)
 
         logger.info("Exported cleaned dataset to %s", PROCESSED_DATA)
-        logger.info("Data cleaning completed successfully.")
 
         logger.info(
             "Dataset summary: %d students, %d institutions, %d majors.",
@@ -201,6 +213,8 @@ def main() -> None:
             df["institution"].nunique(),
             df["major"].nunique(),
         )
+
+        logger.info("Data cleaning completed successfully.")
 
     except Exception:
         logger.exception("Data cleaning failed.")
