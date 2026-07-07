@@ -109,6 +109,16 @@ def normalize_campuses(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def normalize_academic_fields(df: pd.DataFrame) -> pd.DataFrame:
+    # Correct academic fields for known majors
+
+    field = df["major"].map(MAJOR_TO_ACADEMIC_FIELD)
+
+    df["academic_field"] = field.fillna(df["academic_field"])
+
+    return df
+
+
 def apply_aliases(df: pd.DataFrame) -> pd.DataFrame:
     # Apply alias mappings to configured columns
 
@@ -155,6 +165,9 @@ def main() -> None:
 
         logger.info("Normalizing campus names...")
         df = normalize_campuses(df)
+
+        logger.info("Normalizing academic fields...")
+        df = normalize_academic_fields(df)
 
         logger.info("Applying aliases...")
         df = apply_aliases(df)
