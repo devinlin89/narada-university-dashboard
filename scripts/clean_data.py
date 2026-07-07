@@ -21,6 +21,8 @@ from config.replacements import (
     DEFAULT_VALUES,
     VALUE_MAPPINGS,
 )
+from utils.alias import load_institution_names
+from utils.campus import clean_campus_name
 
 logger = get_logger("scripts.clean_data")
 
@@ -90,6 +92,18 @@ def normalize_text(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def normalize_campuses(df: pd.DataFrame) -> pd.DataFrame:
+    # Remove institution names and countries from campus names
+
+    institution_names = load_institution_names()
+
+    df["campus"] = df["campus"].apply(
+        lambda campus: clean_campus_name(campus, institution_names)
+    )
+
+    return df
+
+
 def export_data(df: pd.DataFrame) -> None:
     # Save the cleaned dataset CSV file
 
@@ -124,6 +138,9 @@ def main() -> None:
 
         logger.info("Normalizing text...")
         df = normalize_text(df)
+
+        logger.info("Normalizing campus names...")
+        df = normalize_campuses(df)
 
         export_data(df)
 

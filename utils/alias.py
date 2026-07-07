@@ -36,3 +36,14 @@ def load_todo_table(column: str) -> pd.DataFrame:
         TODO_DIR / f"{column}_aliases_todo.csv",
         ["alias", "canonical"],
     )
+
+
+def load_institution_names() -> set[str]:
+    """Load every institution alias and canonical name."""
+
+    alias_df = load_alias_table("institution")
+
+    names = set(alias_df["alias"].dropna().astype(str))
+    names.update(alias_df["canonical"].dropna().astype(str))
+
+    return names
