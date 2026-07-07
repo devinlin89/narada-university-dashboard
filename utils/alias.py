@@ -47,3 +47,28 @@ def load_institution_names() -> set[str]:
     names.update(alias_df["canonical"].dropna().astype(str))
 
     return names
+
+
+def load_alias_mapping(column: str) -> dict[str, str]:
+    # Load an alias to canonical mapping
+
+    alias_df = load_alias_table(column)
+
+    return dict(
+        zip(
+            alias_df["alias"],
+            alias_df["canonical"],
+            strict=True
+        )
+    )
+
+
+def apply_alias_table(
+        series: pd.Series,
+        column: str
+) -> pd.Series:
+    # Replace aliases with canonical values
+
+    mapping = load_alias_mapping(column)
+
+    return series.replace(mapping)
