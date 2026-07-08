@@ -93,7 +93,7 @@ pip install -r requirements.txt
 ## Getting Started
 
 > [!IMPORTANT]
-> This repository intentionally **does not include the original Google Forms export** because it contains personally identifiable information.
+> This repository intentionally **does not** include the original Google Forms export because it contains personally identifiable information.
 >
 > Contributors must obtain the latest survey export from a project maintainer before running the data cleaning pipeline.
 
