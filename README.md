@@ -20,16 +20,16 @@ This project collects destination data through a Google Form, cleans and standar
 ```text
 narada-university-dashboard/
 │
-├── config/                 # Project configuration
+├── config/                   # Project configuration
 ├── data/
-│   ├── processed/          # Cleaned datasets
-│   ├── raw/                # Google Forms export (not tracked)
-│   └── reference/          # Alias tables
-│       └── todo/           # Alias review files
+│   ├── processed/            # Cleaned datasets
+│   ├── raw/                  # Google Forms export (not tracked)
+│   └── reference/            # Alias tables
+│       └── todo/             # Alias review files
 │
-├── scripts/               # ETL scripts
-├── utils/                 # Shared helper functions
-├── dashboard/             # Streamlit dashboard (future)
+├── scripts/                  # ETL scripts
+├── utils/                    # Shared helper functions
+├── dashboard/                # Streamlit dashboard (future)
 │
 ├── README.md
 ├── requirements.txt
