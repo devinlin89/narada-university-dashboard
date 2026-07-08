@@ -157,7 +157,7 @@ StageFunction = Callable[[pd.DataFrame], pd.DataFrame]
 PipelineStage = tuple[str, StageFunction]
 
 PIPELINE: tuple[PipelineStage, ...] = (
-    # (Log message, pipeline stage)
+    # (Log message, stage function)
     ("Applying schema...", apply_schema),
     ("Normalizing values...", normalize_values),
     ("Converting list fields...", normalize_lists),
