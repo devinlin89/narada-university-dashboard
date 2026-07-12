@@ -33,7 +33,7 @@ def validate_required_fields(df: pd.DataFrame) -> None:
 
 def validate_column_type(
     df: pd.DataFrame,
-    columns: tuple[str, ...],
+    columns: tuple[str, ...] | list[str],
     expected_type: type,
 ) -> None:
     # Ensure all non-null values in the specified columns have the expected type
