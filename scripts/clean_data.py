@@ -1,5 +1,6 @@
 from collections.abc import Callable
 from time import perf_counter
+from typing import Any
 
 import pandas as pd
 from titlecase import titlecase
@@ -86,7 +87,7 @@ def apply_defaults(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def clean_free_response(value: object) -> object:
+def clean_free_response(value: Any) -> Any:
     # Normalize a free-response string by trimming whitespace and applying title case
 
     if not isinstance(value, str):

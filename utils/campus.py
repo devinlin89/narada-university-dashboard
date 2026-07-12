@@ -1,6 +1,7 @@
 # utils/campus.py
 
 import re
+from typing import Any
 
 import pycountry
 
@@ -47,9 +48,9 @@ def normalize_whitespace(text: str) -> str:
 
 
 def clean_campus_name(
-        campus: object,
+        campus: Any,
         institution_names: set[str]
-) -> object:
+) -> Any:
     # Remove institution names, generic words, and countries from a campus name
 
     if not isinstance(campus, str):
