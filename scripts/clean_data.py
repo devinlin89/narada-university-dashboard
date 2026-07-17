@@ -137,6 +137,21 @@ def apply_aliases(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def sort_dataset(df: pd.DataFrame) -> pd.DataFrame:
+    # Sort the cleaned dataset
+
+    columns_sorting_order = [
+        "country",
+        "institution",
+        "campus",
+        "major",
+    ]
+
+    return (
+        df.sort_values(columns_sorting_order)
+        .reset_index(drop=True)
+    )
+
 def validate_dataset(df: pd.DataFrame) -> None:
     # Validate the cleaned dataset before export
 
@@ -168,6 +183,7 @@ PIPELINE: tuple[PipelineStage, ...] = (
     ("Normalizing campus names...", normalize_campuses),
     ("Normalizing academic fields...", normalize_academic_fields),
     ("Applying aliases...", apply_aliases),
+    ("Sorting dataset...", sort_dataset),
 )
 
 
