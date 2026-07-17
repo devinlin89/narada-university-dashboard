@@ -6,20 +6,12 @@ from config.logger import (
     configure_logging,
     get_logger,
 )
-from config.paths import (
-    STUDENTS_DATA,
-    TODO_DATA_DIR,
-)
+from config.paths import TODO_DATA_DIR
 from utils.alias import load_alias_table
 from utils.cli import parse_alias_column_args
+from utils.data_io import load_students
 
 logger = get_logger("scripts.generate_aliases")
-
-
-def load_students() -> pd.DataFrame:
-    # Load the processed student dataset
-
-    return pd.read_csv(STUDENTS_DATA)
 
 
 def load_existing_aliases(column: str) -> set[str]:
