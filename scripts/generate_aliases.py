@@ -7,8 +7,8 @@ from config.logger import (
     get_logger,
 )
 from config.paths import (
-    PROCESSED_DATA,
-    TODO_DIR,
+    STUDENTS_DATA,
+    TODO_DATA_DIR,
 )
 from utils.alias import load_alias_table
 from utils.cli import parse_alias_column_args
@@ -19,7 +19,7 @@ logger = get_logger("scripts.generate_aliases")
 def load_students() -> pd.DataFrame:
     # Load the processed student dataset
 
-    return pd.read_csv(PROCESSED_DATA)
+    return pd.read_csv(STUDENTS_DATA)
 
 
 def load_existing_aliases(column: str) -> set[str]:
@@ -59,9 +59,9 @@ def find_missing_aliases(
 def export_todo(column: str, missing: list[str]) -> None:
     # Export the TODO alias file
 
-    TODO_DIR.mkdir(parents=True, exist_ok=True)
+    TODO_DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-    todo_path = TODO_DIR / f"{column}_aliases_todo.csv"
+    todo_path = TODO_DATA_DIR / f"{column}_aliases_todo.csv"
 
     todo_df = pd.DataFrame({
         "alias": missing,
@@ -97,7 +97,10 @@ def main() -> None:
 
         export_todo(column, missing_aliases)
 
-        logger.info("Exported TODO file to %s", TODO_DIR / f"{column}_aliases_todo.csv")
+        logger.info(
+            "Exported TODO file to %s",
+            TODO_DATA_DIR / f"{column}_aliases_todo.csv"
+        )
         logger.info("Alias generation completed successfully.")
 
     except Exception:

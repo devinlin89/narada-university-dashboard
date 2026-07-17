@@ -17,8 +17,9 @@ from config.logger import (
     get_logger,
 )
 from config.paths import (
-    PROCESSED_DATA,
+    PROCESSED_DATA_DIR,
     RAW_DATA,
+    STUDENTS_DATA,
 )
 from config.replacements import (
     DEFAULT_VALUES,
@@ -148,8 +149,8 @@ def validate_dataset(df: pd.DataFrame) -> None:
 def export_data(df: pd.DataFrame) -> None:
     # Save the cleaned dataset CSV file
 
-    PROCESSED_DATA.parent.mkdir(parents=True, exist_ok=True)
-    df.to_csv(PROCESSED_DATA, index=False)
+    PROCESSED_DATA_DIR.mkdir(parents=True, exist_ok=True)
+    df.to_csv(STUDENTS_DATA, index=False)
 
 
 # Pipeline Definition
@@ -201,7 +202,7 @@ def main() -> None:
         logger.info("Exporting cleaned dataset...")
         export_data(df)
 
-        logger.info("Exported cleaned dataset to %s", PROCESSED_DATA)
+        logger.info("Exported cleaned dataset to %s", STUDENTS_DATA)
 
         logger.info(
             "Dataset summary: %d students, %d institutions, %d majors.",

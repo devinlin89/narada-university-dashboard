@@ -6,8 +6,8 @@ import pandas as pd
 
 from config.aliases import ALIAS_FILES
 from config.paths import (
-    REFERENCE_DIR,
-    TODO_DIR,
+    REFERENCE_DATA_DIR,
+    TODO_DATA_DIR,
 )
 
 
@@ -24,7 +24,7 @@ def load_alias_table(column: str) -> pd.DataFrame:
     # Load the alias table for the specified column.
 
     return load_csv_or_empty(
-        REFERENCE_DIR / ALIAS_FILES[column],
+        REFERENCE_DATA_DIR / ALIAS_FILES[column],
         ["alias", "canonical"],
     )
 
@@ -33,7 +33,7 @@ def load_todo_table(column: str) -> pd.DataFrame:
     # Load the TODO alias table for the specified column.
 
     return load_csv_or_empty(
-        TODO_DIR / f"{column}_aliases_todo.csv",
+        TODO_DATA_DIR / f"{column}_aliases_todo.csv",
         ["alias", "canonical"],
     )
 
