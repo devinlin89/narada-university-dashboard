@@ -8,8 +8,8 @@ from config.logger import (
     get_logger,
 )
 from config.paths import (
-    REFERENCE_DIR,
-    TODO_DIR,
+    REFERENCE_DATA_DIR,
+    TODO_DATA_DIR,
 )
 from utils.alias import (
     load_alias_table,
@@ -100,7 +100,7 @@ def merge_aliases(
 def export_alias_table(alias_df: pd.DataFrame, column: str) -> None:
     # Export the updated alias table
 
-    alias_path = REFERENCE_DIR / ALIAS_FILES[column]
+    alias_path = REFERENCE_DATA_DIR / ALIAS_FILES[column]
 
     alias_path.parent.mkdir(parents=True, exist_ok=True)
     alias_df.to_csv(alias_path, index=False)
@@ -109,7 +109,7 @@ def export_alias_table(alias_df: pd.DataFrame, column: str) -> None:
 def delete_todo_file(column: str) -> None:
     # Delete the TODO Alias file
 
-    todo_path = TODO_DIR / f"{column}_aliases_todo.csv"
+    todo_path = TODO_DATA_DIR / f"{column}_aliases_todo.csv"
 
     if todo_path.exists():
         todo_path.unlink()
