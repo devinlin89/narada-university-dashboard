@@ -1,3 +1,5 @@
+# utils/data_io.py
+
 import pandas as pd
 
 from config.paths import (
@@ -7,5 +9,5 @@ from config.paths import (
 
 def load_students() -> pd.DataFrame:
     # Load the processed student dataset
-    
+
     return pd.read_csv(STUDENTS_DATA)
