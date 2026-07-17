@@ -98,13 +98,13 @@ DROPPED_COLUMNS = [
     "requirements_met",
     "name",
     "class",
-    "consent"
+    "consent",
+    "city"
 ]
 
 FREE_RESPONSE_COLUMNS = [
     "institution",
     "campus",
-    "city",
     "major",
     "scholarship_description"
 ]
