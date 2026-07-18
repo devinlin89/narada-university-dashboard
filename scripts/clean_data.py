@@ -128,6 +128,39 @@ def normalize_academic_fields(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def infer_single_campuses(df: pd.DataFrame) -> pd.DataFrame:
+    # Replace "Not Specified" with the only known campus.
+
+    # Find all known campuses for each institution
+    known_campuses = (
+        df.loc[df["campus"] != "Not Specified"]
+        .groupby("institution")["campus"]
+        .unique()
+    )
+
+    # Build a mapping for institutions with only one known campus
+    replacements = {
+        institution: campuses[0]
+        for institution, campuses in known_campuses.items()
+        if len(campuses) == 1
+    }
+
+    # Select rows where the campus is "Not Specified"
+    # and the institution has a single known campus
+    mask = (
+        df["campus"].eq("Not Specified")
+        & df["institution"].isin(replacements)
+    )
+
+    # Replace "Not Specified" with the inferred campus name
+    df.loc[mask, "campus"] = (
+        df.loc[mask, "institution"]
+        .map(replacements)
+    )
+
+    return df
+
+
 def apply_aliases(df: pd.DataFrame) -> pd.DataFrame:
     # Apply alias mappings to configured columns
 
@@ -182,6 +215,7 @@ PIPELINE: tuple[PipelineStage, ...] = (
     ("Normalizing text...", normalize_text),
     ("Normalizing campus names...", normalize_campuses),
     ("Normalizing academic fields...", normalize_academic_fields),
+    ("Inferring single campuses...", infer_single_campuses),
     ("Applying aliases...", apply_aliases),
     ("Sorting dataset...", sort_dataset),
 )
