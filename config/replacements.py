@@ -13,6 +13,9 @@ VALUE_MAPPINGS: dict[str, dict[str, str | bool]] = {
         "Ai": "Computing & Data",
         "None of above": "Other",
     },
+    "country": {
+        "China (Mainland)": "China",
+    },
 }
 
 DEFAULT_VALUES: dict[str, str] = {
