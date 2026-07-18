@@ -72,3 +72,14 @@ def apply_alias_table(
     mapping = load_alias_mapping(column)
 
     return series.replace(mapping)
+
+
+def get_aliases(column: str, name: str) -> list[str]:
+    # Get all aliases for a given canonical name
+
+    alias_df = load_alias_table(column)
+
+    return alias_df.loc[
+        alias_df["canonical"] == name,
+        "alias"
+    ].dropna().astype(str).tolist()

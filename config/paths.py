@@ -20,3 +20,4 @@ RAW_DATA = RAW_DATA_DIR / "raw_export.csv"
 
 STUDENTS_DATA = PROCESSED_DATA_DIR / "students.csv"
 INSTITUTIONS_DATA = PROCESSED_DATA_DIR / "institutions.csv"
+COORDINATES_DATA = REFERENCE_DATA_DIR / "institution_coordinates.csv"
