@@ -110,20 +110,6 @@ def geocode(
         if location is None:
             continue
 
-        # If we expected a campus, verify it appears in the result.
-        if campus != "Not Specified":
-            display_name = location.address.casefold()
-
-            if (campus.casefold() not in display_name 
-                and institution.casefold() in display_name):
-                if log is not None:
-                    log(
-                        "Campus '%s' not found in '%s', continuing...",
-                        campus,
-                        location.address,
-                    )
-                continue
-
         if log is not None:
             log(f"Found: {location.address}")
 
