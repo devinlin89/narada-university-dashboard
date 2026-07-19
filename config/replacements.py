@@ -15,6 +15,7 @@ VALUE_MAPPINGS: dict[str, dict[str, str | bool]] = {
     },
     "country": {
         "China (Mainland)": "China",
+        "Phillipines": "Philippines",
     },
 }
 
