@@ -2,14 +2,14 @@ from time import perf_counter
 
 import pandas as pd
 
-from config.aliases import ALIAS_FILES
+from config.config import (
+    ALIAS_FILES,
+    REFERENCE_DATA_DIR,
+    TODO_DATA_DIR,
+)
 from config.logger import (
     configure_logging,
     get_logger,
-)
-from config.paths import (
-    REFERENCE_DATA_DIR,
-    TODO_DATA_DIR,
 )
 from utils.alias import (
     load_alias_table,

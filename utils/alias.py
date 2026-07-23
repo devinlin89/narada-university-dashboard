@@ -4,8 +4,8 @@ from pathlib import Path
 
 import pandas as pd
 
-from config.aliases import ALIAS_FILES
-from config.paths import (
+from config.config import (
+    ALIAS_FILES,
     REFERENCE_DATA_DIR,
     TODO_DATA_DIR,
 )

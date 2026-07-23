@@ -2,12 +2,12 @@
 
 import pandas as pd
 
-from config.aliases import ALIAS_FILES
 from config.column_names import (
     BOOLEAN_COLUMNS,
     LIST_RESPONSE_COLUMNS,
     REQUIRED_COLUMNS,
 )
+from config.config import ALIAS_FILES
 from utils.alias import load_alias_table
 
 

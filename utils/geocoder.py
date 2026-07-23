@@ -9,11 +9,10 @@ from typing import TypeAlias
 from geopy.geocoders import Nominatim
 from geopy.location import Location
 
-from config.geocoder import (
-    TIMEOUT,
-    USER_AGENT,
+from config.config import (
+    GEOCODING_OVERRIDES,
+    settings,
 )
-from config.geocoding_overrides import GEOCODING_QUERIES
 from utils.alias import get_aliases
 
 Coordinates: TypeAlias = tuple[float, float]
@@ -22,7 +21,10 @@ Coordinates: TypeAlias = tuple[float, float]
 def create_geocoder() -> Nominatim:
     # Create and configure a Nominatim geocoder
 
-    return Nominatim(user_agent=USER_AGENT, timeout=TIMEOUT)
+    return Nominatim(
+        user_agent=settings.geocoder.user_agent, 
+        timeout=settings.geocoder.timeout
+    )
 
 
 def build_queries(
@@ -35,7 +37,11 @@ def build_queries(
     queries: list[str] = []
 
     # Manual override (highest priority)
-    override = GEOCODING_QUERIES.get((institution, campus))
+    override = (
+        GEOCODING_OVERRIDES
+        .get(institution, {})
+        .get(campus)
+    )
     if override is not None:
         queries.append(override)
 

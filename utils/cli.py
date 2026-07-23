@@ -2,7 +2,7 @@
 
 import argparse
 
-from config.aliases import ALIAS_FILES
+from config.config import ALIAS_FILES
 
 
 def parse_alias_column_args(description: str) -> argparse.Namespace:
@@ -12,9 +12,11 @@ def parse_alias_column_args(description: str) -> argparse.Namespace:
         description=description
     )
 
+    ALIAS_COLUMNS = ALIAS_FILES.keys()
+
     parser.add_argument(
         "column",
-        choices=ALIAS_FILES.keys(),
+        choices=ALIAS_COLUMNS,
         help="Alias table to operate on"
     )
 

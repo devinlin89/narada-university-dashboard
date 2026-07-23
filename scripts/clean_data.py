@@ -5,26 +5,24 @@ from typing import Any
 import pandas as pd
 from titlecase import titlecase
 
-from config.aliases import ALIAS_FILES
 from config.column_names import (
     COLUMN_MAPPING,
     DROPPED_COLUMNS,
     FREE_RESPONSE_COLUMNS,
     LIST_RESPONSE_COLUMNS,
 )
-from config.logger import (
-    configure_logging,
-    get_logger,
-)
-from config.paths import (
+from config.config import (
+    ALIAS_FILES,
+    DEFAULT_VALUES,
+    MAJOR_TO_ACADEMIC_FIELD,
     PROCESSED_DATA_DIR,
     RAW_DATA,
     STUDENTS_DATA,
-)
-from config.replacements import (
-    DEFAULT_VALUES,
-    MAJOR_TO_ACADEMIC_FIELD,
     VALUE_MAPPINGS,
+)
+from config.logger import (
+    configure_logging,
+    get_logger,
 )
 from utils.alias import (
     apply_alias_table,
@@ -39,7 +37,6 @@ from utils.validation import (
 )
 
 logger = get_logger("scripts.clean_data")
-
 
 # Pipeline Stages
 

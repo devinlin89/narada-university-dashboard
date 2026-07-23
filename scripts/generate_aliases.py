@@ -2,11 +2,11 @@ from time import perf_counter
 
 import pandas as pd
 
+from config.config import TODO_DATA_DIR
 from config.logger import (
     configure_logging,
     get_logger,
 )
-from config.paths import TODO_DATA_DIR
 from utils.alias import load_alias_table
 from utils.cli import parse_alias_column_args
 from utils.data_io import load_students

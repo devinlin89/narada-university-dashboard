@@ -3,13 +3,13 @@ from time import perf_counter
 import pandas as pd
 from geopy.geocoders import Nominatim
 
+from config.config import (
+    COORDINATES_DATA,
+    REFERENCE_DATA_DIR,
+)
 from config.logger import (
     configure_logging,
     get_logger,
-)
-from config.paths import (
-    COORDINATES_DATA,
-    REFERENCE_DATA_DIR,
 )
 from utils.data_io import (
     load_coordinates,

@@ -2,7 +2,7 @@
 
 import pandas as pd
 
-from config.paths import (
+from config.config import (
     COORDINATES_DATA,
     INSTITUTIONS_DATA,
     STUDENTS_DATA,

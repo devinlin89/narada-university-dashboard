@@ -1,0 +1,31 @@
+project:
+  name: Narada University Dashboard
+  version: 1.0.0
+
+paths:
+  data: data
+  raw: raw
+  processed: processed
+  reference: reference
+  todo: todo
+
+files:
+  raw_export: raw_export.csv
+  students: students.csv
+  institutions: institutions.csv
+  coordinates: institution_coordinates.csv
+
+aliases:
+  institution: institution_aliases.csv
+  major: major_aliases.csv
+
+geocoder:
+  user_agent: >-
+    narada-university-dashboard
+    (https://github.com/devinlin89/narada-university-dashboard)
+  timeout: 10
+
+logging:
+  level: INFO
+  format:     "%(asctime)s | %(levelname)-8s | %(name)s | %(message)s"
+  date_format: "%H:%M:%S"

@@ -1,0 +1,27 @@
+value_mappings:
+
+  within_jabodetabek:
+    "Yes, it is within Jabodetabek/Greater Jakarta Area": true
+    "No, it is outside of Jabodetabek/Greater Jakarta Area": false
+
+  country:
+    "China (Mainland)": "China"
+    "Philippines": "Philippines"
+
+  academic_field:
+    "Ai": "Computing & Data"
+    "None of above": "Other"
+
+  "received_scholarship?":
+    "Yes": true
+    "No": false
+
+default_values:
+
+  campus: Not Specified
+
+major_to_academic_field:
+
+  Artificial Intelligence: Computing & Data
+  Aviation Technique: Transportation
+  Food Science and Technology: Natural Sciences & Mathematics

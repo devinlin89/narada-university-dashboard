@@ -5,3 +5,4 @@ pycountry
 ruff
 streamlit
 titlecase
+PYyaml
