@@ -6,7 +6,7 @@ import pandas as pd
 
 from config.config import (
     ALIAS_FILES,
-    REFERENCE_DATA_DIR,
+    ALIASES_DIR,
     TODO_DATA_DIR,
 )
 
@@ -24,7 +24,7 @@ def load_alias_table(column: str) -> pd.DataFrame:
     # Load the alias table for the specified column.
 
     return load_csv_or_empty(
-        REFERENCE_DATA_DIR / ALIAS_FILES[column],
+        ALIASES_DIR / ALIAS_FILES[column],
         ["alias", "canonical"],
     )
 

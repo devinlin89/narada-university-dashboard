@@ -43,25 +43,28 @@ DATA_DIR = PROJECT_ROOT / settings.paths.data
 RAW_DATA_DIR = DATA_DIR / settings.paths.raw
 PROCESSED_DATA_DIR = DATA_DIR / settings.paths.processed
 REFERENCE_DATA_DIR = DATA_DIR / settings.paths.reference
-TODO_DATA_DIR = REFERENCE_DATA_DIR / settings.paths.todo
 
+ALIASES_DIR = REFERENCE_DATA_DIR / "aliases"
+GEOCODING_DIR = REFERENCE_DATA_DIR / "geocoding"
+MAPPINGS_DIR = REFERENCE_DATA_DIR / "mappings"
+TODO_DATA_DIR = REFERENCE_DATA_DIR / "todo"
 
 # Files
 RAW_DATA = RAW_DATA_DIR / settings.files.raw_export
 
 STUDENTS_DATA = PROCESSED_DATA_DIR / settings.files.students
 INSTITUTIONS_DATA = PROCESSED_DATA_DIR / settings.files.institutions
-COORDINATES_DATA = REFERENCE_DATA_DIR / settings.files.coordinates
+COORDINATES_DATA = GEOCODING_DIR / settings.files.coordinates
 
 ALIAS_FILES = vars(settings.aliases)
 
 # Reference data
 GEOCODING_OVERRIDES = _load_yaml(
-    REFERENCE_DATA_DIR / "geocoding" / "overrides.yaml"
+    GEOCODING_DIR / "overrides.yaml"
 )
 
 _REPLACEMENTS = _load_yaml(
-    REFERENCE_DATA_DIR / "mappings" / "replacements.yaml"
+    MAPPINGS_DIR / "replacements.yaml"
 )
 
 VALUE_MAPPINGS = _REPLACEMENTS["value_mappings"]

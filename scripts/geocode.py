@@ -5,7 +5,6 @@ from geopy.geocoders import Nominatim
 
 from config.config import (
     COORDINATES_DATA,
-    REFERENCE_DATA_DIR,
 )
 from config.logger import (
     configure_logging,
@@ -132,7 +131,7 @@ def update_coordinates(
 def export_coordinates(df: pd.DataFrame) -> None:
     # Export the institution coordinate dataset.
 
-    REFERENCE_DATA_DIR.mkdir(
+    COORDINATES_DATA.parent.mkdir(
         parents=True,
         exist_ok=True,
     )

@@ -4,7 +4,7 @@ import pandas as pd
 
 from config.config import (
     ALIAS_FILES,
-    REFERENCE_DATA_DIR,
+    ALIASES_DIR,
     TODO_DATA_DIR,
 )
 from config.logger import (
@@ -100,7 +100,7 @@ def merge_aliases(
 def export_alias_table(alias_df: pd.DataFrame, column: str) -> None:
     # Export the updated alias table
 
-    alias_path = REFERENCE_DATA_DIR / ALIAS_FILES[column]
+    alias_path = ALIASES_DIR / ALIAS_FILES[column]
 
     alias_path.parent.mkdir(parents=True, exist_ok=True)
     alias_df.to_csv(alias_path, index=False)
