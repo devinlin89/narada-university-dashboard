@@ -1,5 +1,3 @@
-# utils/data_io.py
-
 from pathlib import Path
 
 import pandas as pd
@@ -7,8 +5,14 @@ import pandas as pd
 from config.config import (
     COORDINATES_DATA,
     INSTITUTIONS_DATA,
+    RAW_DATA,
     STUDENTS_DATA,
 )
+
+
+def load_raw_data() -> pd.DataFrame:
+    # Load the raw Google Forms export into a DataFrame
+    return pd.read_csv(RAW_DATA)
 
 
 def load_csv_or_empty(path: Path, columns: list[str]) -> pd.DataFrame:

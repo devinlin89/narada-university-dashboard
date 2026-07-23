@@ -1,6 +1,3 @@
-# utils/geocoder.py
-# WARN: STILL BROKEN
-
 from collections.abc import Callable
 from random import randint
 from time import sleep
@@ -11,6 +8,7 @@ from geopy.location import Location
 
 from aliases.tables import get_aliases
 from config.config import (
+    DEFAULT_VALUES,
     GEOCODING_OVERRIDES,
     settings,
 )
@@ -23,7 +21,7 @@ def create_geocoder() -> Nominatim:
 
     return Nominatim(
         user_agent=settings.geocoder.user_agent, 
-        timeout=settings.geocoder.timeout
+        timeout=settings.geocoder.timeout,
     )
 
 
@@ -48,7 +46,7 @@ def build_queries(
     # Try every institution alias with the campus
     aliases = get_aliases("institution", institution)
 
-    if campus != "Not Specified":
+    if campus != DEFAULT_VALUES["campus"]:
         queries.append(f"{institution}, {campus}, {country}")
         queries.append(f"{institution} {campus}, {country}")
 
@@ -86,7 +84,12 @@ def query_geocoder(
         return geocoder.geocode(query)
     finally:
         # Always wait, even if geopy raises an exception.
-        sleep(randint(2, 5))
+        sleep(
+            randint(
+                settings.geocoder.min_delay,
+                settings.geocoder.max_delay,
+            )
+        )
 
 
 def geocode(
@@ -94,8 +97,8 @@ def geocode(
     institution: str,
     campus: str,
     country: str,
-    log: Callable[[str], None] | None = None,
-) -> tuple[float, float] | None:
+    log: Callable[[str], object] | None = None,
+) -> Coordinates | None:
     # Geocode an institution using progressively broader queries.
 
     queries = build_queries(
@@ -104,13 +107,13 @@ def geocode(
         country,
     )
 
-    for query in queries:
+    for search_query in queries:
         if log is not None:
-            log(f"Searching: {query}")
+            log(f"Searching: {search_query}")
 
         location = query_geocoder(
             geocoder,
-            query,
+            search_query,
         )
 
         if location is None:

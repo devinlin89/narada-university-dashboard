@@ -6,7 +6,7 @@ value_mappings:
 
   country:
     "China (Mainland)": "China"
-    "Philippines": "Philippines"
+    "Phillipines": "Philippines"
 
   academic_field:
     "Ai": "Computing & Data"

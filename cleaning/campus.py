@@ -1,5 +1,3 @@
-# utils/campus.py
-
 import re
 from typing import Any
 

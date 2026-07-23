@@ -1,5 +1,3 @@
-# utils/alias.py
-
 import pandas as pd
 
 from common.data_io import load_csv_or_empty
@@ -73,3 +71,12 @@ def get_aliases(column: str, name: str) -> list[str]:
         alias_df["canonical"] == name,
         "alias"
     ].dropna().astype(str).tolist()
+
+
+def export_alias_table(alias_df: pd.DataFrame, column: str) -> None:
+    # Export the updated alias table
+
+    alias_path = ALIASES_DIR / ALIAS_FILES[column]
+
+    alias_path.parent.mkdir(parents=True, exist_ok=True)
+    alias_df.to_csv(alias_path, index=False)

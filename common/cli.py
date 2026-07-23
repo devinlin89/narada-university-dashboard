@@ -1,5 +1,3 @@
-# utils/cli.py
-
 import argparse
 
 from config.config import ALIAS_FILES
