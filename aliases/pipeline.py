@@ -1,5 +1,3 @@
-from time import perf_counter
-
 import pandas as pd
 
 from aliases.tables import (
@@ -12,13 +10,9 @@ from aliases.validation import (
     validate_todo,
 )
 from common.cli import parse_alias_column_args
+from common.pipeline import Pipeline
 from config.config import TODO_DATA_DIR
-from config.logger import (
-    configure_logging,
-    get_logger,
-)
-
-logger = get_logger("aliases.pipeline")
+from config.logger import get_logger
 
 
 def merge_aliases(
@@ -46,47 +40,43 @@ def delete_todo_file(column: str) -> None:
         todo_path.unlink()
 
 
-class AliasProcessor:
-    # Run the complete student data cleaning workflow
+class AliasProcessor(Pipeline):
+    # Process reviewed aliases into the reference table
     
-    @staticmethod
-    def run() -> None:
-        configure_logging()
+    logger = get_logger("aliases.pipeline")
 
-        start_time = perf_counter()
+    @classmethod
+    def execute(cls) -> None:
+        logger = cls.logger
 
-        try:
-            args = parse_alias_column_args(
-                "Merge reviewed aliases to the reference table.",
-            )
-            column = args.column.lower()
+        args = parse_alias_column_args(
+            "Merge reviewed aliases to the reference table.",
+        )
+        column = args.column.lower()
 
-            logger.info("Loading alias table...")
-            alias_df = load_alias_table(column)
-            logger.info("Loading TODO alias table...")
-            todo_df = load_todo_table(column)
+        cls.logger.info(
+            "Processing '%s' aliases...",
+            column,
+        )
 
-            logger.info("Validating TODO alias table...")
-            validate_todo(todo_df)
-            validate_against_alias_table(alias_df, todo_df)
+        logger.info("Loading alias table...")
+        alias_df = load_alias_table(column)
+        logger.info("Loading TODO alias table...")
+        todo_df = load_todo_table(column)
 
-            logger.info("Merging alias tables...")
-            alias_df = merge_aliases(alias_df, todo_df)
+        logger.info("Validating TODO alias table...")
+        validate_todo(todo_df)
+        validate_against_alias_table(alias_df, todo_df)
 
-            logger.info("Alias table now contains %d aliases.", len(alias_df))
+        logger.info("Merging alias tables...")
+        alias_df = merge_aliases(alias_df, todo_df)
 
-            logger.info("Exporting updated alias table...")
-            export_alias_table(alias_df, column)
+        logger.info("Alias table now contains %d aliases.", len(alias_df))
 
-            logger.info("Deleting TODO file...")
-            delete_todo_file(column)
+        logger.info("Exporting updated alias table...")
+        export_alias_table(alias_df, column)
 
-            logger.info("Alias application completed successfully.")
+        logger.info("Deleting TODO file...")
+        delete_todo_file(column)
 
-        except Exception:
-            logger.exception("Alias application failed.")
-            raise
-
-        finally:
-            elapsed = perf_counter() - start_time
-            logger.info("Total execution time: %.3f s.", elapsed)
+        logger.info("Alias application completed successfully.")

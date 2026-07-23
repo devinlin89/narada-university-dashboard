@@ -1,17 +1,11 @@
-from time import perf_counter
-
 import pandas as pd
 
 from aliases.tables import load_alias_table
 from common.cli import parse_alias_column_args
 from common.data_io import load_students
+from common.pipeline import Pipeline
 from config.config import TODO_DATA_DIR
-from config.logger import (
-    configure_logging,
-    get_logger,
-)
-
-logger = get_logger("aliases.generator")
+from config.logger import get_logger
 
 
 def load_existing_aliases(column: str) -> set[str]:
@@ -65,49 +59,40 @@ def export_todo(column: str, missing: list[str]) -> None:
     todo_df.to_csv(todo_path, index=False)
 
 
-class AliasGenerator:
+class AliasGenerator(Pipeline):
     # Generate TODO alias tables from processed data
 
-    @staticmethod
-    def run() -> None:
-        configure_logging()
+    logger = get_logger("aliases.generator")
 
-        start_time = perf_counter()
+    @classmethod
+    def execute(cls) -> None:
+        logger = cls.logger
 
-        try:
-            args = parse_alias_column_args(
-                "Generate TODO alias files from processed data.",
+        args = parse_alias_column_args(
+            "Generate TODO alias files from processed data.",
+        )
+        column = args.column.lower()
+
+        logger.info("Loading processed dataset...")
+        df = load_students()
+
+        logger.info("Loading existing aliases for %s...", column)
+        existing_aliases = load_existing_aliases(column)
+
+        logger.info("Finding missing %s aliases...", column)
+        missing_aliases = find_missing_aliases(df, column, existing_aliases)
+
+        logger.info("Found %d missing aliases.", len(missing_aliases))
+
+        if missing_aliases:
+            logger.info("Exporting TODO alias table...")
+            export_todo(column, missing_aliases)
+
+            logger.info(
+                "Exported TODO file to %s",
+                TODO_DATA_DIR / f"{column}_aliases_todo.csv"
             )
-            column = args.column.lower()
+        else:
+            logger.info("No missing aliases found.")
 
-            logger.info("Loading processed dataset...")
-            df = load_students()
-
-            logger.info("Loading existing aliases for %s...", column)
-            existing_aliases = load_existing_aliases(column)
-
-            logger.info("Finding missing aliases...")
-            missing_aliases = find_missing_aliases(df, column, existing_aliases)
-
-            logger.info("Found %d missing aliases.", len(missing_aliases))
-
-            if missing_aliases:
-                logger.info("Exporting TODO alias table...")
-                export_todo(column, missing_aliases)
-
-                logger.info(
-                    "Exported TODO file to %s",
-                    TODO_DATA_DIR / f"{column}_aliases_todo.csv"
-                )
-            else:
-                logger.info("No missing aliases found.")
-
-            logger.info("Alias generation completed successfully.")
-
-        except Exception:
-            logger.exception("Alias generation failed.")
-            raise
-
-        finally:
-            elapsed = perf_counter() - start_time
-            logger.info("Total execution time: %.3f s.", elapsed)
+        logger.info("Alias generation completed successfully.")

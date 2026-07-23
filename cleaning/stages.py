@@ -22,7 +22,7 @@ from config.config import (
     VALUE_MAPPINGS,
 )
 
-# Pipeline Stages
+# Cleaning pipeline stages
 
 def apply_schema(df: pd.DataFrame) -> pd.DataFrame:
     # Rename columns and remove unused columns
@@ -162,12 +162,12 @@ def sort_dataset(df: pd.DataFrame) -> pd.DataFrame:
     )
 
 
-# Pipeline Definition
+# Cleaning pipeline definition
 
 StageFunction = Callable[[pd.DataFrame], pd.DataFrame]
 PipelineStage = tuple[str, StageFunction]
 
-PIPELINE: tuple[PipelineStage, ...] = (
+CLEANING_PIPELINE: tuple[PipelineStage, ...] = (
     # (Log message, stage function)
     ("Applying schema...", apply_schema),
     ("Normalizing values...", normalize_values),

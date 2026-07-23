@@ -1,15 +1,9 @@
-from time import perf_counter
-
 import pandas as pd
 
 from common.data_io import load_students
+from common.pipeline import Pipeline
 from config.config import INSTITUTIONS_DATA
-from config.logger import (
-    configure_logging,
-    get_logger,
-)
-
-logger = get_logger("institutions.generator")
+from config.logger import get_logger
 
 
 def build_institutions(df: pd.DataFrame) -> pd.DataFrame:
@@ -33,43 +27,34 @@ def export_institutions(df: pd.DataFrame) -> None:
     df.to_csv(INSTITUTIONS_DATA, index=False)
 
 
-class InstitutionGenerator:
+class InstitutionGenerator(Pipeline):
     # Generate the institution dataset from the student dataset
 
-    @staticmethod
-    def run() -> None:
-        configure_logging()
+    logger = get_logger("institutions.generator")
 
-        start_time = perf_counter()
+    @classmethod
+    def execute(cls) -> None:
+        logger = cls.logger
 
-        try:
-            logger.info("Loading student dataset...")
-            df = load_students()
+        logger.info("Loading student dataset...")
+        df = load_students()
 
-            logger.info("Loaded %d rows.", len(df))
+        logger.info("Loaded %d rows.", len(df))
 
-            logger.info("Generating institution dataset...")
-            institutions_df = build_institutions(df)
+        logger.info("Generating institution dataset...")
+        institutions_df = build_institutions(df)
 
-            logger.info(
-                "Generated %d unique institutions.",
-                len(institutions_df),
-            )
+        logger.info(
+            "Generated %d unique institutions.",
+            len(institutions_df),
+        )
 
-            logger.info("Exporting institution dataset...")
-            export_institutions(institutions_df)
+        logger.info("Exporting institution dataset...")
+        export_institutions(institutions_df)
 
-            logger.info(
-                "Exported institution dataset to %s.",
-                INSTITUTIONS_DATA,
-            )
+        logger.info(
+            "Exported institution dataset to %s.",
+            INSTITUTIONS_DATA,
+        )
 
-            logger.info("Institution generation completed successfully.")
-        
-        except Exception:
-            logger.exception("Institution generation failed.")
-            raise
-
-        finally:
-            elapsed = perf_counter() - start_time
-            logger.info("Total execution time: %.3f s.", elapsed)
+        logger.info("Institution generation completed successfully.")

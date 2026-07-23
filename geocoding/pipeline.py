@@ -1,5 +1,3 @@
-from time import perf_counter
-
 import pandas as pd
 from geopy.geocoders import Nominatim
 
@@ -7,21 +5,18 @@ from common.data_io import (
     load_coordinates,
     load_institutions,
 )
+from common.pipeline import Pipeline
 from config.config import (
     COORDINATES_DATA,
 )
-from config.logger import (
-    configure_logging,
-    get_logger,
-)
+from config.logger import get_logger
 from geocoding.finder import find_missing_locations
 from geocoding.geocoder import (
     create_geocoder,
     geocode,
 )
 
-logger = get_logger("geocoding.pipeline")
-
+logger = get_logger("geocoding.pipeline") 
 
 def geocode_row(
     geocoder: Nominatim,
@@ -119,77 +114,67 @@ def export_coordinates(df: pd.DataFrame) -> None:
     )
 
 
-class CoordinateGenerator:
+class CoordinateGenerator(Pipeline):
     # Generate coordinates for institutions
+
+    logger = logger
     
-    @staticmethod
-    def run() -> None:
-        configure_logging()
+    @classmethod
+    def execute(cls) -> None:
+        logger = cls.logger
 
-        start_time = perf_counter()
+        geocoder = create_geocoder()
 
+        logger.info("Loading institution dataset...")
+        institutions_df = load_institutions()
 
-        try:
-            geocoder = create_geocoder()
+        logger.info(
+            "Loaded %d unique institutions.",
+            len(institutions_df),
+        )
 
-            logger.info("Loading institution dataset...")
-            institutions_df = load_institutions()
+        logger.info("Loading coordinate cache...")
+        coordinates_df = load_coordinates()
+        logger.info(
+            "Loaded %d cached coordinates.",
+            len(coordinates_df),
+        )
 
-            logger.info(
-                "Loaded %d unique institutions.",
-                len(institutions_df),
-            )
+        logger.info("Finding missing locations...")
+        missing_locations = find_missing_locations(
+            institutions_df,
+            coordinates_df,
+        )
 
-            logger.info("Loading coordinate cache...")
-            coordinates_df = load_coordinates()
-            logger.info(
-                "Loaded %d cached coordinates.",
-                len(coordinates_df),
-            )
+        logger.info(
+            "Found %d locations requiring geocoding.",
+            len(missing_locations),
+        )
 
-            logger.info("Finding missing locations...")
-            missing_locations = find_missing_locations(
-                institutions_df,
-                coordinates_df,
-            )
+        logger.info("Geocoding missing locations...")
+        new_coordinates_df = geocode_locations(
+            geocoder,
+            missing_locations,
+        )
 
-            logger.info(
-                "Found %d locations requiring geocoding.",
-                len(missing_locations),
-            )
+        logger.info(
+            "Successfully geocoded %d new locations.",
+            len(new_coordinates_df),
+        )
 
-            logger.info("Geocoding missing locations...")
-            new_coordinates_df = geocode_locations(
-                geocoder,
-                missing_locations,
-            )
+        logger.info("Updating coordinate cache...")
+        updated_coordinates_df = update_coordinates(
+            coordinates_df,
+            new_coordinates_df,
+        )
 
-            logger.info(
-                "Successfully geocoded %d new locations.",
-                len(new_coordinates_df),
-            )
+        logger.info("Exporting coordinate cache...")
+        export_coordinates(updated_coordinates_df)
 
-            logger.info("Updating coordinate cache...")
-            updated_coordinates_df = update_coordinates(
-                coordinates_df,
-                new_coordinates_df,
-            )
+        logger.info(
+            "Exported %d coordinates to %s.",
+            len(updated_coordinates_df),
+            COORDINATES_DATA,
+        )
 
-            logger.info("Exporting coordinate cache...")
-            export_coordinates(updated_coordinates_df)
-
-            logger.info(
-                "Exported %d coordinates to %s.",
-                len(updated_coordinates_df),
-                COORDINATES_DATA,
-            )
-
-            logger.info("Geocoding completed successfully.")
-
-        except Exception:
-            logger.exception("Geocoding failed.")
-            raise
-
-        finally:
-            elapsed = perf_counter() - start_time
-            logger.info("Total execution time: %.3f s.", elapsed)
+        logger.info("Geocoding completed successfully.")
