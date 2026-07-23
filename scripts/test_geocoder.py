@@ -1,4 +1,4 @@
-from utils.geocoder import (
+from geocoding.geocoder import (
     build_query,
     create_geocoder,
     geocode,

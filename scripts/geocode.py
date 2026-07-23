@@ -3,6 +3,10 @@ from time import perf_counter
 import pandas as pd
 from geopy.geocoders import Nominatim
 
+from common.data_io import (
+    load_coordinates,
+    load_institutions,
+)
 from config.config import (
     COORDINATES_DATA,
 )
@@ -10,11 +14,7 @@ from config.logger import (
     configure_logging,
     get_logger,
 )
-from utils.data_io import (
-    load_coordinates,
-    load_institutions,
-)
-from utils.geocoder import (
+from geocoding.geocoder import (
     create_geocoder,
     geocode,
 )

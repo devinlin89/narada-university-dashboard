@@ -2,6 +2,11 @@ from time import perf_counter
 
 import pandas as pd
 
+from aliases.tables import (
+    load_alias_table,
+    load_todo_table,
+)
+from common.cli import parse_alias_column_args
 from config.config import (
     ALIAS_FILES,
     ALIASES_DIR,
@@ -11,11 +16,6 @@ from config.logger import (
     configure_logging,
     get_logger,
 )
-from utils.alias import (
-    load_alias_table,
-    load_todo_table,
-)
-from utils.cli import parse_alias_column_args
 
 logger = get_logger("scripts.apply_aliases")
 

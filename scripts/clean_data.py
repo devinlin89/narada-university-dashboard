@@ -5,6 +5,11 @@ from typing import Any
 import pandas as pd
 from titlecase import titlecase
 
+from aliases.tables import (
+    apply_alias_table,
+    load_institution_names,
+)
+from cleaning.campus import clean_campus_name
 from config.column_names import (
     COLUMN_MAPPING,
     DROPPED_COLUMNS,
@@ -24,12 +29,7 @@ from config.logger import (
     configure_logging,
     get_logger,
 )
-from utils.alias import (
-    apply_alias_table,
-    load_institution_names,
-)
-from utils.campus import clean_campus_name
-from utils.validation import (
+from validation.validators import (
     validate_aliases,
     validate_boolean_columns,
     validate_list_columns,

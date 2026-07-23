@@ -1,23 +1,13 @@
 # utils/alias.py
 
-from pathlib import Path
-
 import pandas as pd
 
+from common.data_io import load_csv_or_empty
 from config.config import (
     ALIAS_FILES,
     ALIASES_DIR,
     TODO_DATA_DIR,
 )
-
-
-def load_csv_or_empty(path: Path, columns: list[str]) -> pd.DataFrame:
-    # Load a CSV file or return an empty DataFrame if it does not exist.
-
-    if not path.exists():
-        return pd.DataFrame(columns=columns)
-
-    return pd.read_csv(path)
 
 
 def load_alias_table(column: str) -> pd.DataFrame:
@@ -39,7 +29,7 @@ def load_todo_table(column: str) -> pd.DataFrame:
 
 
 def load_institution_names() -> set[str]:
-    """Load every institution alias and canonical name."""
+    # Load every institution alias and canonical name
 
     alias_df = load_alias_table("institution")
 

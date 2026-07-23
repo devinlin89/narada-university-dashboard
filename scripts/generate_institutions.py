@@ -2,12 +2,12 @@ from time import perf_counter
 
 import pandas as pd
 
+from common.data_io import load_students
 from config.config import INSTITUTIONS_DATA
 from config.logger import (
     configure_logging,
     get_logger,
 )
-from utils.data_io import load_students
 
 logger = get_logger("scripts.generate_institutions")
 

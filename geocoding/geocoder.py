@@ -9,11 +9,11 @@ from typing import TypeAlias
 from geopy.geocoders import Nominatim
 from geopy.location import Location
 
+from aliases.tables import get_aliases
 from config.config import (
     GEOCODING_OVERRIDES,
     settings,
 )
-from utils.alias import get_aliases
 
 Coordinates: TypeAlias = tuple[float, float]
 

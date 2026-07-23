@@ -1,5 +1,7 @@
 # utils/data_io.py
 
+from pathlib import Path
+
 import pandas as pd
 
 from config.config import (
@@ -7,6 +9,15 @@ from config.config import (
     INSTITUTIONS_DATA,
     STUDENTS_DATA,
 )
+
+
+def load_csv_or_empty(path: Path, columns: list[str]) -> pd.DataFrame:
+    # Load a CSV file or return an empty DataFrame if it does not exist
+
+    if not path.exists():
+        return pd.DataFrame(columns=columns)
+
+    return pd.read_csv(path)
 
 
 def load_students() -> pd.DataFrame:
