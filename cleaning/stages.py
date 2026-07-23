@@ -1,4 +1,5 @@
 from collections.abc import Callable
+from dataclasses import dataclass
 from typing import Any
 
 import pandas as pd
@@ -165,18 +166,55 @@ def sort_dataset(df: pd.DataFrame) -> pd.DataFrame:
 # Cleaning pipeline definition
 
 StageFunction = Callable[[pd.DataFrame], pd.DataFrame]
-PipelineStage = tuple[str, StageFunction]
 
-CLEANING_PIPELINE: tuple[PipelineStage, ...] = (
+
+@dataclass(frozen=True)
+class CleaningStage:
+    # A single stage in a data processing pipeline
+    message: str
+    function: StageFunction
+
+
+CLEANING_STAGES: tuple[CleaningStage, ...] = (
     # (Log message, stage function)
-    ("Applying schema...", apply_schema),
-    ("Normalizing values...", normalize_values),
-    ("Converting list fields...", normalize_lists),
-    ("Applying default values...", apply_defaults),
-    ("Normalizing text...", normalize_text),
-    ("Normalizing campus names...", normalize_campuses),
-    ("Normalizing academic fields...", normalize_academic_fields),
-    ("Inferring single campuses...", infer_single_campuses),
-    ("Applying aliases...", apply_aliases),
-    ("Sorting dataset...", sort_dataset),
+    CleaningStage(
+        "Applying schema...",
+        apply_schema
+    ),
+    CleaningStage(
+        "Normalizing values...",
+        normalize_values
+    ),
+    CleaningStage(
+        "Converting list fields...",
+        normalize_lists
+    ),
+    CleaningStage(
+        "Applying default values...",
+        apply_defaults
+    ),
+    CleaningStage(
+        "Normalizing text...",
+        normalize_text
+    ),
+    CleaningStage(
+        "Normalizing campus names...",
+        normalize_campuses
+    ),
+    CleaningStage(
+        "Normalizing academic fields...",
+        normalize_academic_fields
+    ),
+    CleaningStage(
+        "Inferring single campuses...",
+        infer_single_campuses
+    ),
+    CleaningStage(
+        "Applying aliases...",
+        apply_aliases
+    ),
+    CleaningStage(
+        "Sorting dataset...",
+        sort_dataset
+    ),
 )

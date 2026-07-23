@@ -1,8 +1,8 @@
 import pandas as pd
 
 from cleaning.stages import (
-    CLEANING_PIPELINE,
-    PipelineStage,
+    CLEANING_STAGES,
+    CleaningStage,
 )
 from cleaning.validation import validate_dataset
 from common.data_io import load_raw_data
@@ -28,7 +28,7 @@ class CleaningPipeline(Pipeline):
 
     logger = get_logger("cleaning.pipeline")
 
-    stages: tuple[PipelineStage, ...] = CLEANING_PIPELINE
+    stages: tuple[CleaningStage, ...] = CLEANING_STAGES
 
     @classmethod
     def execute(cls) -> None:
@@ -65,8 +65,8 @@ class CleaningPipeline(Pipeline):
     def run_stages(cls, df: pd.DataFrame) -> pd.DataFrame:
         # Run the configured cleaning stages
 
-        for message, stage in cls.stages:
-            cls.logger.info(message)
-            df = stage(df)
+        for stage in cls.stages:
+            cls.logger.info(stage.message)
+            df = stage.function(df)
 
         return df
