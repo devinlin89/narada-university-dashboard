@@ -57,7 +57,7 @@ STUDENTS_DATA = PROCESSED_DATA_DIR / settings.files.students
 INSTITUTIONS_DATA = PROCESSED_DATA_DIR / settings.files.institutions
 COORDINATES_DATA = GEOCODING_DIR / settings.files.coordinates
 
-ALIAS_FILES = vars(settings.aliases)
+ALIAS_FILE_NAMES = vars(settings.aliases)
 
 # Reference data
 

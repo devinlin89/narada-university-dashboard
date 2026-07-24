@@ -17,11 +17,12 @@ from config.column_names import (
     LIST_RESPONSE_COLUMNS,
 )
 from config.config import (
-    ALIAS_FILES,
+    ALIAS_FILE_NAMES,
     REFERENCE_DATA,
 )
 
 # Cleaning pipeline stages
+
 
 def apply_schema(df: pd.DataFrame) -> pd.DataFrame:
     # Rename columns and remove unused columns
@@ -54,11 +55,7 @@ def apply_defaults(df: pd.DataFrame) -> pd.DataFrame:
     # Apply configured default values
 
     for column, default in REFERENCE_DATA.default_values.items():
-        df[column] = (
-            df[column]
-            .fillna(default)
-            .replace({"-": default})
-        )
+        df[column] = df[column].fillna(default).replace({"-": default})
 
     return df
 
@@ -120,18 +117,14 @@ def infer_single_campuses(df: pd.DataFrame) -> pd.DataFrame:
         if len(campuses) == 1
     }
 
-    # Select rows with the default campus value 
+    # Select rows with the default campus value
     # whose institution has exactly one known campus
-    mask = (
-        df["campus"].eq(REFERENCE_DATA.default_values["campus"])
-        & df["institution"].isin(replacements)
-    )
+    mask = df["campus"].eq(REFERENCE_DATA.default_values["campus"]) & df[
+        "institution"
+    ].isin(replacements)
 
     # Replace campus default value with the inferred campus name
-    df.loc[mask, "campus"] = (
-        df.loc[mask, "institution"]
-        .map(replacements)
-    )
+    df.loc[mask, "campus"] = df.loc[mask, "institution"].map(replacements)
 
     return df
 
@@ -139,7 +132,7 @@ def infer_single_campuses(df: pd.DataFrame) -> pd.DataFrame:
 def apply_aliases(df: pd.DataFrame) -> pd.DataFrame:
     # Apply alias mappings to configured columns
 
-    for column in ALIAS_FILES:
+    for column in ALIAS_FILE_NAMES:
         df[column] = apply_alias_table(df[column], column)
 
     return df
@@ -155,10 +148,7 @@ def sort_dataset(df: pd.DataFrame) -> pd.DataFrame:
         "major",
     ]
 
-    return (
-        df.sort_values(columns_sorting_order)
-        .reset_index(drop=True)
-    )
+    return df.sort_values(columns_sorting_order).reset_index(drop=True)
 
 
 # Cleaning pipeline definition
@@ -175,44 +165,14 @@ class CleaningStage:
 
 CLEANING_STAGES: tuple[CleaningStage, ...] = (
     # (Log message, stage function)
-    CleaningStage(
-        "Applying schema...",
-        apply_schema
-    ),
-    CleaningStage(
-        "Normalizing values...",
-        normalize_values
-    ),
-    CleaningStage(
-        "Converting list fields...",
-        normalize_lists
-    ),
-    CleaningStage(
-        "Applying default values...",
-        apply_defaults
-    ),
-    CleaningStage(
-        "Normalizing text...",
-        normalize_text
-    ),
-    CleaningStage(
-        "Normalizing campus names...",
-        normalize_campuses
-    ),
-    CleaningStage(
-        "Normalizing academic fields...",
-        normalize_academic_fields
-    ),
-    CleaningStage(
-        "Inferring single campuses...",
-        infer_single_campuses
-    ),
-    CleaningStage(
-        "Applying aliases...",
-        apply_aliases
-    ),
-    CleaningStage(
-        "Sorting dataset...",
-        sort_dataset
-    ),
+    CleaningStage("Applying schema...", apply_schema),
+    CleaningStage("Normalizing values...", normalize_values),
+    CleaningStage("Converting list fields...", normalize_lists),
+    CleaningStage("Applying default values...", apply_defaults),
+    CleaningStage("Normalizing text...", normalize_text),
+    CleaningStage("Normalizing campus names...", normalize_campuses),
+    CleaningStage("Normalizing academic fields...", normalize_academic_fields),
+    CleaningStage("Inferring single campuses...", infer_single_campuses),
+    CleaningStage("Applying aliases...", apply_aliases),
+    CleaningStage("Sorting dataset...", sort_dataset),
 )
