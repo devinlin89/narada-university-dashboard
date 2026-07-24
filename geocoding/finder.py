@@ -1,5 +1,13 @@
+from dataclasses import fields
+
 import pandas as pd
 
+from geocoding.models import GeocodingTarget
+
+KEY_COLUMNS = tuple(
+    field.name
+    for field in fields(GeocodingTarget)
+)
 
 def find_missing_locations(
     institutions_df: pd.DataFrame,
@@ -7,17 +15,11 @@ def find_missing_locations(
 ) -> pd.DataFrame:
     # Find institutions that have not yet been geocoded
 
-    key_columns = [
-        "institution",
-        "campus",
-        "country",
-    ]
-
     missing = (
         institutions_df
         .merge(
-            coordinates_df[key_columns],
-            on=key_columns,
+            coordinates_df[list(KEY_COLUMNS)],
+            on=list(KEY_COLUMNS),
             how="left",
             indicator=True,
         )

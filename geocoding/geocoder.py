@@ -1,7 +1,6 @@
 from collections.abc import Callable
 from random import randint
 from time import sleep
-from typing import TypeAlias
 
 from geopy.geocoders import Nominatim
 from geopy.location import Location
@@ -12,8 +11,10 @@ from config.config import (
     GEOCODING_OVERRIDES,
     settings,
 )
-
-Coordinates: TypeAlias = tuple[float, float]
+from geocoding.models import (
+    Coordinate,
+    GeocodingTarget,
+)
 
 
 def create_geocoder() -> Nominatim:
@@ -25,12 +26,12 @@ def create_geocoder() -> Nominatim:
     )
 
 
-def build_queries(
-    institution: str,
-    campus: str,
-    country: str,
-) -> list[str]:
+def build_queries(target: GeocodingTarget) -> list[str]:
     # Build progressively broader geocoding queries.
+
+    institution = target.institution
+    campus = target.campus
+    country = target.country
 
     queries: list[str] = []
 
@@ -94,18 +95,12 @@ def query_geocoder(
 
 def geocode(
     geocoder: Nominatim,
-    institution: str,
-    campus: str,
-    country: str,
+    target: GeocodingTarget,
     log: Callable[[str], object] | None = None,
-) -> Coordinates | None:
+) -> Coordinate | None:
     # Geocode an institution using progressively broader queries.
 
-    queries = build_queries(
-        institution,
-        campus,
-        country,
-    )
+    queries = build_queries(target)
 
     for search_query in queries:
         if log is not None:
@@ -122,7 +117,7 @@ def geocode(
         if log is not None:
             log(f"Found: {location.address}")
 
-        return (
+        return Coordinate(
             location.latitude,
             location.longitude,
         )

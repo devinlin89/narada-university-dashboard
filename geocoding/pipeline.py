@@ -6,45 +6,41 @@ from common.data_io import (
     load_institutions,
 )
 from common.pipeline import Pipeline
-from config.config import (
-    COORDINATES_DATA,
-)
+from config.config import COORDINATES_DATA
 from config.logger import get_logger
 from geocoding.finder import find_missing_locations
 from geocoding.geocoder import (
     create_geocoder,
     geocode,
 )
+from geocoding.models import (
+    Coordinate,
+    GeocodingTarget,
+)
 
 logger = get_logger("geocoding.pipeline") 
 
 def geocode_row(
     geocoder: Nominatim,
-    institution: str,
-    campus: str,
-    country: str,
+    target: GeocodingTarget,
 ) -> dict[str, object] | None:
     # Geocode a single institution
 
-    coordinates = geocode(
+    coordinate: Coordinate | None = geocode(
         geocoder,
-        institution,
-        campus,
-        country,
+        target,
         log=logger.info,
     )
 
-    if coordinates is None:
+    if coordinate is None:
         return None
 
-    latitude, longitude = coordinates
-
     return {
-        "institution": institution,
-        "campus": campus,
-        "country": country,
-        "latitude": latitude,
-        "longitude": longitude,
+        "institution": target.institution,
+        "campus": target.campus,
+        "country": target.country,
+        "latitude": coordinate.latitude,
+        "longitude": coordinate.longitude,
     }
 
 
@@ -59,22 +55,23 @@ def geocode_locations(
     total = len(locations_df)
 
     for index, row in enumerate(
-        locations_df.itertuples(),
+        locations_df.itertuples(index=False),
         start=1,
     ):
+        target = GeocodingTarget.from_row(row)
+
         logger.info(
-            "[%d/%d] %s, %s",
+            "[%d/%d] %s, %s, %s",
             index,
             total,
-            row.institution,
-            row.campus,
+            target.institution,
+            target.campus,
+            target.country
         )
 
         result = geocode_row(
             geocoder,
-            row.institution,
-            row.campus,
-            row.country,
+            target,
         )
 
         if result is not None:
