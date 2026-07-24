@@ -165,7 +165,7 @@ def sort_dataset(df: pd.DataFrame) -> pd.DataFrame:
 
 # Cleaning pipeline definition
 
-StageFunction = Callable[[pd.DataFrame], pd.DataFrame]
+type StageFunction = Callable[[pd.DataFrame], pd.DataFrame]
 
 
 @dataclass(frozen=True)

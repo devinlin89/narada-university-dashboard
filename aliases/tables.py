@@ -37,7 +37,9 @@ def load_institution_names() -> set[str]:
     return names
 
 
-def load_alias_mapping(column: str) -> dict[str, str]:
+type AliasMapping = dict[str, str]
+
+def load_alias_mapping(column: str) -> AliasMapping:
     # Load an alias to canonical mapping
 
     alias_df = load_alias_table(column)
