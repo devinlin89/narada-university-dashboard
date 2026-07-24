@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from time import perf_counter
 
+from common.exceptions import NaradaError
 from config.logger import configure_logging
 
 
@@ -20,8 +21,12 @@ class Pipeline(ABC):
         try:
             cls.execute()
 
+        except NaradaError as error:
+            cls.logger.error("%s failed: %s", cls.__name__, error)
+            raise
+
         except Exception:
-            cls.logger.exception("%s failed.", cls.__name__)
+            cls.logger.exception("%s failed unexpectedly.", cls.__name__)
             raise
 
         finally:

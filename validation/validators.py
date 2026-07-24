@@ -1,14 +1,19 @@
-# utils/validation.py
-
 import pandas as pd
 
 from aliases.tables import load_alias_table
+from common.exceptions import ValidationError
 from config.column_names import (
     BOOLEAN_COLUMNS,
     LIST_RESPONSE_COLUMNS,
     REQUIRED_COLUMNS,
 )
 from config.config import ALIAS_FILE_NAMES
+
+
+def csv_rows(mask: pd.Series) -> list[int]:
+    # Convert a boolean mask to 1-based CSV row numbers
+
+    return (mask[mask].index + 2).tolist()
 
 
 def validate_required_fields(df: pd.DataFrame) -> None:
@@ -18,9 +23,9 @@ def validate_required_fields(df: pd.DataFrame) -> None:
         missing = df[column].isna() | (df[column].astype(str).str.strip().eq(""))
 
         if missing.any():
-            rows = (missing[missing].index + 2).tolist()
+            rows = csv_rows(missing)
 
-            raise ValueError(
+            raise ValidationError(
                 f"Required field '{column}' contains missing values on CSV rows: {rows}"
             )
 
@@ -40,9 +45,9 @@ def validate_column_type(
         )
 
         if invalid.any():
-            rows = (invalid[invalid].index + 2).tolist()
+            rows = csv_rows(invalid)
 
-            raise TypeError(
+            raise ValidationError(
                 f"Column '{column}' contains invalid "
                 f"{expected_type.__name__} values on CSV rows: {rows}"
             )
@@ -82,7 +87,7 @@ def validate_aliases(df: pd.DataFrame) -> None:
         remaining = sorted(set(df[column].dropna().astype(str)) & unresolved_aliases)
 
         if remaining:
-            raise ValueError(
+            raise ValidationError(
                 f"Column '{column}' still contains unresolved aliases: "
                 f"{', '.join(remaining)}"
             )
