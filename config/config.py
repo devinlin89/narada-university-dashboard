@@ -67,6 +67,6 @@ _REPLACEMENTS = _load_yaml(
     MAPPINGS_DIR / "replacements.yaml"
 )
 
-VALUE_MAPPINGS = _REPLACEMENTS["value_mappings"]
-DEFAULT_VALUES = _REPLACEMENTS["default_values"]
-MAJOR_TO_ACADEMIC_FIELD = _REPLACEMENTS["major_to_academic_field"]
+VALUE_MAPPINGS: dict[str, str] = _REPLACEMENTS["value_mappings"]
+DEFAULT_VALUES: dict[str, str] = _REPLACEMENTS["default_values"]
+MAJOR_TO_ACADEMIC_FIELD: dict[str, str] = _REPLACEMENTS["major_to_academic_field"]

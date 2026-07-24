@@ -106,11 +106,11 @@ def normalize_academic_fields(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def infer_single_campuses(df: pd.DataFrame) -> pd.DataFrame:
-    # Replace "Not Specified" with the only known campus.
+    # Replace campus default value with the only known campus
 
-    # Find all known campuses for each institution
+    # Collect all non-default campuses for each institution
     known_campuses = (
-        df.loc[df["campus"] != "Not Specified"]
+        df.loc[df["campus"] != DEFAULT_VALUES["campus"]]
         .groupby("institution")["campus"]
         .unique()
     )
@@ -122,14 +122,14 @@ def infer_single_campuses(df: pd.DataFrame) -> pd.DataFrame:
         if len(campuses) == 1
     }
 
-    # Select rows where the campus is "Not Specified"
-    # and the institution has a single known campus
+    # Select rows with the default campus value 
+    # whose institution has exactly one known campus
     mask = (
-        df["campus"].eq("Not Specified")
+        df["campus"].eq(DEFAULT_VALUES["campus"])
         & df["institution"].isin(replacements)
     )
 
-    # Replace "Not Specified" with the inferred campus name
+    # Replace campus default value with the inferred campus name
     df.loc[mask, "campus"] = (
         df.loc[mask, "institution"]
         .map(replacements)

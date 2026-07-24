@@ -1,7 +1,8 @@
 import re
-from typing import Any
 
 import pycountry
+
+from config.config import DEFAULT_VALUES
 
 STOP_WORDS = {
     "university",
@@ -46,9 +47,9 @@ def normalize_whitespace(text: str) -> str:
 
 
 def clean_campus_name(
-        campus: Any,
+        campus: object,
         institution_names: set[str]
-) -> Any:
+) -> object:
     # Remove institution names, generic words, and countries from a campus name
 
     if not isinstance(campus, str):
@@ -60,8 +61,8 @@ def clean_campus_name(
 
     campus = normalize_whitespace(campus)
 
-    # Replaces blank campus name
+    # Replace blank campus name with the default value
     if not campus:
-        campus = "Not Specified"
+        campus = DEFAULT_VALUES["campus"]
 
     return campus
