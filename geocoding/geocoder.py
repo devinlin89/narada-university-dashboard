@@ -7,8 +7,7 @@ from geopy.location import Location
 
 from aliases.tables import get_aliases
 from config.config import (
-    DEFAULT_VALUES,
-    GEOCODING_OVERRIDES,
+    REFERENCE_DATA,
     settings,
 )
 from geocoding.models import (
@@ -37,7 +36,7 @@ def build_queries(target: GeocodingTarget) -> list[str]:
 
     # Manual override (highest priority)
     override = (
-        GEOCODING_OVERRIDES
+        REFERENCE_DATA.geocoding_overrides
         .get(institution, {})
         .get(campus)
     )
@@ -47,7 +46,7 @@ def build_queries(target: GeocodingTarget) -> list[str]:
     # Try every institution alias with the campus
     aliases = get_aliases("institution", institution)
 
-    if campus != DEFAULT_VALUES["campus"]:
+    if campus != REFERENCE_DATA.default_values["campus"]:
         queries.append(f"{institution}, {campus}, {country}")
         queries.append(f"{institution} {campus}, {country}")
 
@@ -68,7 +67,7 @@ def build_queries(target: GeocodingTarget) -> list[str]:
         queries.append(alias)
 
     # Campus + country only (last resort)
-    if campus != "Not Specified":
+    if campus != REFERENCE_DATA.default_values["campus"]:
         queries.append(f"{campus}, {country}")
 
     # Remove duplicates while preserving order.

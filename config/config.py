@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -59,14 +60,21 @@ COORDINATES_DATA = GEOCODING_DIR / settings.files.coordinates
 ALIAS_FILES = vars(settings.aliases)
 
 # Reference data
-GEOCODING_OVERRIDES = _load_yaml(
-    GEOCODING_DIR / "overrides.yaml"
-)
 
-_REPLACEMENTS = _load_yaml(
+@dataclass(frozen=True, slots=True)
+class ReferenceData:
+    geocoding_overrides: dict[str, dict[str, str]]
+    value_mappings: dict[str, str]
+    default_values: dict[str, str]
+    major_to_academic_field: dict[str, str]
+
+_replacement_data: dict[str, dict[str, str]] = _load_yaml(
     MAPPINGS_DIR / "replacements.yaml"
 )
 
-VALUE_MAPPINGS: dict[str, str] = _REPLACEMENTS["value_mappings"]
-DEFAULT_VALUES: dict[str, str] = _REPLACEMENTS["default_values"]
-MAJOR_TO_ACADEMIC_FIELD: dict[str, str] = _REPLACEMENTS["major_to_academic_field"]
+REFERENCE_DATA = ReferenceData(
+    geocoding_overrides=_load_yaml(GEOCODING_DIR / "overrides.yaml"),
+    value_mappings=_replacement_data["value_mappings"],
+    default_values=_replacement_data["default_values"],
+    major_to_academic_field=_replacement_data["major_to_academic_field"],
+)

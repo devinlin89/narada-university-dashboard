@@ -2,7 +2,7 @@ import re
 
 import pycountry
 
-from config.config import DEFAULT_VALUES
+from config.config import REFERENCE_DATA
 
 STOP_WORDS = {
     "university",
@@ -63,6 +63,6 @@ def clean_campus_name(
 
     # Replace blank campus name with the default value
     if not campus:
-        campus = DEFAULT_VALUES["campus"]
+        campus = REFERENCE_DATA.default_values["campus"]
 
     return campus

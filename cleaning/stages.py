@@ -18,9 +18,7 @@ from config.column_names import (
 )
 from config.config import (
     ALIAS_FILES,
-    DEFAULT_VALUES,
-    MAJOR_TO_ACADEMIC_FIELD,
-    VALUE_MAPPINGS,
+    REFERENCE_DATA,
 )
 
 # Cleaning pipeline stages
@@ -37,7 +35,7 @@ def apply_schema(df: pd.DataFrame) -> pd.DataFrame:
 def normalize_values(df: pd.DataFrame) -> pd.DataFrame:
     # Apply configured value mappings
 
-    for column, mapping in VALUE_MAPPINGS.items():
+    for column, mapping in REFERENCE_DATA.value_mappings.items():
         df[column] = df[column].replace(mapping)
 
     return df
@@ -55,7 +53,7 @@ def normalize_lists(df: pd.DataFrame) -> pd.DataFrame:
 def apply_defaults(df: pd.DataFrame) -> pd.DataFrame:
     # Apply configured default values
 
-    for column, default in DEFAULT_VALUES.items():
+    for column, default in REFERENCE_DATA.default_values.items():
         df[column] = (
             df[column]
             .fillna(default)
@@ -98,7 +96,7 @@ def normalize_campuses(df: pd.DataFrame) -> pd.DataFrame:
 def normalize_academic_fields(df: pd.DataFrame) -> pd.DataFrame:
     # Correct academic fields for known majors
 
-    field = df["major"].map(MAJOR_TO_ACADEMIC_FIELD)
+    field = df["major"].map(REFERENCE_DATA.major_to_academic_field)
 
     df["academic_field"] = field.fillna(df["academic_field"])
 
@@ -110,7 +108,7 @@ def infer_single_campuses(df: pd.DataFrame) -> pd.DataFrame:
 
     # Collect all non-default campuses for each institution
     known_campuses = (
-        df.loc[df["campus"] != DEFAULT_VALUES["campus"]]
+        df.loc[df["campus"] != REFERENCE_DATA.default_values["campus"]]
         .groupby("institution")["campus"]
         .unique()
     )
@@ -125,7 +123,7 @@ def infer_single_campuses(df: pd.DataFrame) -> pd.DataFrame:
     # Select rows with the default campus value 
     # whose institution has exactly one known campus
     mask = (
-        df["campus"].eq(DEFAULT_VALUES["campus"])
+        df["campus"].eq(REFERENCE_DATA.default_values["campus"])
         & df["institution"].isin(replacements)
     )
 
