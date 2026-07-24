@@ -9,7 +9,7 @@ from config.config import (
 
 
 def load_alias_table(column: str) -> pd.DataFrame:
-    # Load the alias table for the specified column.
+    # Load the alias table for the specified column
 
     return load_csv_or_empty(
         ALIASES_DIR / ALIAS_FILES[column],
@@ -18,7 +18,7 @@ def load_alias_table(column: str) -> pd.DataFrame:
 
 
 def load_todo_table(column: str) -> pd.DataFrame:
-    # Load the TODO alias table for the specified column.
+    # Load the TODO alias table for the specified column
 
     return load_csv_or_empty(
         TODO_DATA_DIR / f"{column}_aliases_todo.csv",
