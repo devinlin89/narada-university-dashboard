@@ -1,9 +1,9 @@
-from geocoding.pipeline import CoordinateGenerator
+from geocoding.pipeline import GeocodingPipeline
 
 
 def main() -> None:
     # Run the geocoding coordinate generation pipeline
-    CoordinateGenerator().run()
+    GeocodingPipeline().run()
 
 
 if __name__ == "__main__":

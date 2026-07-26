@@ -18,7 +18,8 @@ from geocoding.models import (
     GeocodingTarget,
 )
 
-logger = get_logger("geocoding.pipeline") 
+logger = get_logger("geocoding.pipeline")
+
 
 def geocode_row(
     geocoder: Nominatim,
@@ -66,7 +67,7 @@ def geocode_locations(
             total,
             target.institution,
             target.campus,
-            target.country
+            target.country,
         )
 
         result = geocode_row(
@@ -76,7 +77,7 @@ def geocode_locations(
 
         if result is not None:
             new_rows.append(result)
-        
+
     return pd.DataFrame(new_rows)
 
 
@@ -86,15 +87,10 @@ def update_coordinates(
 ) -> pd.DataFrame:
     # Append newly geocoded locations to the coordinate cache
 
-    return (
-        pd.concat(
-            [coordinates_df, new_coordinates_df],
-            ignore_index=True,
-        )
-        .sort_values(
-            ["country", "institution", "campus"]
-        )
-    )
+    return pd.concat(
+        [coordinates_df, new_coordinates_df],
+        ignore_index=True,
+    ).sort_values(["country", "institution", "campus"])
 
 
 def export_coordinates(df: pd.DataFrame) -> None:
@@ -111,11 +107,11 @@ def export_coordinates(df: pd.DataFrame) -> None:
     )
 
 
-class CoordinateGenerator(Pipeline):
+class GeocodingPipeline(Pipeline):
     # Generate coordinates for institutions
 
     logger = logger
-    
+
     @classmethod
     def execute(cls) -> None:
         logger = cls.logger

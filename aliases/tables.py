@@ -2,7 +2,7 @@ import pandas as pd
 
 from common.data_io import load_csv_or_empty
 from config.config import (
-    ALIAS_FILES,
+    ALIAS_FILE_NAMES,
     ALIASES_DIR,
     TODO_DATA_DIR,
 )
@@ -12,7 +12,7 @@ def load_alias_table(column: str) -> pd.DataFrame:
     # Load the alias table for the specified column
 
     return load_csv_or_empty(
-        ALIASES_DIR / ALIAS_FILES[column],
+        ALIASES_DIR / ALIAS_FILE_NAMES[column],
         ["alias", "canonical"],
     )
 
@@ -39,24 +39,16 @@ def load_institution_names() -> set[str]:
 
 type AliasMapping = dict[str, str]
 
+
 def load_alias_mapping(column: str) -> AliasMapping:
     # Load an alias to canonical mapping
 
     alias_df = load_alias_table(column)
 
-    return dict(
-        zip(
-            alias_df["alias"],
-            alias_df["canonical"],
-            strict=True
-        )
-    )
+    return dict(zip(alias_df["alias"], alias_df["canonical"], strict=True))
 
 
-def apply_alias_table(
-        series: pd.Series,
-        column: str
-) -> pd.Series:
+def apply_alias_table(series: pd.Series, column: str) -> pd.Series:
     # Replace aliases with canonical values
 
     mapping = load_alias_mapping(column)
@@ -69,16 +61,18 @@ def get_aliases(column: str, name: str) -> list[str]:
 
     alias_df = load_alias_table(column)
 
-    return alias_df.loc[
-        alias_df["canonical"] == name,
-        "alias"
-    ].dropna().astype(str).tolist()
+    return (
+        alias_df.loc[alias_df["canonical"] == name, "alias"]
+        .dropna()
+        .astype(str)
+        .tolist()
+    )
 
 
 def export_alias_table(alias_df: pd.DataFrame, column: str) -> None:
     # Export the updated alias table
 
-    alias_path = ALIASES_DIR / ALIAS_FILES[column]
+    alias_path = ALIASES_DIR / ALIAS_FILE_NAMES[column]
 
     alias_path.parent.mkdir(parents=True, exist_ok=True)
     alias_df.to_csv(alias_path, index=False)

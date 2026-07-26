@@ -1,5 +1,7 @@
 import pandas as pd
 
+from common.exceptions import ValidationError
+
 
 def validate_todo(todo_df: pd.DataFrame) -> None:
     # Validate a TODO alias table before applying it.
@@ -12,7 +14,7 @@ def validate_todo(todo_df: pd.DataFrame) -> None:
         ]
 
         if missing:
-            raise ValueError(
+            raise ValidationError(
                 f"TODO file contains blank {column} values "
                 f"on CSV rows: {missing}"
             )
@@ -26,7 +28,7 @@ def validate_todo(todo_df: pd.DataFrame) -> None:
         ]
 
         if empty:
-            raise ValueError(
+            raise ValidationError(
                 f"TODO file contains empty {column} values "
                 f"on CSV rows: {empty}"
             )
@@ -37,7 +39,7 @@ def validate_todo(todo_df: pd.DataFrame) -> None:
     ].unique()
 
     if len(duplicates) > 0:
-        raise ValueError(
+        raise ValidationError(
             "TODO file contains duplicate aliases: "
             + ", ".join(sorted(duplicates))
         )
@@ -56,7 +58,7 @@ def validate_against_alias_table(
     )
 
     if conflicts:
-        raise ValueError(
+        raise ValidationError(
             "The following aliases already exist in the alias table: "
             + ", ".join(conflicts)
         )

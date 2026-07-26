@@ -1,33 +1,32 @@
-# utils/validation.py
-
 import pandas as pd
 
 from aliases.tables import load_alias_table
+from common.exceptions import ValidationError
 from config.column_names import (
     BOOLEAN_COLUMNS,
     LIST_RESPONSE_COLUMNS,
     REQUIRED_COLUMNS,
 )
-from config.config import ALIAS_FILES
+from config.config import ALIAS_FILE_NAMES
+
+
+def csv_rows(mask: pd.Series) -> list[int]:
+    # Convert a boolean mask to 1-based CSV row numbers
+
+    return (mask[mask].index + 2).tolist()
 
 
 def validate_required_fields(df: pd.DataFrame) -> None:
     # Ensure all required fields contain non-empty values
 
     for column in REQUIRED_COLUMNS:
-        missing = df[column].isna() | (
-            df[column]
-            .astype(str)
-            .str.strip()
-            .eq("")
-        )
+        missing = df[column].isna() | (df[column].astype(str).str.strip().eq(""))
 
         if missing.any():
-            rows = (missing[missing].index + 2).tolist()
+            rows = csv_rows(missing)
 
-            raise ValueError(
-                f"Required field '{column}' contains missing "
-                f"values on CSV rows: {rows}"
+            raise ValidationError(
+                f"Required field '{column}' contains missing values on CSV rows: {rows}"
             )
 
 
@@ -39,14 +38,16 @@ def validate_column_type(
     # Ensure all non-null values in the specified columns have the expected type
 
     for column in columns:
-        invalid = df[column].dropna().apply(
-            lambda value: not isinstance(value, expected_type)
+        invalid = (
+            df[column]
+            .dropna()
+            .apply(lambda value: not isinstance(value, expected_type))
         )
 
         if invalid.any():
-            rows = (invalid[invalid].index + 2).tolist()
+            rows = csv_rows(invalid)
 
-            raise TypeError(
+            raise ValidationError(
                 f"Column '{column}' contains invalid "
                 f"{expected_type.__name__} values on CSV rows: {rows}"
             )
@@ -71,7 +72,7 @@ def validate_list_columns(df: pd.DataFrame) -> None:
 def validate_aliases(df: pd.DataFrame) -> None:
     # Ensure no unresolved aliases remain in the cleaned dataset
 
-    for column in ALIAS_FILES:
+    for column in ALIAS_FILE_NAMES:
         alias_df = load_alias_table(column)
 
         unresolved_aliases = set(
@@ -83,13 +84,10 @@ def validate_aliases(df: pd.DataFrame) -> None:
             .astype(str)
         )
 
-        remaining = sorted(
-            set(df[column].dropna().astype(str))
-            & unresolved_aliases
-        )
+        remaining = sorted(set(df[column].dropna().astype(str)) & unresolved_aliases)
 
         if remaining:
-            raise ValueError(
+            raise ValidationError(
                 f"Column '{column}' still contains unresolved aliases: "
                 f"{', '.join(remaining)}"
             )
