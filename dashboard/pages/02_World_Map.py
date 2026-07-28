@@ -1,6 +1,5 @@
 import streamlit as st
 from visualization.map import create_map
-import pandas as pd
 
 st.title("World University Map")
 
