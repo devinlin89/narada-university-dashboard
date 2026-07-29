@@ -6,9 +6,12 @@ from dashboard.ui.overview import (
     metric_grid,
     supporting_charts,
 )
+from dashboard.ui.styles import load_css
 from dashboard.visualization.charts import map_preview
 
 data = load_dashboard_data()
+
+load_css()
 
 st.title("🎓 Narada University Dashboard")
 st.caption("University Destinations of the Naradanian Class of 2026")

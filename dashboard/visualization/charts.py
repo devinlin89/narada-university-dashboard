@@ -26,7 +26,7 @@ def map_preview(institutions_df: pd.DataFrame) -> None:
 
         fig.update_traces(
             marker=dict(
-                color="#d62728",
+                color="#e2703e",
                 line=dict(width=0),
             ),
             hoverinfo="skip",
@@ -91,6 +91,8 @@ def country_bar_chart(
         yaxis_title=None,
     )
 
+    fig.update_layout(height=350)
+
     return fig
 
 
@@ -133,6 +135,8 @@ def university_bar_chart(
         margin=dict(l=180, r=20, t=20, b=20),
     )
 
+    fig.update_layout(height=350)
+
     return fig
 
 
@@ -168,6 +172,8 @@ def academic_field_chart(
         yaxis_title=None,
     )
 
+    fig.update_layout(height=350)
+
     return fig
 
 
@@ -195,5 +201,7 @@ def domestic_pie_chart(
         ],
         hole=0.5,
     )
+
+    fig.update_layout(height=350)    
 
     return fig

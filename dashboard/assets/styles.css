@@ -1,0 +1,126 @@
+/* ==========================================================
+   Design Tokens
+   ========================================================== */
+
+:root {
+    /* Border Radius */
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+
+    /* Spacing */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+
+    /* Component Heights */
+    --metric-card-height: 132px;
+    --chart-card-height: 560px;
+    --chart-title-height: 4rem;
+    --info-card-height: 120px;
+
+    /* Typography */
+    --font-title: 2.25rem;
+    --font-section: 1.75rem;
+    --font-card-title: 1.2rem;
+    --font-body: 1rem;
+    --font-metric: 2.4rem;
+
+    /* Font Weights */
+    --weight-normal: 400;
+    --weight-medium: 500;
+    --weight-semibold: 600;
+    --weight-bold: 700;
+}
+
+
+/* ==========================================================
+   Metric Cards
+   ========================================================== */
+
+.metric-card {
+    height: var(--metric-card-height);
+
+    display: grid;
+    grid-template-rows: auto auto;
+
+    justify-content: center;
+    align-content: center;
+
+    text-align: center;
+    gap: 0.25rem;
+}
+
+.metric-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 3.5rem;
+
+    font-size: var(--font-card-title);
+    font-weight: var(--weight-semibold);
+    line-height: 1.2;
+}
+
+.metric-value {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: var(--font-metric);
+    font-weight: var(--weight-bold);
+    line-height: 1;
+
+    margin-bottom: var(--space-md)
+}
+
+
+/* ==========================================================
+   Chart Cards
+   ========================================================== */
+
+.chart-card {
+    height: var(--chart-card-height);
+
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-title {
+    height: var(--chart-title-height);
+
+    display: flex;
+    align-items: flex-start;
+
+    font-size: var(--font-section);
+    font-weight: var(--weight-bold);
+    line-height: 1.2;
+}
+
+
+/* ==========================================================
+   Info Cards
+   ========================================================== */
+
+.info-card {
+    height: var(--info-card-height);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.info-title {
+    font-size: 1.2rem;
+    font-weight: var(--weight-semibold);
+
+    margin-bottom: var(--space-sm);
+}
+
+.info-value {
+    font-size: var(--font-body);
+    line-height: 1.4;
+}

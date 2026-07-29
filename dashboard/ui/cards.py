@@ -30,14 +30,20 @@ def chart_card(
     """Display a chart inside a dashboard card."""
 
     with st.container(border=True):
-        st.subheader(title)
+
+        st.markdown(
+            f"""
+            <div class="chart-title">
+                {title}
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
         st.plotly_chart(
             figure,
             use_container_width=True,
-            config={
-                "displayModeBar": False,
-            },
+            config={"displayModeBar": False},
         )
 
 

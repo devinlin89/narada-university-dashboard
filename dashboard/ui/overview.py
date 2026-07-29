@@ -40,7 +40,7 @@ def supporting_charts(data: DashboardData) -> None:
 
     with left:
         chart_card(
-            "Top Destination Countries",
+            "Top Countries",
             country_bar_chart(data.institutions),
         )
 
