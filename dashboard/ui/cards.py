@@ -39,3 +39,15 @@ def chart_card(
                 "displayModeBar": False,
             },
         )
+
+
+def info_card(
+    icon: str,
+    title: str,
+    value: str,
+) -> None:
+    """Display a dashboard insight."""
+
+    with st.container(border=True):
+        st.markdown(f"##### {icon} {title}")
+        st.write(value)

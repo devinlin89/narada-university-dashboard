@@ -1,7 +1,33 @@
 from dataclasses import dataclass
+from math import asin, cos, radians, sin, sqrt
 
 import pandas as pd
 
+from geocoding.models import Coordinate
+
+# Coordinates of Jakarta
+JAKARTA = (-6.2000, 106.8167)
+
+def haversine(
+    origin: Coordinate,
+    destination: Coordinate,
+) -> float:
+    """
+    Calculate the great circle distance in kilometers between two points 
+    on the earth (specified in decimal degrees)
+    """
+    # convert decimal degrees to radians 
+    lat1, lon1 = map(radians, origin)
+    lat2, lon2 = map(radians, destination)
+
+    # haversine formula 
+    dlon = lon2 - lon1 
+    dlat = lat2 - lat1 
+    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+    c = 2 * asin(sqrt(a)) 
+    r = 6371 # Radius of earth in kilometers. Determines return value units.
+
+    return c * r
 
 @dataclass(frozen=True)
 class DashboardStatistics:
@@ -19,6 +45,7 @@ class DashboardStatistics:
     most_popular_university: str
     most_popular_country: str
     most_popular_field: str
+    farthest_destination: str
     domestic_students: int
     international_students: int
 
@@ -43,6 +70,21 @@ class DashboardStatistics:
             .reset_index(name="students")
             .sort_values("students")
         )
+
+        institutions = institutions_df.copy()
+
+        institutions["distance_km"] = institutions.apply(
+            lambda row: haversine(
+                JAKARTA,
+                (row["latitude"], row["longitude"]),
+            ),
+            axis=1,
+        )
+
+        farthest = institutions.loc[
+            institutions["distance_km"].idxmax()
+        ]
+
 
         domestic_students = (
             students_df["country"]
@@ -76,7 +118,9 @@ class DashboardStatistics:
             most_popular_field=(
                 field_counts.iloc[-1]["academic_field"]
             ),
-
+            farthest_destination=(
+                f"{farthest['institution']}, {farthest['country']}"
+            ),
             domestic_students=domestic_students,
             international_students=international_students,
         )
