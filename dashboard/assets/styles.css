@@ -36,6 +36,8 @@
 }
 
 
+
+
 /* ==========================================================
    Metric Cards
    ========================================================== */
@@ -82,13 +84,6 @@
    Chart Cards
    ========================================================== */
 
-.chart-card {
-    height: var(--chart-card-height);
-
-    display: flex;
-    flex-direction: column;
-}
-
 .chart-title {
     height: var(--chart-title-height);
 
@@ -116,7 +111,29 @@
     line-height: 1.4;
 }
 
-.info-title h5{
+.info-title h3{
     font-size: var(--font-card-title);
     font-weight: var(--weight-semibold);
+}
+
+
+/* ==========================================================
+   Navigation Cards
+   ========================================================== */
+
+.navigation-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.navigation-title h3 {
+    font-size: var(--font-card-title);
+    font-weight: var(--weight-semibold);
+}
+
+.navigation-description {
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: var(--space-md);
 }

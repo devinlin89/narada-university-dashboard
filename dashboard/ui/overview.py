@@ -5,6 +5,7 @@ from dashboard.ui.cards import (
     chart_card,
     info_card,
     metric_card,
+    navigation_card,
 )
 from dashboard.visualization.charts import (
     academic_field_chart,
@@ -68,7 +69,7 @@ def supporting_charts(data: DashboardData) -> None:
 def did_you_know(stats: DashboardStatistics) -> None:
     """Display the dashboard insight panel."""
 
-    with st.container(border=True):
+    with st.container():
         st.subheader("💡 Did You Know?")
 
         top_left, top_right = st.columns(2)
@@ -101,4 +102,60 @@ def did_you_know(stats: DashboardStatistics) -> None:
                 "✈️",
                 "Farthest Destination",
                 stats.farthest_destination,
+            )
+
+
+def explore_more() -> None:
+    """Display the explore more section"""
+
+    with st.container(border=True):
+        st.subheader("🔎 Explore More")
+
+        top_left, top_right = st.columns(2)
+
+        with top_left:
+            navigation_card(
+                title="World Map",
+                icon="🗺️",
+                description=(
+                "Explore every university destination "
+                "on an interactive world map."
+                ),
+                page="pages/02_World_Map.py",
+            )
+
+        with top_right:
+            navigation_card(
+                title="Universities",
+                icon="🏛️",
+                description=(
+                "Browse all universities, student counts, " 
+                "and destination campuses."
+                ),
+                page="pages/03_Universities.py",
+            )
+
+        bottom_left, bottom_right = st.columns(2)
+
+
+        with bottom_left:
+            navigation_card(
+                title="Countries",
+                icon="🌍",
+                description=(
+                "See destination countries and "
+                "how students are distributed worldwide."
+                ),
+                page="pages/04_Countries.py",
+            )
+
+        with bottom_right:
+            navigation_card(
+                title="Majors",
+                icon="🎓",
+                description=(
+                "Explore the most popular majors and "
+                "academic fields chosen by students."
+                ),
+                page="pages/05_Majors.py",
             )

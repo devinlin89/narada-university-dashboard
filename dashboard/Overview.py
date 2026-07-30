@@ -1,8 +1,10 @@
 import streamlit as st
 
 from dashboard.data.loader import load_dashboard_data
+from dashboard.ui.cards import vertical_spacer
 from dashboard.ui.overview import (
     did_you_know,
+    explore_more,
     metric_grid,
     supporting_charts,
 )
@@ -20,26 +22,21 @@ st.write(
     "Browse admissions statistics, universities, majors, and destination countries."
 )
 
-# ==========================
 # Summary Metrics
-# ==========================
-
 metric_grid(data.statistics)
+vertical_spacer()
 
-# ==========================
 # Map Preview
-# ==========================
-
 map_preview(data.institutions)
+vertical_spacer()
 
-# ==========================
 # Two-column charts
-# ==========================
-
 supporting_charts(data)
+vertical_spacer()
 
-# ==========================
 # Interesting Facts
-# ==========================
-
 did_you_know(data.statistics)
+vertical_spacer()
+
+# Explore More
+explore_more()

@@ -1,5 +1,14 @@
+from pathlib import Path
+
 import plotly.graph_objects as go
 import streamlit as st
+
+
+def vertical_spacer(size: str = "1rem") -> None:
+    st.markdown(
+        f"<div style='height: {size};'></div>",
+        unsafe_allow_html=True,
+    )
 
 
 def metric_card(
@@ -57,7 +66,38 @@ def info_card(
     with st.container(border=True):
         st.markdown(f"""
             <div class="info-title">
-                <h5>{icon} {title}</h5>
+                <h3>{icon} {title}</h3>
             </div>
             """, unsafe_allow_html=True)
         st.write(value)
+
+
+def navigation_card(
+    title: str,
+    icon: str,
+    description: str,
+    page: str | Path,
+) -> None:
+    """Display a navigation card linking to another dashboard page."""
+
+    with st.container(border=True):
+        st.markdown(
+            f"""
+            <div class="navigation-card">
+                <div class="navigation-title">
+                    <h3>{icon} {title}</h3>
+                </div>
+                <div class="navigation-description">
+                    {description}
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        if st.button(
+            f"Open {title} →",
+            use_container_width=True,
+            key=f"nav_{title}",
+        ):
+            st.switch_page(page)
