@@ -55,5 +55,9 @@ def info_card(
     """Display a dashboard insight."""
 
     with st.container(border=True):
-        st.markdown(f"##### {icon} {title}")
+        st.markdown(f"""
+            <div class="info-title">
+                <h5>{icon} {title}</h5>
+            </div>
+            """, unsafe_allow_html=True)
         st.write(value)

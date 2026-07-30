@@ -14,11 +14,10 @@ data = load_dashboard_data()
 load_css()
 
 st.title("🎓 Narada University Dashboard")
-st.caption("University Destinations of the Naradanian Class of 2026")
 
 st.write(
-    "Explore the university destinations of the Narada graduating class. "
-    "Browse admissions statistics, universities, majors, and countries."
+    "Explore the university destinations of the Naradanian Class of 2026. "
+    "Browse admissions statistics, universities, majors, and destination countries."
 )
 
 # ==========================

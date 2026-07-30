@@ -5,6 +5,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
+from dashboard.visualization.theme import style_figure
+
 
 def map_preview(institutions_df: pd.DataFrame) -> None:
     """Render the overview world map preview."""
@@ -34,11 +36,13 @@ def map_preview(institutions_df: pd.DataFrame) -> None:
         )
 
         fig.update_geos(
+            fitbounds="locations",
             showland=True,
             landcolor="rgb(250,250,250)",
+            showcountries=True,
             showocean=True,
-            oceancolor="rgb(0,123,186)",
-            countrycolor="white",
+            oceancolor="rgb(0, 104, 201)",
+            countrycolor="rgb(214, 214, 216)",
             showcoastlines=False,
             showframe=False,
             lataxis_showgrid=False,
@@ -47,7 +51,9 @@ def map_preview(institutions_df: pd.DataFrame) -> None:
 
         fig.update_layout(
             margin=dict(l=0, r=0, t=0, b=0),
-            height=450,
+            height=350,
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
         )
 
         st.plotly_chart(
@@ -91,9 +97,13 @@ def country_bar_chart(
         yaxis_title=None,
     )
 
-    fig.update_layout(height=350)
+    fig.update_layout(
+        height=350,
+        margin=dict(l=20, r=20, t=20, b=20),
+        yaxis=dict(automargin=True),
+    )
 
-    return fig
+    return style_figure(fig)
 
 
 def university_bar_chart(
@@ -135,9 +145,13 @@ def university_bar_chart(
         margin=dict(l=180, r=20, t=20, b=20),
     )
 
-    fig.update_layout(height=350)
+    fig.update_layout(
+        height=350,
+        margin=dict(l=20, r=20, t=20, b=20),
+        yaxis=dict(automargin=True),
+    )
 
-    return fig
+    return style_figure(fig)
 
 
 def academic_field_chart(
@@ -172,9 +186,13 @@ def academic_field_chart(
         yaxis_title=None,
     )
 
-    fig.update_layout(height=350)
+    fig.update_layout(
+        height=350,
+        margin=dict(l=20, r=20, t=20, b=20),
+        yaxis=dict(automargin=True),
+    )
 
-    return fig
+    return style_figure(fig)
 
 
 def domestic_pie_chart(
@@ -199,9 +217,23 @@ def domestic_pie_chart(
             domestic,
             international,
         ],
-        hole=0.5,
     )
 
-    fig.update_layout(height=350)    
+    fig.update_layout(
+        height=350,
+        margin=dict(l=20, r=20, t=20, b=20),
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=-0.1,
+            xanchor="center",
+            x=0.5,
+        )
+    )
 
-    return fig
+    fig.update_traces(
+        rotation=180.5,
+        hole=0.55,
+    )
+
+    return style_figure(fig)

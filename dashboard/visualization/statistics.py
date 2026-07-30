@@ -29,6 +29,7 @@ def haversine(
 
     return c * r
 
+
 @dataclass(frozen=True)
 class DashboardStatistics:
     # Headline metrics
@@ -118,9 +119,7 @@ class DashboardStatistics:
             most_popular_field=(
                 field_counts.iloc[-1]["academic_field"]
             ),
-            farthest_destination=(
-                f"{farthest['institution']}, {farthest['country']}"
-            ),
+            farthest_destination=farthest['institution'],
             domestic_students=domestic_students,
             international_students=international_students,
         )
