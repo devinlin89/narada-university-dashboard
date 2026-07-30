@@ -20,7 +20,7 @@ def style_figure(fig: go.Figure):
         autosize=False,
         xaxis_fixedrange=True,
         yaxis_fixedrange=True,
-        height=400,
+        height=350,
         margin=dict(l=20, r=20, t=20, b=20),
         yaxis=dict(automargin=True),
     )

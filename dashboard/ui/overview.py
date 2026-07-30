@@ -54,7 +54,7 @@ def supporting_charts(data: DashboardData) -> None:
 
     with left:
         chart_card(
-            "Academic Fields",
+            "Top Academic Fields",
             academic_field_chart(data.students),
         )
 

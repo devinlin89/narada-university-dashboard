@@ -144,6 +144,7 @@ def university_bar_chart(
 
 def academic_field_chart(
     students_df: pd.DataFrame,
+    top_n: int = 5,
 ) -> go.Figure:
     """Create a horizontal bar chart of academic fields."""
 
@@ -152,6 +153,8 @@ def academic_field_chart(
         .groupby("academic_field")
         .size()
         .reset_index(name="students")
+        .sort_values("students", ascending=False)
+        .head(top_n)
         .sort_values("students")
     )
 
