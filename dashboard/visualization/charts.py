@@ -97,12 +97,6 @@ def country_bar_chart(
         yaxis_title=None,
     )
 
-    fig.update_layout(
-        height=350,
-        margin=dict(l=20, r=20, t=20, b=20),
-        yaxis=dict(automargin=True),
-    )
-
     return style_figure(fig)
 
 
@@ -122,7 +116,7 @@ def university_bar_chart(
     )
 
     data["institution"] = data["institution"].apply(
-        lambda name: "<br>".join(fill(name, width=28).splitlines())
+        lambda name: "<br>".join(fill(name, width=24).splitlines())
     )
 
     fig = px.bar(
@@ -143,12 +137,6 @@ def university_bar_chart(
         xaxis_title="Students",
         yaxis_title=None,
         margin=dict(l=180, r=20, t=20, b=20),
-    )
-
-    fig.update_layout(
-        height=350,
-        margin=dict(l=20, r=20, t=20, b=20),
-        yaxis=dict(automargin=True),
     )
 
     return style_figure(fig)
@@ -184,12 +172,6 @@ def academic_field_chart(
     fig.update_layout(
         xaxis_title="Students",
         yaxis_title=None,
-    )
-
-    fig.update_layout(
-        height=350,
-        margin=dict(l=20, r=20, t=20, b=20),
-        yaxis=dict(automargin=True),
     )
 
     return style_figure(fig)
