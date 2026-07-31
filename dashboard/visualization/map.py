@@ -1,3 +1,5 @@
+from textwrap import fill
+
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -8,9 +10,14 @@ from config.config import REFERENCE_DATA
 def world_map(institutions_df: pd.DataFrame) -> go.Figure:
     """Create an interactive map of university destinations."""
 
+    institutions_df["wrapped_name"] = institutions_df["institution"].apply(
+        lambda x: fill(x, width=28).replace("\n", "<br>")
+    )
+
     hover_text = [
         (
-            f"<b>🏛️ {row.institution}</b>"
+            f"<b>🏛️ {row.wrapped_name}</b>"
+            "<br>"
             f"{'' 
                if row.campus == REFERENCE_DATA.default_values["campus"] 
                else f'<br>📍 {row.campus}'}"
@@ -48,8 +55,9 @@ def world_map(institutions_df: pd.DataFrame) -> go.Figure:
         map_zoom=1.67,
         margin=dict(l=0, r=0, t=0, b=0),
         hoverlabel=dict(
+            align="left",
             font_size=14,
-            font_family="Arial",
+            font_family="Source Sans",
         ),
     )
 
