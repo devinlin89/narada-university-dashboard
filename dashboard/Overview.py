@@ -23,6 +23,13 @@ data = load_dashboard_data()
 
 load_css()
 
+st.set_page_config(
+    page_title="Narada University Dashboard",
+    page_icon="🎓",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
+
 st.title("🎓 Narada University Dashboard")
 
 st.write(
