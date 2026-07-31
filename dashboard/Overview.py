@@ -9,7 +9,10 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from dashboard.data.loader import load_dashboard_data  # noqa: E402
-from dashboard.ui.cards import vertical_spacer  # noqa: E402
+from dashboard.ui.cards import (  # noqa: E402
+    map_preview_card,
+    vertical_spacer,
+)
 from dashboard.ui.overview import (  # noqa: E402
     did_you_know,
     explore_more,
@@ -17,7 +20,6 @@ from dashboard.ui.overview import (  # noqa: E402
     supporting_charts,
 )
 from dashboard.ui.styles import load_css  # noqa: E402
-from dashboard.visualization.charts import map_preview  # noqa: E402
 
 data = load_dashboard_data()
 
@@ -42,7 +44,7 @@ metric_grid(data.statistics)
 vertical_spacer()
 
 # Map Preview
-map_preview(data.institutions)
+map_preview_card(data.institutions)
 vertical_spacer()
 
 # Two-column charts
