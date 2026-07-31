@@ -45,6 +45,7 @@ def map_preview(institutions_df):
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
         )
+    
     return fig
 
 
