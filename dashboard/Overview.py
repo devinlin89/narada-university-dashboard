@@ -1,9 +1,9 @@
+from pathlib import Path
 import sys
 
 import streamlit as st
 
-from config.config import PROJECT_ROOT
-
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from dashboard.data.loader import load_dashboard_data
