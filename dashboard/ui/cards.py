@@ -1,7 +1,10 @@
 from pathlib import Path
 
+import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
+
+from dashboard.visualization.charts import map_preview
 
 
 def vertical_spacer(size: str = "1rem") -> None:
@@ -30,6 +33,35 @@ def metric_card(
             unsafe_allow_html=True,
             help=help,
         )
+
+
+def map_preview_card(institutions_df: pd.DataFrame) -> None:
+    """Render the overview world map preview."""
+
+    with st.container(border=True):
+        st.subheader("🌍 University Destinations")
+        st.caption(
+            "Preview of university destinations. "
+            "Open the interactive map to explore individual universities."
+        )
+
+        fig = map_preview(institutions_df)
+
+        st.plotly_chart(
+            fig,
+            use_container_width=True,
+            config={
+                "displayModeBar": False,
+                "staticPlot": True,
+            },
+        )
+
+        if st.button(
+            "🌍 Explore Interactive Map",
+            key="explore_map",
+            use_container_width=True,
+        ):
+            st.switch_page("pages/02_World_Map.py")
 
 
 def chart_card(

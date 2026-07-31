@@ -8,17 +8,8 @@ import streamlit as st
 from dashboard.visualization.theme import style_figure
 
 
-def map_preview(institutions_df: pd.DataFrame) -> None:
-    """Render the overview world map preview."""
-
-    with st.container(border=True):
-        st.subheader("🌍 University Destinations")
-        st.caption(
-            "Preview of university destinations. "
-            "Open the interactive map to explore individual universities."
-        )
-
-        fig = px.scatter_geo(
+def map_preview(institutions_df):
+    fig = px.scatter_geo(
             institutions_df,
             lat="latitude",
             lon="longitude",
@@ -26,7 +17,7 @@ def map_preview(institutions_df: pd.DataFrame) -> None:
             projection="equirectangular",
         )
 
-        fig.update_traces(
+    fig.update_traces(
             marker=dict(
                 color="#e2703e",
                 line=dict(width=0),
@@ -35,7 +26,7 @@ def map_preview(institutions_df: pd.DataFrame) -> None:
             hovertemplate=None,
         )
 
-        fig.update_geos(
+    fig.update_geos(
             fitbounds="locations",
             showland=True,
             landcolor="rgb(250,250,250)",
@@ -49,28 +40,13 @@ def map_preview(institutions_df: pd.DataFrame) -> None:
             lonaxis_showgrid=False,
         )
 
-        fig.update_layout(
+    fig.update_layout(
             margin=dict(l=0, r=0, t=0, b=0),
             height=350,
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
         )
-
-        st.plotly_chart(
-            fig,
-            use_container_width=True,
-            config={
-                "displayModeBar": False,
-                "staticPlot": True,
-            },
-        )
-
-        if st.button(
-            "🌍 Explore Interactive Map",
-            key="explore_map",
-            use_container_width=True,
-        ):
-            st.switch_page("pages/02_World_Map.py")
+    return fig
 
 
 def country_bar_chart(
