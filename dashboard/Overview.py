@@ -1,4 +1,10 @@
+import sys
+
 import streamlit as st
+
+from config.config import PROJECT_ROOT
+
+sys.path.insert(0, str(PROJECT_ROOT))
 
 from dashboard.data.loader import load_dashboard_data
 from dashboard.ui.cards import vertical_spacer
