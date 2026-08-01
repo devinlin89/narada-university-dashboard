@@ -9,7 +9,7 @@ from config.config import (
     INSTITUTIONS_DATA,
     STUDENTS_DATA,
 )
-from dashboard.visualization.statistics import DashboardStatistics
+from dashboard.data.statistics import DashboardStatistics
 
 
 @dataclass(frozen=True)

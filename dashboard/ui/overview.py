@@ -1,6 +1,7 @@
 import streamlit as st
 
 from dashboard.data.loader import DashboardData
+from dashboard.data.statistics import DashboardStatistics
 from dashboard.ui.cards import (
     chart_card,
     info_card,
@@ -13,7 +14,6 @@ from dashboard.visualization.charts import (
     domestic_pie_chart,
     university_bar_chart,
 )
-from dashboard.visualization.statistics import DashboardStatistics
 
 
 def metric_grid(stats: DashboardStatistics) -> None:
