@@ -11,6 +11,7 @@ if str(PROJECT_ROOT) not in sys.path:
 from dashboard.data.loader import load_dashboard_data  # noqa: E402
 from dashboard.ui.cards import (  # noqa: E402
     map_preview_card,
+    page_header,
     vertical_spacer,
 )
 from dashboard.ui.overview import (  # noqa: E402
@@ -32,11 +33,13 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-st.title("🎓 Narada University Dashboard")
-
-st.write(
-    "Explore the university destinations of the Naradanian Class of 2026. "
-    "Browse admissions statistics, universities, majors, and destination countries."
+page_header(
+    title="🎓 Narada University Dashboard",
+    description=(
+        "Explore the university destinations of the Naradanian Class of 2026. "
+        "Browse admissions statistics, universities, majors, "
+        "and destination countries."
+    )
 )
 
 # Summary Metrics

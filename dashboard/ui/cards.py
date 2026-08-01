@@ -8,10 +8,20 @@ from dashboard.visualization.charts import map_preview
 
 
 def vertical_spacer(size: str = "1rem") -> None:
+    """Add a vertical spacer of the specified size."""
+
     st.markdown(
         f"<div style='height: {size};'></div>",
         unsafe_allow_html=True,
     )
+
+
+def page_header(title: str, description: str | None = None) -> None:
+    """Display a page header with an optional description."""
+
+    st.title(title)
+    if description:
+        st.write(description)
 
 
 def metric_card(
