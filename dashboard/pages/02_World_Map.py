@@ -9,6 +9,11 @@ data = load_dashboard_data()
 load_css()
 
 st.title("World University Map")
+st.write(
+    "Explore the destinations of Narada Class of 2026 students around the world. "
+    "Hover over a marker on the map to view the university "
+    "name, campus, country, and student count."
+)
 
 st.plotly_chart(world_map(data.institutions), 
     use_container_width=True,
