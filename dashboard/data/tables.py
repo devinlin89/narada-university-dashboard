@@ -86,3 +86,38 @@ def countries_table(institutions: pd.DataFrame) -> pd.DataFrame:
     table.index.name = "#"
 
     return table
+
+
+def majors_table(students: pd.DataFrame) -> pd.DataFrame:
+    """Create the Majors page table."""
+
+    table = (
+        students
+        .groupby(
+            ["academic_field", "major"],
+            as_index=False,
+        )
+        .size()
+        .rename(
+            columns={
+                "academic_field": "Academic Field",
+                "major": "Major",
+                "size": "Students",
+            }
+        )[
+            [
+                "Academic Field",
+                "Major",
+                "Students",
+            ]
+        ]
+        .sort_values(
+            "Students",
+            ascending=False,
+        )
+    )
+
+    table.index = range(1, len(table) + 1)
+    table.index.name = "#"
+
+    return table
