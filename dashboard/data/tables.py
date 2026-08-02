@@ -1,3 +1,5 @@
+from ast import literal_eval
+
 import pandas as pd
 
 from config.config import REFERENCE_DATA
@@ -113,6 +115,53 @@ def majors_table(students: pd.DataFrame) -> pd.DataFrame:
         ]
         .sort_values(
             "Students",
+            ascending=False,
+        )
+    )
+
+    table.index = range(1, len(table) + 1)
+    table.index.name = "#"
+
+    return table
+
+
+def admissions_table(students: pd.DataFrame) -> pd.DataFrame:
+    """Create the Admissions page table."""
+
+    table = (
+        students
+        .rename(
+            columns={
+                "applications_count": "Applications",
+                "acceptances_count": "Offers",
+                "received_scholarship?": "Scholarship",
+                "scholarship_description": "Scholarship Description",
+                "decision_factors": "Decision Factors",
+            }
+        )
+        .assign(
+            **{
+                "Offer Rate": lambda df: (
+                    df["Offers"] / df["Applications"]
+                ).map("{:.0%}".format),
+                "Decision Factors": lambda df: (
+                    df["Decision Factors"]
+                    .apply(literal_eval)
+                    .apply(", ".join)
+                ),
+            }
+        )[
+            [
+                "Applications",
+                "Offers",
+                "Offer Rate",
+                "Scholarship",
+                "Scholarship Description",
+                "Decision Factors",
+            ]
+        ]
+        .sort_values(
+            "Offers",
             ascending=False,
         )
     )
