@@ -12,11 +12,12 @@ load_css()
 page_header(
     title="Majors",
     description=(
-        "Explore the academic fields and majors chosen by the graduating class."
+        "Explore the majors and academic fields chosen by students "
+        "and discover where those programs are offered around the world."
     )
 )
 
 st.dataframe(
     majors_table(data.students),
     use_container_width=True,
-)
+)   

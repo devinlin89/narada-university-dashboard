@@ -12,7 +12,8 @@ load_css()
 page_header(
     title="Universities",
     description=(
-        "Browse all university destinations for the Narada Class of 2026."
+        "Browse every university destination, compare student counts, and "
+        "explore the campuses chosen by the graduating class."
     )
 )
 
