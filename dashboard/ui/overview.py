@@ -135,10 +135,10 @@ def explore_more() -> None:
                 page="pages/03_Universities.py",
             )
 
-        bottom_left, bottom_right = st.columns(2)
+        middle_left, middle_right = st.columns(2)
 
 
-        with bottom_left:
+        with middle_left:
             navigation_card(
                 title="Countries",
                 icon="🌍",
@@ -149,7 +149,7 @@ def explore_more() -> None:
                 page="pages/04_Countries.py",
             )
 
-        with bottom_right:
+        with middle_right:
             navigation_card(
                 title="Majors",
                 icon="🎓",
@@ -158,4 +158,30 @@ def explore_more() -> None:
                 "academic fields chosen by students."
                 ),
                 page="pages/05_Majors.py",
+            )
+
+
+        bottom_left, bottom_right = st.columns(2)
+
+
+        with bottom_left:
+            navigation_card(
+                title="Admissions",
+                icon="🌍",
+                description=(
+                "Analyze application count, admission offers, "
+                "and scholarship outcomes."
+                ),
+                page="pages/06_Admissions.py",
+            )
+
+        with bottom_right:
+            navigation_card(
+                title="About",
+                icon="🎓",
+                description=(
+                "Learn how this dashboard was built and "
+                "where the data comes from."
+                ),
+                page="pages/07_About.py",
             )
