@@ -24,6 +24,8 @@ def page_header(title: str, description: str | None = None) -> None:
     if description:
         st.write(description)
 
+    vertical_spacer()
+
 
 def metric_card(
     title: str,
