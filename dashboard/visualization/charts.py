@@ -201,3 +201,66 @@ def overview_domestic_pie_chart(
     )
 
     return style_figure(fig)
+
+
+def university_distribution_chart(
+    institutions_df: pd.DataFrame,
+) -> tuple[go.Figure, list[str]]:
+    """
+    Create a horizontal bar chart of universities with more than one student.
+    Universities chosen by exactly one student are omitted from the chart and
+    returned separately.
+    """
+
+    data = (
+        institutions_df
+        .groupby("institution", as_index=False)["student_count"]
+        .sum()
+        .sort_values("student_count", ascending=False)
+    )
+
+    # Universities with multiple students
+    major = (
+        data[data["student_count"] > 1]
+        .sort_values("student_count")
+        .copy()
+    )
+
+    # Universities chosen by exactly one student
+    other = (
+        data[data["student_count"] == 1]
+        .sort_values("institution")
+    )
+
+    other_universities = other["institution"].tolist()
+
+    major["institution"] = major["institution"].apply(
+        lambda name: "<br>".join(fill(name, width=26).splitlines())
+    )
+
+    fig = px.bar(
+        major,
+        x="student_count",
+        y="institution",
+        orientation="h",
+        text="student_count",
+    )
+
+    fig.update_traces(
+        textposition="outside",
+        cliponaxis=False,
+    )
+
+    fig.update_yaxes(
+        title=None,
+        categoryorder="array",
+        categoryarray=major["institution"].tolist(),
+    )
+
+    fig.update_layout(
+        xaxis_title="Students",
+        margin=dict(l=210, r=40, t=20, b=20),
+        height=max(250, 70 + 60 * len(major)),
+    )
+
+    return style_figure(fig), other_universities

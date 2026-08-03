@@ -96,6 +96,27 @@
 }
 
 
+/* -------------------------------------------------- */
+/* Primary Chart                                      */
+/* -------------------------------------------------- */
+
+.primary-chart {
+    margin-bottom: 1rem;
+}
+
+.primary-chart h2 {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.primary-chart p {
+    margin: 0.5rem 0 0;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+
 /* ==========================================================
    Info Cards
    ========================================================== */

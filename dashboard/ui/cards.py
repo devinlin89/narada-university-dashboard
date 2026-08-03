@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from pathlib import Path
 
 import pandas as pd
@@ -96,6 +97,27 @@ def chart_card(
             use_container_width=True,
             config={"displayModeBar": False},
         )
+
+
+@contextmanager
+def primary_section(
+    title: str,
+    description: str,
+):
+    """Display a primary visualization card."""
+
+    with st.container(border=True):
+        st.markdown(
+            f"""
+            <div class="primary-chart">
+                <h2>{title}</h2>
+                <p>{description}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        yield
 
 
 def info_card(
