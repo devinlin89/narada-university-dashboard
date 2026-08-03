@@ -308,3 +308,44 @@ def country_distribution_chart(
     )
 
     return style_figure(fig)
+
+
+def academic_field_distribution_chart(
+    students: pd.DataFrame,
+) -> go.Figure:
+    """Create a horizontal bar chart of academic fields."""
+
+    data = (
+        students
+        .groupby("academic_field", as_index=False)
+        .size()
+        .rename(columns={"size": "student_count"})
+        .sort_values("student_count")
+    )
+
+    fig = px.bar(
+        data,
+        x="student_count",
+        y="academic_field",
+        orientation="h",
+        text="student_count",
+    )
+
+    fig.update_traces(
+        textposition="outside",
+        cliponaxis=False,
+    )
+
+    fig.update_yaxes(
+        title=None,
+        categoryorder="array",
+        categoryarray=data["academic_field"].tolist(),
+    )
+
+    fig.update_layout(
+        xaxis_title="Students",
+        margin=dict(l=160, r=40, t=20, b=20),
+        height=max(350, 70 + 60 * len(data)),
+    )
+
+    return style_figure(fig)
