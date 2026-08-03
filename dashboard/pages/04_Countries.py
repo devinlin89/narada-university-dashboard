@@ -22,7 +22,7 @@ page_header(
 )
 
 with primary_section(
-    title="Destination Country Ranking",
+    title="Most Popular Destination Countries",
     description=(
         "Compare destination countries by the total number of students "
         "studying there."
