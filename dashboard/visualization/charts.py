@@ -264,3 +264,47 @@ def university_distribution_chart(
     )
 
     return style_figure(fig), other_universities
+
+
+def country_distribution_chart(
+    institutions: pd.DataFrame,
+) -> go.Figure:
+    """Create a horizontal bar chart of destination countries."""
+
+    data = (
+        institutions
+        .groupby("country", as_index=False)["student_count"]
+        .sum()
+        .sort_values("student_count")
+    )
+
+    data["country"] = data["country"].apply(
+        lambda name: "<br>".join(fill(name, width=20).splitlines())
+    )
+
+    fig = px.bar(
+        data,
+        x="student_count",
+        y="country",
+        orientation="h",
+        text="student_count",
+    )
+
+    fig.update_traces(
+        textposition="outside",
+        cliponaxis=False,
+    )
+
+    fig.update_yaxes(
+        title=None,
+        categoryorder="array",
+        categoryarray=data["country"].tolist(),
+    )
+
+    fig.update_layout(
+        xaxis_title="Students",
+        margin=dict(l=160, r=40, t=20, b=20),
+        height=max(350, 70 + 60 * len(data)),
+    )
+
+    return style_figure(fig)
