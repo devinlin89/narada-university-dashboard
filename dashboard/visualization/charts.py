@@ -349,3 +349,38 @@ def academic_field_distribution_chart(
     )
 
     return style_figure(fig)
+
+
+def applications_distribution_chart(
+    students: pd.DataFrame,
+) -> go.Figure:
+    """Create a bar chart of the number of university applications."""
+
+    data = (
+        students
+        .groupby("applications_count", as_index=False)
+        .size()
+        .rename(columns={"size": "student_count"})
+        .sort_values("applications_count")
+    )
+
+    fig = px.bar(
+        data,
+        x="applications_count",
+        y="student_count",
+        text="student_count",
+    )
+
+    fig.update_traces(
+        textposition="outside",
+        cliponaxis=False,
+    )
+
+    fig.update_layout(
+        xaxis_title="Universities Applied To",
+        yaxis_title="Students",
+        margin=dict(l=40, r=40, t=20, b=20),
+        height=450,
+    )
+
+    return style_figure(fig)
