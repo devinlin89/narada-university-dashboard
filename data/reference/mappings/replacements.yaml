@@ -8,6 +8,9 @@ value_mappings:
     "China (Mainland)": "China"
     "Phillipines": "Philippines"
 
+  campus:
+    Alam Sutra: Alam Sutera
+
   academic_field:
     "Ai": "Computing & Data"
     "None of above": "Other"
@@ -25,3 +28,5 @@ major_to_academic_field:
   Artificial Intelligence: Computing & Data
   Aviation Technique: Transportation
   Food Science and Technology: Natural Sciences & Mathematics
+  Biotechnology: Natural Sciences & Mathematics
+  Biological Sciences: Natural Sciences & Mathematics
