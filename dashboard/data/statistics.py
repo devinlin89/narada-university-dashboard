@@ -99,7 +99,7 @@ class DashboardStatistics:
 
         return cls(
             total_students=len(students_df),
-            total_universities=len(institutions_df),
+            total_universities=institutions_df["institution"].nunique(),
             total_countries=institutions_df["country"].nunique(),
             total_fields=students_df["academic_field"].nunique(),
 
