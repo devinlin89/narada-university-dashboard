@@ -45,11 +45,11 @@ def map_preview(institutions_df):
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
         )
-    
+
     return fig
 
 
-def country_bar_chart(
+def overview_country_bar_chart(
     institutions_df: pd.DataFrame,
 ) -> go.Figure:
 
@@ -69,6 +69,7 @@ def country_bar_chart(
     )
 
     fig.update_layout(
+        height=350,
         xaxis_title="Students",
         yaxis_title=None,
     )
@@ -76,7 +77,7 @@ def country_bar_chart(
     return style_figure(fig)
 
 
-def university_bar_chart(
+def overview_university_bar_chart(
     institutions_df: pd.DataFrame,
     top_n: int = 5,
 ) -> go.Figure:
@@ -110,6 +111,7 @@ def university_bar_chart(
     )
 
     fig.update_layout(
+        height=350,
         xaxis_title="Students",
         yaxis_title=None,
         margin=dict(l=180, r=20, t=20, b=20),
@@ -118,7 +120,7 @@ def university_bar_chart(
     return style_figure(fig)
 
 
-def academic_field_chart(
+def overview_academic_field_chart(
     students_df: pd.DataFrame,
     top_n: int = 5,
 ) -> go.Figure:
@@ -149,6 +151,7 @@ def academic_field_chart(
     )
 
     fig.update_layout(
+        height=350,
         xaxis_title="Students",
         yaxis_title=None,
     )
@@ -156,7 +159,7 @@ def academic_field_chart(
     return style_figure(fig)
 
 
-def domestic_pie_chart(
+def overview_domestic_pie_chart(
     students_df: pd.DataFrame,
 ) -> go.Figure:
     """Create a donut chart comparing domestic and international students."""

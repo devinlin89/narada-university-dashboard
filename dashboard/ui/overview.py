@@ -9,10 +9,10 @@ from dashboard.ui.cards import (
     navigation_card,
 )
 from dashboard.visualization.charts import (
-    academic_field_chart,
-    country_bar_chart,
-    domestic_pie_chart,
-    university_bar_chart,
+    overview_academic_field_chart,
+    overview_country_bar_chart,
+    overview_domestic_pie_chart,
+    overview_university_bar_chart,
 )
 
 
@@ -42,13 +42,13 @@ def supporting_charts(data: DashboardData) -> None:
     with left:
         chart_card(
             "Top Countries",
-            country_bar_chart(data.institutions),
+            overview_country_bar_chart(data.institutions),
         )
 
     with right:
         chart_card(
             "Top Universities",
-            university_bar_chart(data.institutions),
+            overview_university_bar_chart(data.institutions),
         )
 
     left, right = st.columns(2)
@@ -56,13 +56,13 @@ def supporting_charts(data: DashboardData) -> None:
     with left:
         chart_card(
             "Top Academic Fields",
-            academic_field_chart(data.students),
+            overview_academic_field_chart(data.students),
         )
 
     with right:
         chart_card(
             "Domestic vs International",
-            domestic_pie_chart(data.students),
+            overview_domestic_pie_chart(data.students),
         )
 
 
@@ -167,7 +167,7 @@ def explore_more() -> None:
         with bottom_left:
             navigation_card(
                 title="Admissions",
-                icon="🌍",
+                icon="📝",
                 description=(
                 "Analyze application count, admission offers, "
                 "and scholarship outcomes."
@@ -178,7 +178,7 @@ def explore_more() -> None:
         with bottom_right:
             navigation_card(
                 title="About",
-                icon="🎓",
+                icon="ℹ️",
                 description=(
                 "Learn how this dashboard was built and "
                 "where the data comes from."
