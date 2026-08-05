@@ -107,8 +107,8 @@
 
 .primary-chart h2 {
     margin: 0;
-    font-size: 1.75rem;
-    font-weight: 700;
+    font-size: var(--font-section);
+    font-weight: var(--weight-semibold);
 }
 
 .primary-chart p {

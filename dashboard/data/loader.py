@@ -40,6 +40,12 @@ def load_dashboard_data() -> DashboardData:
         .apply(literal_eval)
     )
 
+    # Convert the "received_scholarship?" column to boolean
+    students["received_scholarship?"] = (
+        students["received_scholarship?"]
+        .astype("boolean")
+    )
+
     institutions = load_csv(INSTITUTIONS_DATA)
 
     coordinates = load_csv(COORDINATES_DATA)

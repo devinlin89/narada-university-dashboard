@@ -7,6 +7,29 @@ import plotly.graph_objects as go
 
 from dashboard.visualization.theme import style_figure
 
+SCHOLARSHIP_BENEFITS = {
+    "Tuition": [
+        "tuition",
+    ],
+    "Entrance Fee": [
+        "entrance",
+        "uang pangkal",
+    ],
+    "Building Fee": [
+        "building fee",
+        "dp3",
+    ],
+    "Accommodation": [
+        "accommodation",
+        "dorm",
+        "housing",
+    ],
+    "Living Allowance": [
+        "living allowance",
+        "stipend",
+    ],
+}
+
 
 def map_preview(institutions_df):
     fig = px.scatter_geo(
@@ -521,57 +544,57 @@ def university_decision_factors_chart(
     # Adjust spacing based on the number of factors.
     fig.update_layout(
         margin=dict(l=190, r=40, t=20, b=20),
-        height=280,
+        height=350,
     )
 
     return style_figure(fig)
 
 
-def university_scholarship_distribution_chart(
+def university_scholarship_benefits_chart(
     selected_institution: str,
-    students: pd.DataFrame,
+    students_df: pd.DataFrame,
 ) -> go.Figure:
-    """Create a horizontal bar chart of scholarships for the selected university."""
+    """Create a bar chart showing scholarship benefits for the selected university."""
 
-    # Filter to the selected university and count scholarship recipients
-    data = (
-        students
-        .loc[students["institution"] == selected_institution]
-        .copy()
+    descriptions = (
+        students_df.loc[
+            students_df["institution"] == selected_institution,
+            "scholarship_description",
+        ]
+        .dropna()
+        .str.lower()
     )
 
-    data["received_scholarship?"] = (
-        data["received_scholarship?"]
-        .map({
-            True: "Received Scholarship",
-            False: "No Scholarship",
-        })
-        .fillna("No Response")
-    )
+    counts = Counter()
+
+    for description in descriptions:
+        for benefit, keywords in SCHOLARSHIP_BENEFITS.items():
+            if any(keyword in description for keyword in keywords):
+                counts[benefit] += 1
 
     data = (
-        data
-        .groupby("received_scholarship?", as_index=False)
-        .size()
-        .rename(columns={"size": "student_count"})
+        pd.DataFrame(
+            {
+                "benefit": list(counts.keys()),
+                "student_count": list(counts.values()),
+            }
+        )
         .sort_values("student_count")
     )
 
     fig = px.bar(
         data,
         x="student_count",
-        y="received_scholarship?",
+        y="benefit",
         orientation="h",
         text="student_count",
     )
 
-    # Display student counts outside each bar
     fig.update_traces(
         textposition="outside",
         cliponaxis=False,
     )
 
-    # Show only integer tick values
     fig.update_xaxes(
         title="Students",
         dtick=1,
@@ -579,15 +602,10 @@ def university_scholarship_distribution_chart(
         rangemode="tozero",
     )
 
-    # Preserve the sorted order instead of Plotly's default ordering
-    fig.update_yaxes(
-        title=None,
-        categoryorder="array",
-        categoryarray=data["received_scholarship?"].tolist(),
-    )
+    fig.update_yaxes(title=None)
 
     fig.update_layout(
-        margin=dict(l=170, r=40, t=20, b=20),
+        margin=dict(l=120, r=40, t=20, b=20),
         height=250,
     )
 

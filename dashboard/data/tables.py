@@ -1,5 +1,3 @@
-from ast import literal_eval
-
 import pandas as pd
 
 from config.config import REFERENCE_DATA
@@ -146,7 +144,6 @@ def admissions_table(students: pd.DataFrame) -> pd.DataFrame:
                 ).map("{:.0%}".format),
                 "Decision Factors": lambda df: (
                     df["Decision Factors"]
-                    .apply(literal_eval)
                     .apply(", ".join)
                 ),
             }
