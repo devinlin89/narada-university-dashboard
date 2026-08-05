@@ -18,7 +18,7 @@ page_header(
     description=(
         "Explore the majors and academic fields chosen by students "
         "and discover where those programs are offered around the world."
-    )
+    ),
 )
 
 with primary_section(
@@ -31,11 +31,11 @@ with primary_section(
 ):
     st.plotly_chart(
         academic_field_distribution_chart(data.students),
-        use_container_width=True,
+        width="stretch",
         config={"displayModeBar": False},
     )
 
 st.dataframe(
     majors_table(data.students),
-    use_container_width=True,
+    width="stretch",
 )

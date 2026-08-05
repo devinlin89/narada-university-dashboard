@@ -18,24 +18,23 @@ page_header(
     description=(
         "Explore where students are studying around the world "
         "and compare destination countries by popularity."
-    )
+    ),
 )
 
 with primary_section(
     title="Most Popular Destination Countries",
     description=(
-        "Compare destination countries by the total number of students "
-        "studying there."
+        "Compare destination countries by the total number of students studying there."
     ),
 ):
     st.plotly_chart(
         country_distribution_chart(data.institutions),
-        use_container_width=True,
+        width="stretch",
         config={"displayModeBar": False},
     )
 
 
 st.dataframe(
     countries_table(data.institutions),
-    use_container_width=True,
+    width="stretch",
 )

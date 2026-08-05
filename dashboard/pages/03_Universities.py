@@ -28,7 +28,7 @@ page_header(
     description=(
         "Browse every university destination, compare student counts, and "
         "explore the campuses chosen by the graduating class."
-    )
+    ),
 )
 
 
@@ -43,7 +43,7 @@ with primary_section(
 ):
     st.plotly_chart(
         fig,
-        use_container_width=True,
+        width="stretch",
         config={"displayModeBar": False},
     )
 
@@ -54,9 +54,7 @@ with primary_section(
     )
 
     with st.expander("View these universities"):
-        st.markdown(
-            "\n".join(f"- {name}" for name in other_universities)
-        )
+        st.markdown("\n".join(f"- {name}" for name in other_universities))
 
 selected_university = entity_selector(
     "University",
@@ -106,5 +104,5 @@ st.subheader("Universities Table")
 
 st.dataframe(
     universities_table(data.institutions),
-    use_container_width=True,
+    width="stretch",
 )

@@ -19,7 +19,7 @@ page_header(
         "Explore how many universities students applied to, the offers they "
         "received, and their scholarship outcomes understand the "
         "admissions outcomes of the Class of 2026."
-    )
+    ),
 )
 
 with primary_section(
@@ -32,11 +32,11 @@ with primary_section(
 ):
     st.plotly_chart(
         applications_distribution_chart(data.students),
-        use_container_width=True,
+        width="stretch",
         config={"displayModeBar": False},
     )
 
 st.dataframe(
     admissions_table(data.students),
-    use_container_width=True,
+    width="stretch",
 )

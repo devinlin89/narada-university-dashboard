@@ -63,7 +63,7 @@ def map_preview_card(institutions_df: pd.DataFrame) -> None:
 
         st.plotly_chart(
             fig,
-            use_container_width=True,
+            width="stretch",
             config={
                 "displayModeBar": False,
                 "staticPlot": True,
@@ -73,7 +73,7 @@ def map_preview_card(institutions_df: pd.DataFrame) -> None:
         if st.button(
             "🌍 Explore Interactive Map",
             key="explore_map",
-            use_container_width=True,
+            width="stretch",
         ):
             st.switch_page("pages/02_World_Map.py")
 
@@ -85,12 +85,11 @@ def chart_card(
     """Display a chart inside a dashboard card."""
 
     with st.container(border=True):
-
         st.subheader(title)
 
         st.plotly_chart(
             figure,
-            use_container_width=True,
+            width="stretch",
             config={"displayModeBar": False},
         )
 
@@ -124,11 +123,14 @@ def info_card(
     """Display a dashboard insight."""
 
     with st.container(border=True):
-        st.markdown(f"""
+        st.markdown(
+            f"""
             <div class="info-title">
                 <h3>{icon} {title}</h3>
             </div>
-            """, unsafe_allow_html=True)
+            """,
+            unsafe_allow_html=True,
+        )
         st.write(value)
 
 
@@ -157,7 +159,7 @@ def navigation_card(
 
         if st.button(
             f"Open {title} →",
-            use_container_width=True,
+            width="stretch",
             key=f"nav_{title}",
         ):
             st.switch_page(page)
