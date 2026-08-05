@@ -1,3 +1,4 @@
+from ast import literal_eval
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -30,6 +31,14 @@ def load_dashboard_data() -> DashboardData:
     """Load and prepare all dashboard datasets."""
 
     students = load_csv(STUDENTS_DATA)
+
+    # Convert the "decision_factors" column
+    # from string representation of lists to actual lists
+    students["decision_factors"] = (
+        students["decision_factors"]
+        .fillna("[]")
+        .apply(literal_eval)
+    )
 
     institutions = load_csv(INSTITUTIONS_DATA)
 

@@ -5,6 +5,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
+from dashboard.data.profile import UniversityProfile
 from dashboard.visualization.charts import map_preview
 
 
@@ -85,14 +86,7 @@ def chart_card(
 
     with st.container(border=True):
 
-        st.markdown(
-            f"""
-            <div class="chart-title">
-                {title}
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.subheader(title)
 
         st.plotly_chart(
             figure,
@@ -167,3 +161,34 @@ def navigation_card(
             key=f"nav_{title}",
         ):
             st.switch_page(page)
+
+
+def university_profile_card(
+    profile: UniversityProfile,
+) -> None:
+    """Display a profile card for the selected university."""
+
+    with st.container(border=True):
+        st.subheader("University Profile")
+
+        st.markdown(
+            f"""
+            <div class="profile-content">
+            <div class="profile-row">
+                <span class="profile-label">University</span>
+                <span class="profile-value">{profile.institution}</span>
+            </div>
+
+            <div class="profile-row">
+                <span class="profile-label">Country</span>
+                <span class="profile-value">{profile.country}</span>
+            </div>
+
+            <div class="profile-row">
+                <span class="profile-label">Students</span>
+                <span class="profile-value">{profile.students}</span>
+            </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )

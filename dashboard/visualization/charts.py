@@ -1,3 +1,4 @@
+from collections import Counter
 from textwrap import fill
 
 import pandas as pd
@@ -264,6 +265,333 @@ def university_distribution_chart(
     )
 
     return style_figure(fig), other_universities
+
+
+def university_campus_distribution_chart(
+    selected_institution: str,
+    institutions_df: pd.DataFrame,
+) -> go.Figure:
+    """Create a horizontal bar chart of campuses for the selected university."""
+
+    # Filter to the selected university and order campuses by student count
+    data = (
+        institutions_df
+        .loc[institutions_df["institution"] == selected_institution]
+        .sort_values("student_count")
+        .copy()
+    )
+
+    # Wrap long campus names so they fit within the chart
+    data["campus"] = data["campus"].apply(
+        lambda campus: "<br>".join(
+            fill(campus, width=26).splitlines()
+        )
+    )
+
+    fig = px.bar(
+        data,
+        x="student_count",
+        y="campus",
+        orientation="h",
+        text="student_count",
+    )
+
+    # Display student counts outside each bar
+    fig.update_traces(
+        textposition="outside",
+        cliponaxis=False,
+    )
+
+    # Show only integer tick values
+    fig.update_xaxes(
+        title="Students",
+        dtick=1,
+        tickmode="linear",
+        rangemode="tozero",
+    )
+
+    # Preserve the sorted order instead of Plotly's default ordering
+    fig.update_yaxes(
+        title=None,
+        categoryorder="array",
+        categoryarray=data["campus"].tolist(),
+    )
+
+    # Adjust spacing based on the number of campuses
+    fig.update_layout(
+        xaxis_title="Students",
+        margin=dict(l=210, r=40, t=20, b=20),
+        height=250,
+    )
+
+    return style_figure(fig)
+
+
+def university_academic_field_distribution_chart(
+    selected_institution: str,
+    students_df: pd.DataFrame,
+) -> go.Figure:
+    """Create a horizontal bar chart of academic fields for the selected university."""
+
+    # Filter to the selected university and order fields by student count
+    data = (
+        students_df
+        .loc[students_df["institution"] == selected_institution]
+        .copy()
+        .groupby("academic_field", as_index=False)
+        .size()
+        .rename(columns={"size": "student_count"})
+        .sort_values("student_count")
+    )
+
+    # Wrap long field names so they fit within the chart
+    data["academic_field"] = data["academic_field"].apply(
+        lambda field: "<br>".join(
+            fill(field, width=28).splitlines()
+        )
+    )
+
+    fig = px.bar(
+        data,
+        x="student_count",
+        y="academic_field",
+        orientation="h",
+        text="student_count",
+    )
+
+    # Display student counts outside each bar
+    fig.update_traces(
+        textposition="outside",
+        cliponaxis=False,
+    )
+
+    # Show only integer tick values
+    fig.update_xaxes(
+        title="Students",
+        dtick=1,
+        tickmode="linear",
+        rangemode="tozero",
+    )
+
+    # Preserve the sorted order instead of Plotly's default ordering
+    fig.update_yaxes(
+        title=None,
+        categoryorder="array",
+        categoryarray=data["academic_field"].tolist(),
+    )
+
+    # Adjust spacing based on the number of fields
+    fig.update_layout(
+        xaxis_title="Students",
+        margin=dict(l=210, r=40, t=20, b=20),
+        height=250,
+    )
+
+    return style_figure(fig)
+
+
+def university_major_distribution_chart(
+    selected_institution: str,
+    students_df: pd.DataFrame,
+) -> go.Figure:
+    """Create a horizontal bar chart of majors for the selected university."""
+
+    # Filter to the selected university and order majors by student count
+    data = (
+        students_df
+        .loc[students_df["institution"] == selected_institution]
+        .copy()
+        .groupby("major", as_index=False)
+        .size()
+        .rename(columns={"size": "student_count"})
+        .sort_values("student_count")
+    )
+
+    # Wrap long major names so they fit within the chart
+    data["major"] = data["major"].apply(
+        lambda major: "<br>".join(
+            fill(major, width=28).splitlines()
+        )
+    )
+
+    fig = px.bar(
+        data,
+        x="student_count",
+        y="major",
+        orientation="h",
+        text="student_count",
+    )
+
+    # Display student counts outside each bar
+    fig.update_traces(
+        textposition="outside",
+        cliponaxis=False,
+    )
+
+    # Show only integer tick values
+    fig.update_xaxes(
+        title="Students",
+        dtick=1,
+        tickmode="linear",
+        rangemode="tozero",
+    )
+
+    # Preserve the sorted order instead of Plotly's default ordering
+    fig.update_yaxes(
+        title=None,
+        categoryorder="array",
+        categoryarray=data["major"].tolist(),
+    )
+
+    # Adjust spacing based on the number of majors
+    fig.update_layout(
+        xaxis_title="Students",
+        margin=dict(l=210, r=40, t=20, b=20),
+        height=250,
+    )
+
+    return style_figure(fig)
+
+
+def university_decision_factors_chart(
+    selected_institution: str,
+    students_df: pd.DataFrame,
+) -> go.Figure:
+    """Create a horizontal bar chart of decision factors for the selected university."""
+
+    # Filter to the selected university.
+    data = students_df.loc[
+        students_df["institution"] == selected_institution,
+        "decision_factors",
+    ]
+
+    # Count how many times each decision factor was selected.
+    factors = Counter()
+
+    for factors_list in data:
+        factors.update(factors_list)
+
+    data = (
+        pd.DataFrame(
+            factors.items(),
+            columns=[
+                "decision_factor",
+                "student_count",
+            ],
+        )
+        .sort_values("student_count")
+    )
+
+    # Wrap long factor names so they fit within the chart.
+    data["decision_factor"] = data["decision_factor"].apply(
+        lambda factor: "<br>".join(
+            fill(factor, width=28).splitlines()
+        )
+    )
+
+    fig = px.bar(
+        data,
+        x="student_count",
+        y="decision_factor",
+        orientation="h",
+        text="student_count",
+    )
+
+    # Display student counts outside each bar.
+    fig.update_traces(
+        textposition="outside",
+        cliponaxis=False,
+    )
+
+    # Show only integer tick values.
+    fig.update_xaxes(
+        title="Students",
+        dtick=1,
+        tickmode="linear",
+        rangemode="tozero",
+    )
+
+    # Preserve the sorted order.
+    fig.update_yaxes(
+        title=None,
+        categoryorder="array",
+        categoryarray=data["decision_factor"].tolist(),
+    )
+
+    # Adjust spacing based on the number of factors.
+    fig.update_layout(
+        margin=dict(l=190, r=40, t=20, b=20),
+        height=280,
+    )
+
+    return style_figure(fig)
+
+
+def university_scholarship_distribution_chart(
+    selected_institution: str,
+    students: pd.DataFrame,
+) -> go.Figure:
+    """Create a horizontal bar chart of scholarships for the selected university."""
+
+    # Filter to the selected university and count scholarship recipients
+    data = (
+        students
+        .loc[students["institution"] == selected_institution]
+        .copy()
+    )
+
+    data["received_scholarship?"] = (
+        data["received_scholarship?"]
+        .map({
+            True: "Received Scholarship",
+            False: "No Scholarship",
+        })
+        .fillna("No Response")
+    )
+
+    data = (
+        data
+        .groupby("received_scholarship?", as_index=False)
+        .size()
+        .rename(columns={"size": "student_count"})
+        .sort_values("student_count")
+    )
+
+    fig = px.bar(
+        data,
+        x="student_count",
+        y="received_scholarship?",
+        orientation="h",
+        text="student_count",
+    )
+
+    # Display student counts outside each bar
+    fig.update_traces(
+        textposition="outside",
+        cliponaxis=False,
+    )
+
+    # Show only integer tick values
+    fig.update_xaxes(
+        title="Students",
+        dtick=1,
+        tickmode="linear",
+        rangemode="tozero",
+    )
+
+    # Preserve the sorted order instead of Plotly's default ordering
+    fig.update_yaxes(
+        title=None,
+        categoryorder="array",
+        categoryarray=data["received_scholarship?"].tolist(),
+    )
+
+    fig.update_layout(
+        margin=dict(l=170, r=40, t=20, b=20),
+        height=250,
+    )
+
+    return style_figure(fig)
 
 
 def country_distribution_chart(
