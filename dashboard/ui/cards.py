@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from dashboard.data.profile import UniversityProfile
-from dashboard.visualization.charts import map_preview
+from dashboard.visualization.map import map_preview
 
 
 def vertical_spacer(size: str = "1rem") -> None:

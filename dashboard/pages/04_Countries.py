@@ -7,7 +7,7 @@ from dashboard.ui.cards import (
     primary_section,
 )
 from dashboard.ui.styles import load_css
-from dashboard.visualization.charts import country_distribution_chart
+from dashboard.visualization.countries import country_distribution_chart
 
 data = load_dashboard_data()
 

@@ -8,7 +8,7 @@ from dashboard.ui.cards import (
     metric_card,
     navigation_card,
 )
-from dashboard.visualization.charts import (
+from dashboard.visualization.overview import (
     overview_academic_field_chart,
     overview_country_bar_chart,
     overview_domestic_pie_chart,
