@@ -6,6 +6,7 @@ from dashboard.data.profile import (
     scholarship_statistics,
 )
 from dashboard.data.tables import countries_table
+from dashboard.data.transforms import filter_country
 from dashboard.ui.cards import (
     chart_card,
     country_profile_card,
@@ -16,7 +17,6 @@ from dashboard.ui.cards import (
 from dashboard.ui.filters import entity_selector
 from dashboard.ui.layout import two_column_layout
 from dashboard.ui.styles import load_css
-from dashboard.visualization.charts import filter_country
 from dashboard.visualization.countries import (
     country_academic_field_distribution_chart,
     country_decision_factors_chart,

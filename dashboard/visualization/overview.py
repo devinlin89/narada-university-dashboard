@@ -2,11 +2,13 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
+from dashboard.data.transforms import (
+    count_by,
+    sum_by,
+)
 from dashboard.visualization.charts import (
     PRIMARY_HEIGHT,
-    count_by,
     horizontal_bar_chart,
-    sum_by,
 )
 from dashboard.visualization.theme import style_figure
 
@@ -25,7 +27,7 @@ def overview_country_bar_chart(
         wrap_width=20,
         tick_distance=5,
         margin_left=160,
-        height=PRIMARY_HEIGHT,
+        is_primary=True,
     )
 
 
@@ -49,7 +51,7 @@ def overview_university_bar_chart(
         wrap_width=24,
         tick_distance=2,
         margin_left=180,
-        height=PRIMARY_HEIGHT,
+        is_primary=True,
     )
 
 
@@ -75,7 +77,7 @@ def overview_academic_field_chart(
         y="academic_field",
         tick_distance=5,
         wrap_width=28,
-        height=PRIMARY_HEIGHT,
+        is_primary=True,
     )
 
 

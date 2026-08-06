@@ -1,9 +1,9 @@
 import pandas as pd
 import plotly.graph_objects as go
 
+from dashboard.data.transforms import count_by
 from dashboard.visualization.charts import (
     VERTICAL_BAR_HEIGHT,
-    count_by,
     vertical_bar_chart,
 )
 

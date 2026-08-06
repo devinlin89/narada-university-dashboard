@@ -1,11 +1,8 @@
 import pandas as pd
 import plotly.graph_objects as go
 
-from dashboard.visualization.charts import (
-    PRIMARY_HEIGHT,
-    count_by,
-    horizontal_bar_chart,
-)
+from dashboard.data.transforms import count_by
+from dashboard.visualization.charts import horizontal_bar_chart
 
 
 def academic_field_distribution_chart(
@@ -22,7 +19,8 @@ def academic_field_distribution_chart(
         data,
         x="student_count",
         y="academic_field",
+        wrap_width=28,
         tick_distance=5,
         margin_left=160,
-        height=max(PRIMARY_HEIGHT, 70 + 60 * len(data)),
+        is_tall=True,
     )

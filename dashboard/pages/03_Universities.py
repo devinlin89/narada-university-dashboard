@@ -6,6 +6,7 @@ from dashboard.data.profile import (
     university_profile,
 )
 from dashboard.data.tables import universities_table
+from dashboard.data.transforms import filter_university
 from dashboard.ui.cards import (
     chart_card,
     page_header,
@@ -16,7 +17,6 @@ from dashboard.ui.cards import (
 from dashboard.ui.filters import entity_selector
 from dashboard.ui.layout import two_column_layout
 from dashboard.ui.styles import load_css
-from dashboard.visualization.charts import filter_university
 from dashboard.visualization.universities import (
     university_academic_field_distribution_chart,
     university_campus_distribution_chart,

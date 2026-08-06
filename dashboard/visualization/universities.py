@@ -4,13 +4,13 @@ import pandas as pd
 import plotly.graph_objects as go
 
 from config.config import SCHOLARSHIP_TYPES
-from dashboard.data.transforms import count_decision_factors
-from dashboard.visualization.charts import (
+from dashboard.data.transforms import (
     count_by,
+    count_decision_factors,
     filter_university,
-    horizontal_bar_chart,
     sum_by,
 )
+from dashboard.visualization.charts import horizontal_bar_chart
 
 
 def university_distribution_chart(

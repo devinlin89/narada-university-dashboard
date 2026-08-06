@@ -35,6 +35,7 @@ def horizontal_bar_chart(
     tick_distance: int = 1,
     margin_left: int = 210,
     is_primary: bool = False,
+    is_tall: bool = False,
 ) -> go.Figure:
     """Create a standardized horizontal bar chart."""
 
@@ -70,7 +71,9 @@ def horizontal_bar_chart(
         categoryarray=data[y].tolist(),
     )
 
-    if is_primary:
+    if is_tall:
+        height = max(PRIMARY_HEIGHT, 50 + len(data) * 60)
+    elif is_primary:
         height = PRIMARY_HEIGHT
     else:
         height = chart_height(len(data))
@@ -136,46 +139,3 @@ def vertical_bar_chart(
     )
 
     return style_figure(fig)
-
-
-def filter_university(
-    data: pd.DataFrame,
-    institution: str,
-) -> pd.DataFrame:
-    """Return rows for a single university."""
-
-    return data.loc[data["institution"] == institution]
-
-
-def filter_country(
-    data: pd.DataFrame,
-    country: str,
-) -> pd.DataFrame:
-    """Return rows for a single destination country."""
-
-    return data.loc[data["country"] == country]
-
-
-def count_by(
-    data: pd.DataFrame,
-    *,
-    column: str,
-) -> pd.DataFrame:
-    """Count the number of students by a given column."""
-
-    return (
-        data.groupby(column, as_index=False)
-        .size()
-        .rename(columns={"size": "student_count"})
-    )
-
-
-def sum_by(
-    data: pd.DataFrame,
-    *,
-    group: str,
-    value: str = "student_count",
-) -> pd.DataFrame:
-    """Sum the number of students by a given column."""
-
-    return data.groupby(group, as_index=False)[value].sum()
