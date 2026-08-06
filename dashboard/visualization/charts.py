@@ -5,30 +5,8 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
+from config.config import SCHOLARSHIP_TYPES
 from dashboard.visualization.theme import style_figure
-
-SCHOLARSHIP_BENEFITS = {
-    "Tuition": [
-        "tuition",
-    ],
-    "Entrance Fee": [
-        "entrance",
-        "uang pangkal",
-    ],
-    "Building Fee": [
-        "building fee",
-        "dp3",
-    ],
-    "Accommodation": [
-        "accommodation",
-        "dorm",
-        "housing",
-    ],
-    "Living Allowance": [
-        "living allowance",
-        "stipend",
-    ],
-}
 
 
 def map_preview(institutions_df):
@@ -568,7 +546,7 @@ def university_scholarship_benefits_chart(
     counts = Counter()
 
     for description in descriptions:
-        for benefit, keywords in SCHOLARSHIP_BENEFITS.items():
+        for benefit, keywords in SCHOLARSHIP_TYPES.items():
             if any(keyword in description for keyword in keywords):
                 counts[benefit] += 1
 

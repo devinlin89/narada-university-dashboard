@@ -15,7 +15,7 @@ def _load_yaml(path: Path) -> dict:
 
 def _to_namespace(obj):
     # Recursively convert dictionaries to SimpleNamespace
-    
+
     if isinstance(obj, dict):
         return SimpleNamespace(
             **{k: _to_namespace(v) for k, v in obj.items()}
@@ -77,4 +77,11 @@ REFERENCE_DATA = ReferenceData(
     value_mappings=_replacement_data["value_mappings"],
     default_values=_replacement_data["default_values"],
     major_to_academic_field=_replacement_data["major_to_academic_field"],
+)
+
+
+# Scholarship types
+
+SCHOLARSHIP_TYPES= _load_yaml(
+    MAPPINGS_DIR / "scholarship_types.yaml"
 )
