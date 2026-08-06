@@ -4,9 +4,8 @@ import pandas as pd
 import plotly.graph_objects as go
 
 from config.config import SCHOLARSHIP_TYPES
+from dashboard.data.transforms import count_decision_factors
 from dashboard.visualization.charts import (
-    CARD_HEIGHT,
-    PRIMARY_HEIGHT,
     count_by,
     filter_university,
     horizontal_bar_chart,
@@ -27,7 +26,10 @@ def university_distribution_chart(
         "student_count", ascending=False
     )
 
-    top_universities = data.loc[data["student_count"] > 1].sort_values("student_count")
+    top_universities = (
+        data.loc[data["student_count"] > 1]
+        .sort_values("student_count")
+    )
 
     other_universities = (
         data.loc[data["student_count"] == 1]
@@ -40,7 +42,7 @@ def university_distribution_chart(
         x="student_count",
         y="institution",
         wrap_width=26,
-        height=PRIMARY_HEIGHT,
+        is_primary=True,
     )
 
     return fig, other_universities
@@ -61,8 +63,7 @@ def university_campus_distribution_chart(
         data,
         x="student_count",
         y="campus",
-        wrap_width=26,
-        height=CARD_HEIGHT,
+        wrap_width=26
     )
 
 
@@ -81,8 +82,8 @@ def university_academic_field_distribution_chart(
         data,
         x="student_count",
         y="academic_field",
+        tick_distance=2,
         wrap_width=28,
-        height=CARD_HEIGHT,
     )
 
 
@@ -105,7 +106,6 @@ def university_major_distribution_chart(
         x="student_count",
         y="major",
         wrap_width=28,
-        height=CARD_HEIGHT,
     )
 
 
@@ -115,26 +115,21 @@ def university_decision_factors_chart(
 ) -> go.Figure:
     """Create a horizontal bar chart of decision factors for the selected university."""
 
-    factors = Counter()
-
-    for factor_list in filter_university(
-        students_df,
-        selected_institution,
-    )["decision_factors"]:
-        factors.update(factor_list)
-
-    data = pd.DataFrame(
-        factors.items(),
-        columns=["decision_factor", "student_count"],
-    ).sort_values("student_count")
+    data = count_decision_factors(
+        filter_university(
+            students_df,
+            selected_institution,
+        )["decision_factors"]
+    )
 
     return horizontal_bar_chart(
         data,
         x="student_count",
         y="decision_factor",
         wrap_width=28,
+        tick_distance=2,
         margin_left=190,
-        height=PRIMARY_HEIGHT,
+        is_primary=True,
     )
 
 
@@ -142,7 +137,7 @@ def university_scholarship_benefits_chart(
     selected_institution: str,
     students_df: pd.DataFrame,
 ) -> go.Figure:
-    """Create a horizontal bar chart showing scholarship benefits."""
+    """Create a horizontal bar chart showing scholarships of the selected university."""
 
     descriptions = (
         filter_university(
@@ -170,5 +165,4 @@ def university_scholarship_benefits_chart(
         x="student_count",
         y="benefit",
         margin_left=120,
-        height=CARD_HEIGHT,
     )

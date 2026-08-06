@@ -1,8 +1,13 @@
+from collections import Counter
+
 import pandas as pd
 import plotly.graph_objects as go
 
+from config.config import SCHOLARSHIP_TYPES
+from dashboard.data.transforms import count_decision_factors
 from dashboard.visualization.charts import (
-    PRIMARY_HEIGHT,
+    count_by,
+    filter_country,
     horizontal_bar_chart,
     sum_by,
 )
@@ -26,5 +31,131 @@ def country_distribution_chart(
         wrap_width=20,
         tick_distance=5,
         margin_left=160,
-        height=PRIMARY_HEIGHT,
+        is_primary=True,
+    )
+
+
+def country_university_distribution_chart(
+    selected_country: str,
+    institutions_df: pd.DataFrame,
+) -> go.Figure:
+    """Create a horizontal bar chart of universities in the selected country."""
+
+    data = sum_by(
+        filter_country(
+            institutions_df,
+            selected_country,
+        ),
+        group="institution",
+    ).sort_values("student_count")
+
+    return horizontal_bar_chart(
+        data,
+        x="student_count",
+        y="institution",
+        wrap_width=26,
+    )
+
+
+def country_academic_field_distribution_chart(
+    selected_country: str,
+    students_df: pd.DataFrame,
+) -> go.Figure:
+    """Create a horizontal bar chart of academic fields in the selected country."""
+
+    data = count_by(
+        filter_country(
+            students_df,
+            selected_country,
+        ),
+        column="academic_field",
+    ).sort_values("student_count")
+
+    return horizontal_bar_chart(
+        data,
+        x="student_count",
+        y="academic_field",
+        tick_distance=2,
+        wrap_width=28,
+    )
+
+
+def country_major_distribution_chart(
+    selected_country: str,
+    students_df: pd.DataFrame,
+) -> go.Figure:
+    """Create a horizontal bar chart of majors in the selected country."""
+
+    data = count_by(
+        filter_country(
+            students_df,
+            selected_country,
+        ),
+        column="major",
+    ).sort_values("student_count")
+
+    return horizontal_bar_chart(
+        data,
+        x="student_count",
+        y="major",
+        wrap_width=28,
+    )
+
+
+def country_decision_factors_chart(
+    selected_country: str,
+    students_df: pd.DataFrame,
+) -> go.Figure:
+    """Create a horizontal bar chart of decision factors for the selected country."""
+
+    data = count_decision_factors(
+        filter_country(
+            students_df,
+            selected_country,
+        )["decision_factors"]
+    )
+
+    return horizontal_bar_chart(
+        data,
+        x="student_count",
+        y="decision_factor",
+        wrap_width=28,
+        tick_distance=2,
+        margin_left=190,
+        is_primary=True,
+    )
+
+
+def country_scholarship_benefits_chart(
+    selected_country: str,
+    students_df: pd.DataFrame,
+) -> go.Figure:
+    """Create a horizontal bar chart showing scholarships in the selected country."""
+
+    descriptions = (
+        filter_country(
+            students_df,
+            selected_country,
+        )["scholarship_description"]
+        .dropna()
+        .str.lower()
+    )
+
+    counts = Counter()
+
+    for description in descriptions:
+        for benefit, keywords in SCHOLARSHIP_TYPES.items():
+            if any(keyword in description for keyword in keywords):
+                counts[benefit] += 1
+
+    data = pd.DataFrame(
+        counts.items(),
+        columns=["benefit", "student_count"],
+    ).sort_values("student_count")
+
+    return horizontal_bar_chart(
+        data,
+        x="student_count",
+        y="benefit",
+        margin_left=120,
     )

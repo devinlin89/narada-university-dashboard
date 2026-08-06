@@ -8,11 +8,21 @@ from dashboard.visualization.theme import style_figure
 
 # Height constants for charts
 
-CARD_HEIGHT = 250
+MIN_CARD_HEIGHT = 240
+MAX_CARD_HEIGHT = 600
 PRIMARY_HEIGHT = 350
 VERTICAL_BAR_HEIGHT = 450
 MAP_PREVIEW_HEIGHT = 385
 WORLD_MAP_HEIGHT = 500
+
+def chart_height(
+    rows: int,
+    *,
+    threshold: int = 4,
+) -> int:
+    """Return the appropriate chart height based on the number of rows."""
+
+    return MAX_CARD_HEIGHT if rows > threshold else MIN_CARD_HEIGHT
 
 
 def horizontal_bar_chart(
@@ -24,7 +34,7 @@ def horizontal_bar_chart(
     wrap_width: int | None = None,
     tick_distance: int = 1,
     margin_left: int = 210,
-    height: int = 250,
+    is_primary: bool = False,
 ) -> go.Figure:
     """Create a standardized horizontal bar chart."""
 
@@ -59,6 +69,11 @@ def horizontal_bar_chart(
         categoryorder="array",
         categoryarray=data[y].tolist(),
     )
+
+    if is_primary:
+        height = PRIMARY_HEIGHT
+    else:
+        height = chart_height(len(data))
 
     fig.update_layout(
         margin=dict(
@@ -132,6 +147,15 @@ def filter_university(
     return data.loc[data["institution"] == institution]
 
 
+def filter_country(
+    data: pd.DataFrame,
+    country: str,
+) -> pd.DataFrame:
+    """Return rows for a single destination country."""
+
+    return data.loc[data["country"] == country]
+
+
 def count_by(
     data: pd.DataFrame,
     *,
@@ -155,12 +179,3 @@ def sum_by(
     """Sum the number of students by a given column."""
 
     return data.groupby(group, as_index=False)[value].sum()
-
-
-
-
-
-
-
-
-

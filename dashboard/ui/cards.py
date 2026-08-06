@@ -5,7 +5,10 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from dashboard.data.profile import UniversityProfile
+from dashboard.data.profile import (
+    CountryProfile,
+    UniversityProfile,
+)
 from dashboard.visualization.map import map_preview
 
 
@@ -189,6 +192,47 @@ def university_profile_card(
             <div class="profile-row">
                 <span class="profile-label">Students</span>
                 <span class="profile-value">{profile.students}</span>
+            </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+
+def country_profile_card(
+    profile: CountryProfile,
+) -> None:
+    """Display a profile card for the selected country."""
+
+    with st.container(border=True):
+        st.subheader("Country Profile")
+
+        st.markdown(
+            f"""
+            <div class="profile-content">
+            <div class="profile-row">
+                <span class="profile-label">Country</span>
+                <span class="profile-value">{profile.country}</span>
+            </div>
+
+            <div class="profile-row">
+                <span class="profile-label">Students</span>
+                <span class="profile-value">{profile.students}</span>
+            </div>
+
+            <div class="profile-row">
+                <span class="profile-label">Universities</span>
+                <span class="profile-value">{profile.universities}</span>
+            </div>
+
+            <div class="profile-row">
+                <span class="profile-label">Academic Fields</span>
+                <span class="profile-value">{profile.academic_fields}</span>
+            </div>
+
+            <div class="profile-row">
+                <span class="profile-label">Majors</span>
+                <span class="profile-value">{profile.majors}</span>
             </div>
             </div>
             """,

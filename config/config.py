@@ -82,6 +82,13 @@ REFERENCE_DATA = ReferenceData(
 
 # Scholarship types
 
-SCHOLARSHIP_TYPES= _load_yaml(
+SCHOLARSHIP_TYPES: dict[str, list[str]]= _load_yaml(
     MAPPINGS_DIR / "scholarship_types.yaml"
 )
+
+
+# Decision Factors
+
+DECISION_FACTORS: list[str] = _load_yaml(
+    MAPPINGS_DIR / "decision_factors.yaml"
+)["decision_factors"]

@@ -16,6 +16,7 @@ from dashboard.ui.cards import (
 from dashboard.ui.filters import entity_selector
 from dashboard.ui.layout import two_column_layout
 from dashboard.ui.styles import load_css
+from dashboard.visualization.charts import filter_university
 from dashboard.visualization.universities import (
     university_academic_field_distribution_chart,
     university_campus_distribution_chart,
@@ -134,8 +135,10 @@ else:
         ),
     ):
         selected_scholarship_statistics = scholarship_statistics(
-            selected_university,
-            data.students,
+            filter_university(
+                data.students,
+                selected_university,
+            )
         )
 
         vertical_spacer()
