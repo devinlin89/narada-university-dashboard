@@ -8,75 +8,215 @@ import plotly.graph_objects as go
 from config.config import SCHOLARSHIP_TYPES
 from dashboard.visualization.theme import style_figure
 
+# Height constants for charts
 
-def map_preview(institutions_df):
+CARD_HEIGHT = 250
+PRIMARY_HEIGHT = 350
+MAP_HEIGHT = 385
+
+
+def map_preview(institutions_df: pd.DataFrame) -> go.Figure:
+    """Create a world map preview of university destinations."""
+
     fig = px.scatter_geo(
-            institutions_df,
-            lat="latitude",
-            lon="longitude",
-            size="student_count",
-            projection="equirectangular",
-        )
+        institutions_df,
+        lat="latitude",
+        lon="longitude",
+        size="student_count",
+        projection="equirectangular",
+    )
 
     fig.update_traces(
-            marker=dict(
-                color="#e2703e",
-                line=dict(width=0),
-            ),
-            hoverinfo="skip",
-            hovertemplate=None,
-        )
+        marker=dict(
+            color="#e2703e",
+            line=dict(width=0),
+        ),
+        hoverinfo="skip",
+        hovertemplate=None,
+    )
 
     fig.update_geos(
-            fitbounds="locations",
-            showland=True,
-            landcolor="#fafaf8",
-            showcountries=True,
-            showocean=True,
-            oceancolor="#d4dadc",
-            countrycolor="#f3eaea",
-            showcoastlines=False,
-            showframe=False,
-            lataxis_showgrid=False,
-            lonaxis_showgrid=False,
-        )
+        fitbounds="locations",
+        showland=True,
+        landcolor="#fafaf8",
+        showcountries=True,
+        showocean=True,
+        oceancolor="#d4dadc",
+        countrycolor="#f3eaea",
+        showcoastlines=False,
+        showframe=False,
+        lataxis_showgrid=False,
+        lonaxis_showgrid=False,
+    )
 
     fig.update_layout(
-            margin=dict(l=0, r=0, t=0, b=0),
-            height=385  ,
-            paper_bgcolor="rgba(0,0,0,0)",
-            plot_bgcolor="rgba(0,0,0,0)",
-        )
+        margin=dict(l=0, r=0, t=0, b=0),
+        height=MAP_HEIGHT,
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+    )
 
     return fig
+
+
+def horizontal_bar_chart(
+    data: pd.DataFrame,
+    *,
+    x: str,
+    y: str,
+    x_title: str = "Students",
+    wrap_width: int | None = None,
+    tick_distance: int = 1,
+    margin_left: int = 210,
+    height: int = 250,
+) -> go.Figure:
+    """Create a standardized horizontal bar chart."""
+
+    if wrap_width:
+        data = data.copy()
+        data[y] = data[y].apply(
+            lambda text: "<br>".join(fill(text, width=wrap_width).splitlines())
+        )
+
+    fig = px.bar(
+        data,
+        x=x,
+        y=y,
+        orientation="h",
+        text=x,
+    )
+
+    fig.update_traces(
+        textposition="outside",
+        cliponaxis=False,
+    )
+
+    fig.update_xaxes(
+        title=x_title,
+        dtick=tick_distance,
+        tickmode="linear",
+        rangemode="tozero",
+    )
+
+    fig.update_yaxes(
+        title=None,
+        categoryorder="array",
+        categoryarray=data[y].tolist(),
+    )
+
+    fig.update_layout(
+        margin=dict(
+            l=margin_left,
+            r=40,
+            t=20,
+            b=20,
+        ),
+        height=height,
+    )
+
+    return style_figure(fig)
+
+
+def vertical_bar_chart(
+    data: pd.DataFrame,
+    *,
+    x: str,
+    y: str,
+    x_title: str | None = None,
+    y_title: str = "Students",
+    x_tick_distance: int = 1,
+    y_tick_distance: int = 1,
+    height: int = 450,
+) -> go.Figure:
+    """Create a standardized vertical bar chart."""
+
+    fig = px.bar(
+        data,
+        x=x,
+        y=y,
+        text=y,
+    )
+
+    fig.update_traces(
+        textposition="outside",
+        cliponaxis=False,
+    )
+
+    fig.update_xaxes(
+        title=x_title,
+        dtick=x_tick_distance,
+    )
+
+    fig.update_yaxes(
+        title=y_title,
+        dtick=y_tick_distance,
+        tickmode="linear",
+        rangemode="tozero",
+    )
+
+    fig.update_layout(
+        margin=dict(
+            l=40,
+            r=40,
+            t=20,
+            b=20,
+        ),
+        height=height,
+    )
+
+    return style_figure(fig)
+
+
+def filter_university(
+    data: pd.DataFrame,
+    institution: str,
+) -> pd.DataFrame:
+    """Return rows for a single university."""
+
+    return data.loc[data["institution"] == institution]
+
+
+def count_by(
+    data: pd.DataFrame,
+    *,
+    column: str,
+) -> pd.DataFrame:
+    """Count the number of students by a given column."""
+
+    return (
+        data.groupby(column, as_index=False)
+        .size()
+        .rename(columns={"size": "student_count"})
+    )
+
+
+def sum_by(
+    data: pd.DataFrame,
+    *,
+    group: str,
+    value: str = "student_count",
+) -> pd.DataFrame:
+    """Sum the number of students by a given column."""
+
+    return data.groupby(group, as_index=False)[value].sum()
 
 
 def overview_country_bar_chart(
     institutions_df: pd.DataFrame,
 ) -> go.Figure:
+    """Create a horizontal bar chart of destination countries."""
 
-    country_counts = (
-        institutions_df
-        .groupby("country", as_index=False)["student_count"]
-        .sum()
-        .sort_values("student_count")
-    )
+    data = sum_by(institutions_df, group="country").sort_values("student_count")
 
-    fig = px.bar(
-        country_counts,
+    return horizontal_bar_chart(
+        data,
         x="student_count",
         y="country",
-        orientation="h",
-        text="student_count",
+        wrap_width=20,
+        tick_distance=5,
+        margin_left=160,
+        height=PRIMARY_HEIGHT,
     )
-
-    fig.update_layout(
-        height=350,
-        xaxis_title="Students",
-        yaxis_title=None,
-    )
-
-    return style_figure(fig)
 
 
 def overview_university_bar_chart(
@@ -86,40 +226,21 @@ def overview_university_bar_chart(
     """Create a horizontal bar chart of the most popular universities."""
 
     data = (
-        institutions_df
-        .groupby("institution", as_index=False)["student_count"]
-        .sum()
+        sum_by(institutions_df, group="institution")
         .sort_values("student_count", ascending=False)
         .head(top_n)
         .sort_values("student_count")
     )
 
-    data["institution"] = data["institution"].apply(
-        lambda name: "<br>".join(fill(name, width=24).splitlines())
-    )
-
-    fig = px.bar(
+    return horizontal_bar_chart(
         data,
         x="student_count",
         y="institution",
-        orientation="h",
-        text="student_count",
+        wrap_width=24,
+        tick_distance=2,
+        margin_left=180,
+        height=PRIMARY_HEIGHT,
     )
-
-    fig.update_yaxes(
-        categoryorder="array",
-        categoryarray=data["institution"],
-        title=None,
-    )
-
-    fig.update_layout(
-        height=350,
-        xaxis_title="Students",
-        yaxis_title=None,
-        margin=dict(l=180, r=20, t=20, b=20),
-    )
-
-    return style_figure(fig)
 
 
 def overview_academic_field_chart(
@@ -128,37 +249,24 @@ def overview_academic_field_chart(
 ) -> go.Figure:
     """Create a horizontal bar chart of academic fields."""
 
-    field_counts = (
-        students_df
-        .groupby("academic_field")
-        .size()
-        .reset_index(name="students")
-        .sort_values("students", ascending=False)
+    data = (
+        count_by(
+            students_df,
+            column="academic_field",
+        )
+        .sort_values("student_count", ascending=False)
         .head(top_n)
-        .sort_values("students")
+        .sort_values("student_count")
     )
 
-    field_counts["academic_field"] = field_counts["academic_field"].apply(
-        lambda name: "<br>"
-        .join(fill(name, width=28)
-        .splitlines())
-    )
-
-    fig = px.bar(
-        field_counts,
-        x="students",
+    return horizontal_bar_chart(
+        data,
+        x="student_count",
         y="academic_field",
-        orientation="h",
-        text="students",
+        tick_distance=5,
+        wrap_width=28,
+        height=PRIMARY_HEIGHT,
     )
-
-    fig.update_layout(
-        height=350,
-        xaxis_title="Students",
-        yaxis_title=None,
-    )
-
-    return style_figure(fig)
 
 
 def overview_domestic_pie_chart(
@@ -166,11 +274,7 @@ def overview_domestic_pie_chart(
 ) -> go.Figure:
     """Create a donut chart comparing domestic and international students."""
 
-    domestic = (
-        students_df["country"]
-        .eq("Indonesia")
-        .sum()
-    )
+    domestic = students_df["country"].eq("Indonesia").sum()
 
     international = len(students_df) - domestic
 
@@ -186,7 +290,7 @@ def overview_domestic_pie_chart(
     )
 
     fig.update_layout(
-        height=350,
+        height=PRIMARY_HEIGHT,
         margin=dict(l=20, r=20, t=20, b=20),
         legend=dict(
             orientation="h",
@@ -194,7 +298,7 @@ def overview_domestic_pie_chart(
             y=-0.1,
             xanchor="center",
             x=0.5,
-        )
+        ),
     )
 
     fig.update_traces(
@@ -214,58 +318,27 @@ def university_distribution_chart(
     returned separately.
     """
 
-    data = (
-        institutions_df
-        .groupby("institution", as_index=False)["student_count"]
-        .sum()
-        .sort_values("student_count", ascending=False)
+    data = sum_by(institutions_df, group="institution").sort_values(
+        "student_count", ascending=False
     )
 
-    # Universities with multiple students
-    major = (
-        data[data["student_count"] > 1]
-        .sort_values("student_count")
-        .copy()
+    top_universities = data.loc[data["student_count"] > 1].sort_values("student_count")
+
+    other_universities = (
+        data.loc[data["student_count"] == 1]
+        .sort_values("institution")["institution"]
+        .tolist()
     )
 
-    # Universities chosen by exactly one student
-    other = (
-        data[data["student_count"] == 1]
-        .sort_values("institution")
-    )
-
-    other_universities = other["institution"].tolist()
-
-    major["institution"] = major["institution"].apply(
-        lambda name: "<br>".join(fill(name, width=26).splitlines())
-    )
-
-    fig = px.bar(
-        major,
+    fig = horizontal_bar_chart(
+        top_universities,
         x="student_count",
         y="institution",
-        orientation="h",
-        text="student_count",
+        wrap_width=26,
+        height=PRIMARY_HEIGHT,
     )
 
-    fig.update_traces(
-        textposition="outside",
-        cliponaxis=False,
-    )
-
-    fig.update_yaxes(
-        title=None,
-        categoryorder="array",
-        categoryarray=major["institution"].tolist(),
-    )
-
-    fig.update_layout(
-        xaxis_title="Students",
-        margin=dict(l=210, r=40, t=20, b=20),
-        height=max(250, 70 + 60 * len(major)),
-    )
-
-    return style_figure(fig), other_universities
+    return fig, other_universities
 
 
 def university_campus_distribution_chart(
@@ -274,58 +347,18 @@ def university_campus_distribution_chart(
 ) -> go.Figure:
     """Create a horizontal bar chart of campuses for the selected university."""
 
-    # Filter to the selected university and order campuses by student count
-    data = (
-        institutions_df
-        .loc[institutions_df["institution"] == selected_institution]
-        .sort_values("student_count")
-        .copy()
-    )
+    data = filter_university(
+        institutions_df,
+        selected_institution,
+    ).sort_values("student_count")
 
-    # Wrap long campus names so they fit within the chart
-    data["campus"] = data["campus"].apply(
-        lambda campus: "<br>".join(
-            fill(campus, width=26).splitlines()
-        )
-    )
-
-    fig = px.bar(
+    return horizontal_bar_chart(
         data,
         x="student_count",
         y="campus",
-        orientation="h",
-        text="student_count",
+        wrap_width=26,
+        height=CARD_HEIGHT,
     )
-
-    # Display student counts outside each bar
-    fig.update_traces(
-        textposition="outside",
-        cliponaxis=False,
-    )
-
-    # Show only integer tick values
-    fig.update_xaxes(
-        title="Students",
-        dtick=1,
-        tickmode="linear",
-        rangemode="tozero",
-    )
-
-    # Preserve the sorted order instead of Plotly's default ordering
-    fig.update_yaxes(
-        title=None,
-        categoryorder="array",
-        categoryarray=data["campus"].tolist(),
-    )
-
-    # Adjust spacing based on the number of campuses
-    fig.update_layout(
-        xaxis_title="Students",
-        margin=dict(l=210, r=40, t=20, b=20),
-        height=250,
-    )
-
-    return style_figure(fig)
 
 
 def university_academic_field_distribution_chart(
@@ -334,61 +367,18 @@ def university_academic_field_distribution_chart(
 ) -> go.Figure:
     """Create a horizontal bar chart of academic fields for the selected university."""
 
-    # Filter to the selected university and order fields by student count
-    data = (
-        students_df
-        .loc[students_df["institution"] == selected_institution]
-        .copy()
-        .groupby("academic_field", as_index=False)
-        .size()
-        .rename(columns={"size": "student_count"})
-        .sort_values("student_count")
-    )
+    data = count_by(
+        filter_university(students_df, selected_institution),
+        column="academic_field",
+    ).sort_values("student_count")
 
-    # Wrap long field names so they fit within the chart
-    data["academic_field"] = data["academic_field"].apply(
-        lambda field: "<br>".join(
-            fill(field, width=28).splitlines()
-        )
-    )
-
-    fig = px.bar(
+    return horizontal_bar_chart(
         data,
         x="student_count",
         y="academic_field",
-        orientation="h",
-        text="student_count",
+        wrap_width=28,
+        height=CARD_HEIGHT,
     )
-
-    # Display student counts outside each bar
-    fig.update_traces(
-        textposition="outside",
-        cliponaxis=False,
-    )
-
-    # Show only integer tick values
-    fig.update_xaxes(
-        title="Students",
-        dtick=1,
-        tickmode="linear",
-        rangemode="tozero",
-    )
-
-    # Preserve the sorted order instead of Plotly's default ordering
-    fig.update_yaxes(
-        title=None,
-        categoryorder="array",
-        categoryarray=data["academic_field"].tolist(),
-    )
-
-    # Adjust spacing based on the number of fields
-    fig.update_layout(
-        xaxis_title="Students",
-        margin=dict(l=210, r=40, t=20, b=20),
-        height=250,
-    )
-
-    return style_figure(fig)
 
 
 def university_major_distribution_chart(
@@ -397,61 +387,21 @@ def university_major_distribution_chart(
 ) -> go.Figure:
     """Create a horizontal bar chart of majors for the selected university."""
 
-    # Filter to the selected university and order majors by student count
-    data = (
-        students_df
-        .loc[students_df["institution"] == selected_institution]
-        .copy()
-        .groupby("major", as_index=False)
-        .size()
-        .rename(columns={"size": "student_count"})
-        .sort_values("student_count")
-    )
+    data = count_by(
+        filter_university(
+            students_df,
+            selected_institution,
+        ),
+        column="major",
+    ).sort_values("student_count")
 
-    # Wrap long major names so they fit within the chart
-    data["major"] = data["major"].apply(
-        lambda major: "<br>".join(
-            fill(major, width=28).splitlines()
-        )
-    )
-
-    fig = px.bar(
+    return horizontal_bar_chart(
         data,
         x="student_count",
         y="major",
-        orientation="h",
-        text="student_count",
+        wrap_width=28,
+        height=CARD_HEIGHT,
     )
-
-    # Display student counts outside each bar
-    fig.update_traces(
-        textposition="outside",
-        cliponaxis=False,
-    )
-
-    # Show only integer tick values
-    fig.update_xaxes(
-        title="Students",
-        dtick=1,
-        tickmode="linear",
-        rangemode="tozero",
-    )
-
-    # Preserve the sorted order instead of Plotly's default ordering
-    fig.update_yaxes(
-        title=None,
-        categoryorder="array",
-        categoryarray=data["major"].tolist(),
-    )
-
-    # Adjust spacing based on the number of majors
-    fig.update_layout(
-        xaxis_title="Students",
-        margin=dict(l=210, r=40, t=20, b=20),
-        height=250,
-    )
-
-    return style_figure(fig)
 
 
 def university_decision_factors_chart(
@@ -460,85 +410,40 @@ def university_decision_factors_chart(
 ) -> go.Figure:
     """Create a horizontal bar chart of decision factors for the selected university."""
 
-    # Filter to the selected university.
-    data = students_df.loc[
-        students_df["institution"] == selected_institution,
-        "decision_factors",
-    ]
-
-    # Count how many times each decision factor was selected.
     factors = Counter()
 
-    for factors_list in data:
-        factors.update(factors_list)
+    for factor_list in filter_university(
+        students_df,
+        selected_institution,
+    )["decision_factors"]:
+        factors.update(factor_list)
 
-    data = (
-        pd.DataFrame(
-            factors.items(),
-            columns=[
-                "decision_factor",
-                "student_count",
-            ],
-        )
-        .sort_values("student_count")
-    )
+    data = pd.DataFrame(
+        factors.items(),
+        columns=["decision_factor", "student_count"],
+    ).sort_values("student_count")
 
-    # Wrap long factor names so they fit within the chart.
-    data["decision_factor"] = data["decision_factor"].apply(
-        lambda factor: "<br>".join(
-            fill(factor, width=28).splitlines()
-        )
-    )
-
-    fig = px.bar(
+    return horizontal_bar_chart(
         data,
         x="student_count",
         y="decision_factor",
-        orientation="h",
-        text="student_count",
+        wrap_width=28,
+        margin_left=190,
+        height=PRIMARY_HEIGHT,
     )
-
-    # Display student counts outside each bar.
-    fig.update_traces(
-        textposition="outside",
-        cliponaxis=False,
-    )
-
-    # Show only integer tick values.
-    fig.update_xaxes(
-        title="Students",
-        dtick=1,
-        tickmode="linear",
-        rangemode="tozero",
-    )
-
-    # Preserve the sorted order.
-    fig.update_yaxes(
-        title=None,
-        categoryorder="array",
-        categoryarray=data["decision_factor"].tolist(),
-    )
-
-    # Adjust spacing based on the number of factors.
-    fig.update_layout(
-        margin=dict(l=190, r=40, t=20, b=20),
-        height=350,
-    )
-
-    return style_figure(fig)
 
 
 def university_scholarship_benefits_chart(
     selected_institution: str,
     students_df: pd.DataFrame,
 ) -> go.Figure:
-    """Create a bar chart showing scholarship benefits for the selected university."""
+    """Create a horizontal bar chart showing scholarship benefits."""
 
     descriptions = (
-        students_df.loc[
-            students_df["institution"] == selected_institution,
-            "scholarship_description",
-        ]
+        filter_university(
+            students_df,
+            selected_institution,
+        )["scholarship_description"]
         .dropna()
         .str.lower()
     )
@@ -550,44 +455,18 @@ def university_scholarship_benefits_chart(
             if any(keyword in description for keyword in keywords):
                 counts[benefit] += 1
 
-    data = (
-        pd.DataFrame(
-            {
-                "benefit": list(counts.keys()),
-                "student_count": list(counts.values()),
-            }
-        )
-        .sort_values("student_count")
-    )
+    data = pd.DataFrame(
+        counts.items(),
+        columns=["benefit", "student_count"],
+    ).sort_values("student_count")
 
-    fig = px.bar(
+    return horizontal_bar_chart(
         data,
         x="student_count",
         y="benefit",
-        orientation="h",
-        text="student_count",
+        margin_left=120,
+        height=CARD_HEIGHT,
     )
-
-    fig.update_traces(
-        textposition="outside",
-        cliponaxis=False,
-    )
-
-    fig.update_xaxes(
-        title="Students",
-        dtick=1,
-        tickmode="linear",
-        rangemode="tozero",
-    )
-
-    fig.update_yaxes(title=None)
-
-    fig.update_layout(
-        margin=dict(l=120, r=40, t=20, b=20),
-        height=250,
-    )
-
-    return style_figure(fig)
 
 
 def country_distribution_chart(
@@ -595,43 +474,21 @@ def country_distribution_chart(
 ) -> go.Figure:
     """Create a horizontal bar chart of destination countries."""
 
-    data = (
-        institutions
-        .groupby("country", as_index=False)["student_count"]
-        .sum()
-        .sort_values("student_count")
-    )
+    data = sum_by(
+        institutions,
+        group="country",
+        value="student_count",
+    ).sort_values("student_count")
 
-    data["country"] = data["country"].apply(
-        lambda name: "<br>".join(fill(name, width=20).splitlines())
-    )
-
-    fig = px.bar(
+    return horizontal_bar_chart(
         data,
         x="student_count",
         y="country",
-        orientation="h",
-        text="student_count",
+        wrap_width=20,
+        tick_distance=5,
+        margin_left=160,
+        height=PRIMARY_HEIGHT,
     )
-
-    fig.update_traces(
-        textposition="outside",
-        cliponaxis=False,
-    )
-
-    fig.update_yaxes(
-        title=None,
-        categoryorder="array",
-        categoryarray=data["country"].tolist(),
-    )
-
-    fig.update_layout(
-        xaxis_title="Students",
-        margin=dict(l=160, r=40, t=20, b=20),
-        height=max(350, 70 + 60 * len(data)),
-    )
-
-    return style_figure(fig)
 
 
 def academic_field_distribution_chart(
@@ -639,40 +496,19 @@ def academic_field_distribution_chart(
 ) -> go.Figure:
     """Create a horizontal bar chart of academic fields."""
 
-    data = (
-        students
-        .groupby("academic_field", as_index=False)
-        .size()
-        .rename(columns={"size": "student_count"})
-        .sort_values("student_count")
-    )
+    data = count_by(
+        students,
+        column="academic_field",
+    ).sort_values("student_count")
 
-    fig = px.bar(
+    return horizontal_bar_chart(
         data,
         x="student_count",
         y="academic_field",
-        orientation="h",
-        text="student_count",
+        tick_distance=5,
+        margin_left=160,
+        height=max(PRIMARY_HEIGHT, 70 + 60 * len(data)),
     )
-
-    fig.update_traces(
-        textposition="outside",
-        cliponaxis=False,
-    )
-
-    fig.update_yaxes(
-        title=None,
-        categoryorder="array",
-        categoryarray=data["academic_field"].tolist(),
-    )
-
-    fig.update_layout(
-        xaxis_title="Students",
-        margin=dict(l=160, r=40, t=20, b=20),
-        height=max(350, 70 + 60 * len(data)),
-    )
-
-    return style_figure(fig)
 
 
 def applications_distribution_chart(
@@ -681,30 +517,18 @@ def applications_distribution_chart(
     """Create a bar chart of the number of university applications."""
 
     data = (
-        students
-        .groupby("applications_count", as_index=False)
-        .size()
-        .rename(columns={"size": "student_count"})
+        count_by(
+            students,
+            column="applications_count",
+        )
         .sort_values("applications_count")
     )
 
-    fig = px.bar(
+    return vertical_bar_chart(
         data,
         x="applications_count",
         y="student_count",
-        text="student_count",
-    )
-
-    fig.update_traces(
-        textposition="outside",
-        cliponaxis=False,
-    )
-
-    fig.update_layout(
-        xaxis_title="Universities Applied To",
-        yaxis_title="Students",
-        margin=dict(l=40, r=40, t=20, b=20),
+        x_title="Universities Applied To",
+        y_tick_distance=2,
         height=450,
     )
-
-    return style_figure(fig)
