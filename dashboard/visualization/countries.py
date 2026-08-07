@@ -1,12 +1,10 @@
-from collections import Counter
-
 import pandas as pd
 import plotly.graph_objects as go
 
-from config.config import SCHOLARSHIP_TYPES
 from dashboard.data.transforms import (
     count_by,
     count_decision_factors,
+    count_scholarship_benefits,
     filter_country,
     sum_by,
 )
@@ -132,26 +130,12 @@ def country_scholarship_benefits_chart(
 ) -> go.Figure:
     """Create a horizontal bar chart showing scholarships in the selected country."""
 
-    descriptions = (
+    data = count_scholarship_benefits(
         filter_country(
             students_df,
             selected_country,
         )["scholarship_description"]
-        .dropna()
-        .str.lower()
     )
-
-    counts = Counter()
-
-    for description in descriptions:
-        for benefit, keywords in SCHOLARSHIP_TYPES.items():
-            if any(keyword in description for keyword in keywords):
-                counts[benefit] += 1
-
-    data = pd.DataFrame(
-        counts.items(),
-        columns=["benefit", "student_count"],
-    ).sort_values("student_count")
 
     return horizontal_bar_chart(
         data,
