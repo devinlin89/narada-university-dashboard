@@ -1,5 +1,6 @@
 import streamlit as st
 
+from dashboard.ui.filters import entity_selector
 from dashboard.data.loader import load_dashboard_data
 from dashboard.data.tables import majors_table
 from dashboard.ui.cards import (
@@ -34,6 +35,17 @@ with primary_section(
         width="stretch",
         config={"displayModeBar": False},
     )
+
+st.subheader("University Selector")
+
+selected_major = entity_selector(
+    "Major",
+    data.students["major"].unique(),
+)
+
+if selected_major is None:
+    st.info("Select a major to see the universities students in that major applied to.")
+
 
 st.dataframe(
     majors_table(data.students),
