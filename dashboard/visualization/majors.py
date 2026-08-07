@@ -6,12 +6,12 @@ from dashboard.visualization.charts import horizontal_bar_chart
 
 
 def academic_field_distribution_chart(
-    students: pd.DataFrame,
+    students_df: pd.DataFrame,
 ) -> go.Figure:
     """Create a horizontal bar chart of academic fields."""
 
     data = count_by(
-        students,
+        students_df,
         column="academic_field",
     ).sort_values("student_count")
 

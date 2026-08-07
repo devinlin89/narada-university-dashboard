@@ -14,12 +14,12 @@ from dashboard.visualization.charts import horizontal_bar_chart
 
 
 def country_distribution_chart(
-    institutions: pd.DataFrame,
+    institutions_df: pd.DataFrame,
 ) -> go.Figure:
     """Create a horizontal bar chart of destination countries."""
 
     data = sum_by(
-        institutions,
+        institutions_df,
         group="country",
         value="student_count",
     ).sort_values("student_count")

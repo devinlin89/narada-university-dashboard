@@ -9,13 +9,13 @@ from dashboard.visualization.charts import (
 
 
 def applications_distribution_chart(
-    students: pd.DataFrame,
+    students_df: pd.DataFrame,
 ) -> go.Figure:
     """Create a bar chart of the number of university applications."""
 
     data = (
         count_by(
-            students,
+            students_df,
             column="applications_count",
         )
         .sort_values("applications_count")

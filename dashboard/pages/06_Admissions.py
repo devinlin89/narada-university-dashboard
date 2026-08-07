@@ -40,3 +40,4 @@ st.dataframe(
     admissions_table(data.students),
     width="stretch",
 )
+
