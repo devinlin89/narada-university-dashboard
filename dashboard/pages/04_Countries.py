@@ -144,6 +144,9 @@ else:
             config={"displayModeBar": False},
         )
 
+
+st.subheader("Countries Table")
+
 st.dataframe(
     countries_table(data.institutions),
     width="stretch",
