@@ -5,9 +5,9 @@ from dashboard.data.statistics import DashboardStatistics
 from dashboard.ui.cards import (
     chart_card,
     info_card,
-    metric_card,
     navigation_card,
 )
+from dashboard.ui.layout import metric_row
 from dashboard.visualization.overview import (
     overview_academic_field_chart,
     overview_country_bar_chart,
@@ -19,19 +19,12 @@ from dashboard.visualization.overview import (
 def metric_grid(stats: DashboardStatistics) -> None:
     """Display the dashboard summary metrics."""
 
-    col1, col2, col3, col4 = st.columns(4)
-
-    with col1:
-        metric_card("Students", stats.total_students)
-
-    with col2:
-        metric_card("Universities", stats.total_universities)
-
-    with col3:
-        metric_card("Countries", stats.total_countries)
-
-    with col4:
-        metric_card("Academic Fields", stats.total_fields)
+    metric_row(
+        ("Students", stats.total_students),
+        ("Universities", stats.total_universities),
+        ("Countries", stats.total_countries),
+        ("Academic Fields", stats.total_fields),
+    )
 
 
 def supporting_charts(data: DashboardData) -> None:
