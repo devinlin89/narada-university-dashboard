@@ -8,9 +8,7 @@ from dashboard.visualization.charts import (
 )
 
 
-def applications_distribution_chart(
-    students_df: pd.DataFrame,
-) -> go.Figure:
+def applications_distribution_chart(students_df: pd.DataFrame) -> go.Figure:
     """Create a bar chart of the number of university applications."""
 
     data = (
@@ -26,6 +24,27 @@ def applications_distribution_chart(
         x="applications_count",
         y="student_count",
         x_title="Universities Applied To",
+        y_tick_distance=2,
+        height=VERTICAL_BAR_HEIGHT,
+    )
+
+
+def offers_distribution_chart(students_df: pd.DataFrame) -> go.Figure:
+    """Create a bar chart of the number of university offers."""
+
+    data = (
+        count_by(
+            students_df,
+            column="acceptances_count",
+        )
+        .sort_values("acceptances_count")
+    )
+
+    return vertical_bar_chart(
+        data,
+        x="acceptances_count",
+        y="student_count",
+        x_title="Offers Received",
         y_tick_distance=2,
         height=VERTICAL_BAR_HEIGHT,
     )

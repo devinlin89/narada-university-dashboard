@@ -50,12 +50,20 @@ class DashboardStatistics:
     domestic_students: int
     international_students: int
 
+    # Admissions metrics
+    average_applications: float
+    average_offer_rate: float
+    received_scholarship: int
+
     @classmethod
     def from_data(
         cls,
         students_df: pd.DataFrame,
         institutions_df: pd.DataFrame,
     ) -> "DashboardStatistics":
+        """Create dashboard statistics from student and institution data."""
+
+        # Chart Data
 
         country_counts = (
             institutions_df
@@ -71,6 +79,9 @@ class DashboardStatistics:
             .reset_index(name="students")
             .sort_values("students")
         )
+
+
+        # Insight Cards
 
         institutions = institutions_df.copy()
 
@@ -95,6 +106,21 @@ class DashboardStatistics:
 
         international_students = (
             len(students_df) - domestic_students
+        )
+
+
+        # Admission Metrics
+
+        average_applications = students_df["applications_count"].mean()
+
+        offer_rates = students_df["acceptances_count"].div(
+            students_df["applications_count"].replace(0, pd.NA)
+        )
+
+        average_offer_rate = offer_rates.mean()
+
+        received_scholarship = (
+            students_df["received_scholarship?"].eq(True).sum()
         )
 
         return cls(
@@ -122,4 +148,8 @@ class DashboardStatistics:
             farthest_destination=farthest['institution'],
             domestic_students=domestic_students,
             international_students=international_students,
+
+            average_applications=average_applications,
+            average_offer_rate=average_offer_rate,
+            received_scholarship=received_scholarship,
         )
