@@ -27,4 +27,4 @@ class GeocodingTarget:
             institution=row.institution,
             campus=row.campus,
             country=row.country,
-        )   
+        )

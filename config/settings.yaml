@@ -25,7 +25,7 @@ geocoder:
     (https://github.com/devinlin89/narada-university-dashboard)
   timeout: 10
   min_delay: 2
-  max_delay: 5 
+  max_delay: 5
 
 logging:
   level: INFO
