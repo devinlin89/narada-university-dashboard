@@ -50,8 +50,17 @@ if selected_major is None:
     st.info("Select a major to see the universities students in that major applied to.")
 else:
     metric_row(
-        ("Total Students", len(data.students[data.students["major"] == selected_major])),
-        ("Most Common Country", data.students[data.students["major"] == selected_major]["country"].mode()[0]),
+        (
+            "Total Students",
+            len(data.students[data.students["major"] == selected_major])
+        ),
+        (
+            "Most Common Country",
+            (
+                data.students[data.students["major"] == selected_major]["country"]
+                .mode()[0]
+            )
+        ),
     )
     universities = universities_by_major(
     selected_major,
