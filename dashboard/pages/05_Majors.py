@@ -1,15 +1,15 @@
 import streamlit as st
 
-from dashboard.ui.filters import entity_selector, universities_by_major
 from dashboard.data.loader import load_dashboard_data
+from dashboard.data.profile import university_profile
 from dashboard.data.tables import majors_table
-from dashboard.ui.layout import metric_row
-from dashboard.data.profile import (university_profile)
 from dashboard.ui.cards import (
     page_header,
     primary_section,
     university_profile_card,
 )
+from dashboard.ui.filters import entity_selector, universities_by_major
+from dashboard.ui.layout import metric_row
 from dashboard.ui.styles import load_css
 from dashboard.visualization.majors import academic_field_distribution_chart
 
@@ -39,7 +39,7 @@ with primary_section(
         config={"displayModeBar": False},
     )
 
-st.subheader("University Selector")
+st.subheader("Major Selector")
 
 selected_major = entity_selector(
     "Major",
@@ -60,7 +60,7 @@ else:
     universities_profiles = []
     for university in universities:
         profile = university_profile(
-            university, 
+            university,
             data.institutions,)
         universities_profiles.append(profile)
 
