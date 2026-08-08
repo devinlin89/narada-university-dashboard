@@ -8,6 +8,7 @@ from dashboard.ui.cards import (
     navigation_card,
 )
 from dashboard.ui.layout import metric_row
+from dashboard.visualization.flags import country_flag
 from dashboard.visualization.overview import (
     overview_academic_field_chart,
     overview_country_bar_chart,
@@ -94,7 +95,10 @@ def did_you_know(stats: DashboardStatistics) -> None:
             info_card(
                 "🌍",
                 "Most Popular Country",
-                stats.most_popular_country,
+                (
+                        f"{country_flag(stats.most_popular_country)} "
+                        f"{stats.most_popular_country}"
+                ),
             )
 
         bottom_left, bottom_right = st.columns(2)
