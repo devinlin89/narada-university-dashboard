@@ -11,7 +11,9 @@ from dashboard.ui.layout import metric_row
 from dashboard.visualization.overview import (
     overview_academic_field_chart,
     overview_country_bar_chart,
-    overview_domestic_pie_chart,
+    overview_domestic_donut_chart,
+    overview_jabodetabek_donut_chart,
+    overview_program_type_chart,
     overview_university_bar_chart,
 )
 
@@ -54,8 +56,22 @@ def supporting_charts(data: DashboardData) -> None:
 
     with right:
         chart_card(
+            "Program Types",
+            overview_program_type_chart(data.students),
+        )
+
+    left, right = st.columns(2)
+
+    with left:
+        chart_card(
             "Domestic vs International",
-            overview_domestic_pie_chart(data.students),
+            overview_domestic_donut_chart(data.students),
+        )
+
+    with right:
+        chart_card(
+            "Indonesian Destinations",
+            overview_jabodetabek_donut_chart(data.students),
         )
 
 
