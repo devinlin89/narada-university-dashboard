@@ -9,6 +9,7 @@ from dashboard.data.profile import (
     CountryProfile,
     UniversityProfile,
 )
+from dashboard.visualization.flags import country_flag
 from dashboard.visualization.map import map_preview
 
 
@@ -186,7 +187,9 @@ def university_profile_card(
 
             <div class="profile-row">
                 <span class="profile-label">Country</span>
-                <span class="profile-value">{profile.country}</span>
+                <span class="profile-value">
+                    {country_flag(profile.country)} {profile.country}
+                </span>
             </div>
 
             <div class="profile-row">
@@ -212,7 +215,9 @@ def country_profile_card(
             <div class="profile-content">
             <div class="profile-row">
                 <span class="profile-label">Country</span>
-                <span class="profile-value">{profile.country}</span>
+                <span class="profile-value">
+                    {country_flag(profile.country)} {profile.country}
+                </span>
             </div>
 
             <div class="profile-row">
