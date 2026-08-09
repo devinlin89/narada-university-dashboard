@@ -171,6 +171,7 @@ def navigation_card(
 
 def university_profile_card(
     profile: UniversityProfile,
+    css_class: str = "profile-content--medium",
 ) -> None:
     """Display a profile card for the selected university."""
 
@@ -179,7 +180,7 @@ def university_profile_card(
 
         st.markdown(
             f"""
-            <div class="profile-content">
+            <div class="profile-content {css_class}">
             <div class="profile-row">
                 <span class="profile-label">University</span>
                 <span class="profile-value">{profile.institution}</span>
@@ -204,6 +205,7 @@ def university_profile_card(
 
 def country_profile_card(
     profile: CountryProfile,
+    css_class: str = "profile-content--medium",
 ) -> None:
     """Display a profile card for the selected country."""
 
@@ -212,7 +214,7 @@ def country_profile_card(
 
         st.markdown(
             f"""
-            <div class="profile-content">
+            <div class="profile-content {css_class}">
             <div class="profile-row">
                 <span class="profile-label">Country</span>
                 <span class="profile-value">

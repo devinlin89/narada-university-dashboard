@@ -26,18 +26,22 @@ class ScholarshipStatistics:
 
 def university_profile(
     selected_institution: str,
-    institutions_df: pd.DataFrame,
+    institutions: pd.DataFrame,
+    student_count: int | None = None,
 ) -> UniversityProfile:
-    """Return summary information for the selected university."""
+    """Return summary information for a selected university."""
 
-    data = institutions_df.loc[
-        institutions_df["institution"] == selected_institution
+    data = institutions.loc[
+        institutions["institution"].eq(selected_institution)
     ]
 
+    if student_count is None:
+        student_count = int(data["student_count"].sum())
+
     return UniversityProfile(
-        institution=data["institution"].iat[0],
+        institution=selected_institution,
         country=data["country"].iat[0],
-        students=int(data["student_count"].sum()),
+        students=student_count,
     )
 
 

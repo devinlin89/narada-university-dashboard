@@ -18,7 +18,9 @@
     /* Component Heights */
     --metric-card-height: 132px;
     --chart-card-height: 560px;
-    --chart-content-height: 256px;
+    --short-chart-content-height: 200px;
+    --medium-chart-content-height: 256px;
+    --tall-chart-content-height: 500px;
     --chart-title-height: 4rem;
     --info-card-height: 120px;
 
@@ -165,9 +167,20 @@
    University Profile Cards
    ========================================================== */
 
-.profile-content     {
+.profile-content {
     padding-top: var(--space-md);
-    min-height: var(--chart-content-height);
+}
+
+.profile-content--short {
+    min-height: var(--short-chart-content-height);
+}
+
+.profile-content--medium {
+    min-height: var(--medium-chart-content-height);
+}
+
+.profile-content--tall {
+    min-height: var(--tall-chart-content-height);
 }
 
 .profile-row {
