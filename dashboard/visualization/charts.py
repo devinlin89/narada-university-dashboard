@@ -15,6 +15,16 @@ VERTICAL_BAR_HEIGHT = 350
 MAP_PREVIEW_HEIGHT = 385
 WORLD_MAP_HEIGHT = 500
 
+def is_tall_chart(
+    rows: int,
+    *,
+    threshold: int = 4,
+) -> bool:
+    """Return whether a chart should use the tall layout."""
+
+    return rows > threshold
+
+
 def chart_height(
     rows: int,
     *,

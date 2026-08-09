@@ -6,7 +6,10 @@ from dashboard.data.profile import (
     scholarship_statistics,
 )
 from dashboard.data.tables import countries_table
-from dashboard.data.transforms import filter_country
+from dashboard.data.transforms import (
+    filter_country,
+    sum_by,
+)
 from dashboard.ui.cards import (
     chart_card,
     country_profile_card,
@@ -17,6 +20,7 @@ from dashboard.ui.cards import (
 from dashboard.ui.filters import entity_selector
 from dashboard.ui.layout import two_column_layout
 from dashboard.ui.styles import load_css
+from dashboard.visualization.charts import is_tall_chart
 from dashboard.visualization.countries import (
     country_academic_field_distribution_chart,
     country_decision_factors_chart,
@@ -67,8 +71,25 @@ else:
         data.students,
     )
 
+    university_data = sum_by(
+        filter_country(
+            data.institutions,
+            selected_country,
+        ),
+        group="institution",
+    )
+
+    profile_class = (
+        "profile-content--tall"
+        if is_tall_chart(len(university_data))
+        else "profile-content--medium"
+    )
+
     two_column_layout(
-        lambda: country_profile_card(profile),
+        lambda: country_profile_card(
+            profile,
+            profile_class,
+        ),
         lambda: chart_card(
             "University Distribution",
             country_university_distribution_chart(
