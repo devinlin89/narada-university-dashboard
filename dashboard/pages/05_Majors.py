@@ -7,7 +7,10 @@ from dashboard.ui.cards import (
     primary_section,
 )
 from dashboard.ui.filters import entity_selector
-from dashboard.ui.majors import display_university_results
+from dashboard.ui.majors import (
+    display_major_results,
+    display_university_results,
+)
 from dashboard.ui.styles import load_css
 from dashboard.visualization.majors import academic_field_distribution_chart
 
@@ -60,6 +63,12 @@ with right:
         "Major",
         students["major"].unique(),
     )
+
+display_major_results(
+    selected_academic_field,
+    selected_major,
+    data.students,
+)
 
 display_university_results(
     selected_academic_field,

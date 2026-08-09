@@ -18,7 +18,7 @@
     /* Component Heights */
     --metric-card-height: 132px;
     --chart-card-height: 560px;
-    --short-chart-content-height: 200px;
+    --short-chart-content-height: 180px;
     --medium-chart-content-height: 256px;
     --tall-chart-content-height: 616px;
     --chart-title-height: 4rem;
@@ -181,6 +181,13 @@
 
 .profile-content--tall {
     min-height: var(--tall-chart-content-height);
+}
+
+.profile-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 1.25rem;
 }
 
 .profile-row {

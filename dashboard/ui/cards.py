@@ -203,6 +203,40 @@ def university_profile_card(
         )
 
 
+def university_result_card(
+    profile: UniversityProfile,
+    filter_column: str,
+    css_class: str = "profile-content--medium",
+) -> None:
+    """Display a compact university result card."""
+
+    label = filter_column.replace("_", " ").title()
+
+    with st.container(border=True):
+        st.markdown(
+            f"""
+            <div class="profile-content {css_class}">
+            <div class="profile-title">
+                {profile.institution}
+            </div>
+
+            <div class="profile-row">
+                <span class="profile-label">Country</span>
+                <span class="profile-value">
+                    {country_flag(profile.country)} {profile.country}
+                </span>
+            </div>
+
+            <div class="profile-row">
+                <span class="profile-label">Students in {label}</span>
+                <span class="profile-value">{profile.students}</span>
+            </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+
 def country_profile_card(
     profile: CountryProfile,
     css_class: str = "profile-content--medium",
