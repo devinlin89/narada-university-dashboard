@@ -39,18 +39,22 @@ def display_university_results(
         ),
     )
 
-    university_profiles = [
-        university_profile(
-            university,
-            institutions_df,
-            student_count=int(
-                filtered_students["institution"]
-                .eq(university)
-                .sum()
-            ),
-        )
-        for university in filtered_students["institution"].unique()
-    ]
+    university_profiles = sorted(
+        (
+            university_profile(
+                university,
+                institutions_df,
+                student_count=int(
+                    filtered_students["institution"]
+                    .eq(university)
+                    .sum()
+                ),
+            )
+            for university in filtered_students["institution"].unique()
+        ),
+        key=lambda profile: profile.students,
+        reverse=True,
+    )
 
     for i in range(0, len(university_profiles), 2):
         cols = st.columns(2)
