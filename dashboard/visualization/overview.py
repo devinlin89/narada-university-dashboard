@@ -16,7 +16,7 @@ from dashboard.visualization.theme import style_figure
 def overview_country_bar_chart(
     institutions_df: pd.DataFrame,
 ) -> go.Figure:
-    """Create a horizontal bar chart of destination countries."""
+    """Create a horizontal bar chart of destination countries/regions."""
 
     data = sum_by(institutions_df, group="country").sort_values("student_count")
 

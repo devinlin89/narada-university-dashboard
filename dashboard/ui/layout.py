@@ -68,7 +68,7 @@ def navigation_grid():
                 title="Countries",
                 icon="🌍",
                 description=(
-                "See destination countries and "
+                "See destination countries/regions and "
                 "how students are distributed worldwide."
                 ),
                 page="pages/04_Countries.py",

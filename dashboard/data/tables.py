@@ -30,14 +30,14 @@ def universities_table(institutions: pd.DataFrame) -> pd.DataFrame:
             columns={
                 "institution": "University",
                 "campuses": "Campuses",
-                "country": "Country",
+                "country": "Country / Region",
                 "students": "Students",
             }
         )[
             [
                 "University",
                 "Campuses",
-                "Country",
+                "Country / Region",
                 "Students",
             ]
         ]
@@ -54,7 +54,7 @@ def universities_table(institutions: pd.DataFrame) -> pd.DataFrame:
 
 
 def countries_table(institutions: pd.DataFrame) -> pd.DataFrame:
-    """Create the Countries page table."""
+    """Create the Countries/Regions page table."""
 
     table = (
         institutions
@@ -65,13 +65,13 @@ def countries_table(institutions: pd.DataFrame) -> pd.DataFrame:
         )
         .rename(
             columns={
-                "country": "Country",
+                "country": "Country / Region",
                 "universities": "Universities",
                 "students": "Students",
             }
         )[
             [
-                "Country",
+                "Country / Region",
                 "Universities",
                 "Students",
             ]

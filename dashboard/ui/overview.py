@@ -27,7 +27,7 @@ def metric_grid(stats: DashboardStatistics) -> None:
     metric_row(
         ("Students", stats.total_students),
         ("Universities", stats.total_universities),
-        ("Countries", stats.total_countries),
+        ("Countries / Regions", stats.total_countries),
         ("Academic Fields", stats.total_fields),
     )
 
@@ -39,7 +39,7 @@ def supporting_charts(data: DashboardData) -> None:
 
     with left:
         chart_card(
-            "Top Countries",
+            "Top Countries / Regions",
             overview_country_bar_chart(data.institutions),
         )
 
@@ -96,7 +96,7 @@ def did_you_know(stats: DashboardStatistics) -> None:
         with top_right:
             info_card(
                 "🌍",
-                "Most Popular Country",
+                "Most Popular Country / Region",
                 (
                         f"{country_flag(stats.most_popular_country)} "
                         f"{stats.most_popular_country}"

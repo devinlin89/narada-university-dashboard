@@ -7,6 +7,7 @@ import streamlit as st
 
 from config.config import (
     COORDINATES_DATA,
+    COUNTRY_DISPLAY_NAMES,
     INSTITUTIONS_DATA,
     STUDENTS_DATA,
 )
@@ -57,11 +58,15 @@ def load_dashboard_data() -> DashboardData:
         validate="one_to_one",
     )
 
+    # Dashboard-facing country display names
+    for df in (students, institutions):
+        df["country"] = df["country"].replace(COUNTRY_DISPLAY_NAMES)
+
     return DashboardData(
         students=students,
         institutions=institutions,
         statistics=DashboardStatistics.from_data(
         students,
         institutions,
-    ),
+        ),
     )

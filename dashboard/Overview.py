@@ -38,7 +38,7 @@ page_header(
     description=(
         "Explore the university destinations of the Naradanian Class of 2026. "
         "Browse admissions statistics, universities, majors, "
-        "and destination countries."
+        "and destination countries/regions."
     )
 )
 

@@ -14,7 +14,7 @@ from dashboard.visualization.charts import horizontal_bar_chart
 def country_distribution_chart(
     institutions_df: pd.DataFrame,
 ) -> go.Figure:
-    """Create a horizontal bar chart of destination countries."""
+    """Create a horizontal bar chart of destination countries/regions."""
 
     data = sum_by(
         institutions_df,
@@ -37,7 +37,7 @@ def country_university_distribution_chart(
     selected_country: str,
     institutions_df: pd.DataFrame,
 ) -> go.Figure:
-    """Create a horizontal bar chart of universities in the selected country."""
+    """Create a horizontal bar chart of universities in the selected country/region."""
 
     data = sum_by(
         filter_country(
@@ -59,7 +59,8 @@ def country_academic_field_distribution_chart(
     selected_country: str,
     students_df: pd.DataFrame,
 ) -> go.Figure:
-    """Create a horizontal bar chart of academic fields in the selected country."""
+    """Create a horizontal bar chart of academic fields
+    in the selected country/region."""
 
     data = count_by(
         filter_country(
@@ -82,7 +83,7 @@ def country_major_distribution_chart(
     selected_country: str,
     students_df: pd.DataFrame,
 ) -> go.Figure:
-    """Create a horizontal bar chart of majors in the selected country."""
+    """Create a horizontal bar chart of majors in the selected country/region."""
 
     data = count_by(
         filter_country(
@@ -104,7 +105,8 @@ def country_decision_factors_chart(
     selected_country: str,
     students_df: pd.DataFrame,
 ) -> go.Figure:
-    """Create a horizontal bar chart of decision factors for the selected country."""
+    """Create a horizontal bar chart of decision factors
+    for the selected country/region."""
 
     data = count_decision_factors(
         filter_country(
@@ -128,7 +130,8 @@ def country_scholarship_benefits_chart(
     selected_country: str,
     students_df: pd.DataFrame,
 ) -> go.Figure:
-    """Create a horizontal bar chart showing scholarships in the selected country."""
+    """Create a horizontal bar chart showing scholarships
+    in the selected country/region."""
 
     data = count_scholarship_benefits(
         filter_country(

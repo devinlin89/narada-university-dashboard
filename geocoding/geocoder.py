@@ -20,7 +20,7 @@ def create_geocoder() -> Nominatim:
     # Create and configure a Nominatim geocoder
 
     return Nominatim(
-        user_agent=settings.geocoder.user_agent, 
+        user_agent=settings.geocoder.user_agent,
         timeout=settings.geocoder.timeout,
     )
 

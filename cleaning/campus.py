@@ -50,7 +50,7 @@ def clean_campus_name(
         campus: object,
         institution_names: set[str]
 ) -> object:
-    # Remove institution names, generic words, and countries from a campus name
+    # Remove institution names, generic words, and countries/regions from a campus name
 
     if not isinstance(campus, str):
         return campus

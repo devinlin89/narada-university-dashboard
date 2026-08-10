@@ -35,7 +35,7 @@ def display_major_results(
     metric_row(
         ("Total Students", len(filtered_students)),
         ("Universities", filtered_students["institution"].nunique()),
-        ("Countries", filtered_students["country"].nunique()),
+        ("Countries / Regions", filtered_students["country"].nunique()),
         (
             "International Rate",
             f"{filtered_students['country'].ne('Indonesia').mean():.0%}",
@@ -43,7 +43,7 @@ def display_major_results(
     )
 
     chart_card(
-        "Country Distribution",
+        "Country / Region Distribution",
         major_country_distribution_chart(filtered_students),
     )
 

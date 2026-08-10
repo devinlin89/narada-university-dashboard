@@ -38,13 +38,13 @@ page_header(
     title="Countries",
     description=(
         "Explore where students are studying around the world "
-        "and compare destination countries by popularity."
+        "and compare destination countries/regions by popularity."
     ),
 )
 
 
 with primary_section(
-    title="Most Popular Destination Countries",
+    title="Most Popular Destination Countries / Regions",
     description=(
         "Compare destination countries by the total number of students studying there."
     ),
@@ -59,12 +59,12 @@ with primary_section(
 st.subheader("Country Selector")
 
 selected_country = entity_selector(
-    "Country",
+    "Country / Region",
     sorted(data.institutions["country"].unique()),
 )
 
 if selected_country is None:
-    st.info("Select a country to view detailed statistics.")
+    st.info("Select a country/region to view detailed statistics.")
 else:
     profile = country_profile(
         selected_country,
@@ -166,7 +166,7 @@ else:
         )
 
 
-st.subheader("Countries Table")
+st.subheader("Countries / Regions Table")
 
 st.dataframe(
     countries_table(data.institutions),

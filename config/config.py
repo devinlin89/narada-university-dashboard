@@ -97,3 +97,15 @@ SCHOLARSHIP_TYPES: dict[str, list[str]]= _load_yaml(
 DECISION_FACTORS: list[str] = _load_yaml(
     MAPPINGS_DIR / "decision_factors.yaml"
 )["decision_factors"]
+
+
+# Country dashboard display names
+
+COUNTRY_DISPLAY_NAMES: dict[str, str] = _load_yaml(
+    MAPPINGS_DIR / "country_display_names.yaml"
+)
+
+COUNTRY_FLAG_NAMES = {
+    display: country
+    for country, display in COUNTRY_DISPLAY_NAMES.items()
+}

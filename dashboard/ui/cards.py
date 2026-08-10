@@ -187,7 +187,7 @@ def university_profile_card(
             </div>
 
             <div class="profile-row">
-                <span class="profile-label">Country</span>
+                <span class="profile-label">Country / Region</span>
                 <span class="profile-value">
                     {country_flag(profile.country)} {profile.country}
                 </span>
@@ -221,7 +221,7 @@ def university_result_card(
             </div>
 
             <div class="profile-row">
-                <span class="profile-label">Country</span>
+                <span class="profile-label">Country / Region</span>
                 <span class="profile-value">
                     {country_flag(profile.country)} {profile.country}
                 </span>
@@ -244,13 +244,13 @@ def country_profile_card(
     """Display a profile card for the selected country."""
 
     with st.container(border=True):
-        st.subheader("Country Profile")
+        st.subheader("Country / Region Profile")
 
         st.markdown(
             f"""
             <div class="profile-content {css_class}">
             <div class="profile-row">
-                <span class="profile-label">Country</span>
+                <span class="profile-label">Country / Region</span>
                 <span class="profile-value">
                     {country_flag(profile.country)} {profile.country}
                 </span>

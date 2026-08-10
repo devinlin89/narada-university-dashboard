@@ -31,7 +31,7 @@ def academic_field_distribution_chart(
 def major_country_distribution_chart(
     students_df: pd.DataFrame,
 ) -> go.Figure:
-    """Create a horizontal bar chart of destination countries."""
+    """Create a horizontal bar chart of destination countries/regions."""
 
     data = (
         count_by(

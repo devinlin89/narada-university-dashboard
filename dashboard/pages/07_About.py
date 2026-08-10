@@ -31,7 +31,7 @@ st.write(
     Narada School's Class of 2026 about their post-graduation
     university destinations and academic choices. The survey collected
     information on students' committed university destinations,
-    destination countries, campuses, majors, academic fields,
+    destination countries/regions, campuses, majors, academic fields,
     applications, admission outcomes, scholarships, and factors
     influencing their university decisions.
 
@@ -40,10 +40,10 @@ st.write(
     destinations and academic pathways of the graduating class. Users
     can examine the geographic distribution of university destinations,
     analyze charts and statistics, and filter results by university,
-    country, academic field, and major.
+    country/region, academic field, and major.
 
     We hope this dashboard provides a useful overview of the
-    university destinations, countries, academic fields, and majors
+    university destinations, countries/regions, academic fields, and majors
     represented within the Narada School Class of 2026.
     """
 )

@@ -82,7 +82,7 @@ def normalize_text(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def normalize_campuses(df: pd.DataFrame) -> pd.DataFrame:
-    # Remove institution names and countries from campus names
+    # Remove institution names and countries/regions from campus names
 
     institution_names = load_institution_names()
 

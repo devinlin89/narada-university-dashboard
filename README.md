@@ -17,7 +17,7 @@ This project collects destination and admissions data through a Google Form, pro
 - Dataset validation
 - Interactive and responsive Streamlit dashboard:
   - Interactive world map
-  - University, country, and academic field charts and statistics
+  - University, country/region, and academic field charts and statistics
   - Admissions and scholarship charts and statistics
 
 ## Project Structure
@@ -239,14 +239,14 @@ streamlit run dashboard/Overview.py
 
 The dashboard is intended to provide an accessible overview of the destinations and academic pathways represented by the graduating class.
 
-It presents the data through several complementary views, including geographic maps, university and country distributions, academic fields, and admissions statistics.
+It presents the data through several complementary views, including geographic maps, university and country/region distributions, academic fields, and admissions statistics.
 
 The dashboard currently includes:
 
 - **Overview**: Summary statistics, destination distribution, and key insights
 - **World Map**: Geographic visualization of university destinations
 - **Universities**:  University and campus statistics
-- **Countries**: Destination statistics by country
+- **Countries/Regions**: Destination statistics by country/region
 - **Majors**: Academic field and major statistics
 - **Admissions**: Application, acceptance, and scholarship statistics
 - **About**: Information about the dashboard, project, and technology used
@@ -259,7 +259,7 @@ The project is built primarily with Python and uses:
 - *Plotly*: Interactive charts and maps
 - *Streamlit*: Dashboard interface
 - *Geopy*: Geocoding
-- *pycountry*: Country lists and flags
+- *pycountry*: Country/region lists and flags
 - *PyYAML*: Configuration and reference data
 - *titlecase*: Text normalization
 
