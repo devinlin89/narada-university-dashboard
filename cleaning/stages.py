@@ -27,6 +27,9 @@ from config.config import (
 def apply_schema(df: pd.DataFrame) -> pd.DataFrame:
     # Rename columns and remove unused columns
 
+    # Replace invisible characters
+    df.columns = df.columns.str.replace("\r\n", "\n")
+
     df = df.rename(columns=COLUMN_MAPPING)
     df = df.drop(columns=DROPPED_COLUMNS)
 

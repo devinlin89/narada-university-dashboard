@@ -16,9 +16,9 @@ def load_raw_data() -> pd.DataFrame:
 
 
 def load_csv_or_empty(path: Path, columns: list[str]) -> pd.DataFrame:
-    # Load a CSV file or return an empty DataFrame if it does not exist
+    """Load a CSV file or return an empty DataFrame if it does not exist or is empty."""
 
-    if not path.exists():
+    if not path.exists() or path.stat().st_size == 0:
         return pd.DataFrame(columns=columns)
 
     return pd.read_csv(path)

@@ -11,7 +11,7 @@ class Pipeline(ABC):
     logger = None
 
     @classmethod
-    def run(cls) -> None:
+    def run(cls, *args, **kwargs) -> None:
         # Execute the pipeline with common logging and timing
 
         configure_logging()
@@ -19,7 +19,7 @@ class Pipeline(ABC):
         start_time = perf_counter()
 
         try:
-            cls.execute()
+            cls.execute(*args, **kwargs)
 
         except NaradaError as error:
             cls.logger.error("%s failed: %s", cls.__name__, error)
@@ -39,7 +39,7 @@ class Pipeline(ABC):
 
     @classmethod
     @abstractmethod
-    def execute(cls) -> None:
+    def execute(cls, *args, **kwargs) -> None:
         # Execute the pipeline-specific workflow
 
         raise NotImplementedError

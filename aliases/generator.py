@@ -1,31 +1,32 @@
 import pandas as pd
 
 from aliases.tables import load_alias_table
-from common.cli import parse_alias_column_args
 from common.data_io import load_students
 from common.pipeline import Pipeline
 from config.config import TODO_DATA_DIR
 from config.logger import get_logger
 
 
-def load_existing_aliases(column: str) -> set[str]:
-    # Load the existing aliases for the specified column
+def load_existing_alias_values(column: str) -> set[str]:
+    """Load existing aliases and canonical values for the specified column."""
 
     alias_df = load_alias_table(column)
 
     return set(
-        alias_df["alias"]
+        pd.concat(
+            [alias_df["alias"], alias_df["canonical"]]
+        )
         .dropna()
         .astype(str)
     )
 
 
 def find_missing_aliases(
-        df: pd.DataFrame,
-        column: str,
-        existing_aliases: set[str]
+    df: pd.DataFrame,
+    column: str,
+    existing_values: set[str],
 ) -> list[str]:
-    # Find values that are not yet present in the alias table
+    """Find values that are not yet present in the alias table."""
 
     unique_values = (
         df[column]
@@ -36,9 +37,9 @@ def find_missing_aliases(
     )
 
     missing_values = sorted(
-        value 
-        for value in unique_values 
-        if value not in existing_aliases
+        value
+        for value in unique_values
+        if value not in existing_values
     )
 
     return missing_values
@@ -65,22 +66,23 @@ class AliasGenerator(Pipeline):
     logger = get_logger("aliases.generator")
 
     @classmethod
-    def execute(cls) -> None:
+    def execute(cls, column: str) -> None:
         logger = cls.logger
 
-        args = parse_alias_column_args(
-            "Generate TODO alias files from processed data.",
-        )
-        column = args.column.lower()
+        column = column.lower()
 
         logger.info("Loading processed dataset...")
         df = load_students()
 
         logger.info("Loading existing aliases for %s...", column)
-        existing_aliases = load_existing_aliases(column)
+        existing_values = load_existing_alias_values(column)
 
         logger.info("Finding missing %s aliases...", column)
-        missing_aliases = find_missing_aliases(df, column, existing_aliases)
+        missing_aliases = find_missing_aliases(
+            df,
+            column,
+            existing_values,
+        )
 
         logger.info("Found %d missing aliases.", len(missing_aliases))
 

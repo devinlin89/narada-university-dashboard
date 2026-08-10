@@ -80,6 +80,11 @@ REFERENCE_DATA = ReferenceData(
 )
 
 
+# Alias Columns
+
+ALIAS_COLUMNS = tuple(ALIAS_FILE_NAMES)
+
+
 # Scholarship types
 
 SCHOLARSHIP_TYPES: dict[str, list[str]]= _load_yaml(

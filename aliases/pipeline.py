@@ -9,7 +9,6 @@ from aliases.validation import (
     validate_against_alias_table,
     validate_todo,
 )
-from common.cli import parse_alias_column_args
 from common.pipeline import Pipeline
 from config.config import TODO_DATA_DIR
 from config.logger import get_logger
@@ -42,17 +41,14 @@ def delete_todo_file(column: str) -> None:
 
 class AliasProcessor(Pipeline):
     # Process reviewed aliases into the reference table
-    
+
     logger = get_logger("aliases.pipeline")
 
     @classmethod
-    def execute(cls) -> None:
+    def execute(cls, column: str) -> None:
         logger = cls.logger
 
-        args = parse_alias_column_args(
-            "Merge reviewed aliases to the reference table.",
-        )
-        column = args.column.lower()
+        column = column.lower()
 
         cls.logger.info(
             "Processing '%s' aliases...",
