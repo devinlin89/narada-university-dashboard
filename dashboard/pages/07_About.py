@@ -93,7 +93,6 @@ st.write(
 
 vertical_spacer()
 
-st.write(" ")
 # Credits
 st.markdown("## Created By")
 
