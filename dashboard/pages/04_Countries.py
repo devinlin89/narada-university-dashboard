@@ -46,7 +46,8 @@ page_header(
 with primary_section(
     title="Most Popular Destination Countries / Regions",
     description=(
-        "Compare destination countries by the total number of students studying there."
+        "Compare destination countries/regions "
+        "by the total number of students studying there."
     ),
 ):
     st.plotly_chart(
@@ -56,7 +57,7 @@ with primary_section(
     )
 
 
-st.subheader("Country Selector")
+st.subheader("Country / Region Selector")
 
 selected_country = entity_selector(
     "Country / Region",
