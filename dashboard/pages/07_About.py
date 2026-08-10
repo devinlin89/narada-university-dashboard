@@ -1,8 +1,11 @@
 import streamlit as st
 
-from dashboard.ui.cards import page_header
+from dashboard.ui.cards import (
+    page_header,
+    vertical_spacer,
+)
+from dashboard.ui.layout import navigation_grid
 from dashboard.ui.styles import load_css
-from dashboard.ui.overview import explore_more 
 
 load_css()
 
@@ -12,84 +15,96 @@ page_header(
     title="About",
     description=(
         """
-            Narada University Dashboard is an interactive platform created to
-            visualize and explore the post-graduation plans of students from
-            Narada School.
-        
-            A few months ago, we conducted a survey among our friends about their
-            plans after graduation. The survey collected information about their
-            destination countries, universities, intended majors, academic fields,
-            and admission outcomes.
-        
-            We transformed these survey responses into an interactive dashboard
-            so the results can be explored through maps, charts, statistics,
-            and university profiles. """
+        An interactive dashboard presenting the university destinations,
+        academic fields, majors, and admission outcomes of
+        Narada School's Class of 2026.
+        """
     ),
 )
 
-explore_more()
-
-st.write(" ")
-
-# How It Works
-st.markdown("## How It Works")
+# About the Dashboard
+st.markdown("## About the Dashboard")
 
 st.write(
     """
-    The dashboard processes the survey data using Python and Pandas,
-    then presents the results through interactive visualizations built
-    with Streamlit and Plotly.
+    A few months before graduation, we surveyed students from
+    Narada School's Class of 2026 about their post-graduation
+    university destinations and academic choices. The survey collected
+    information on students' committed university destinations,
+    destination countries, campuses, majors, academic fields,
+    applications, admission outcomes, scholarships, and factors
+    influencing their university decisions.
 
-    Filters and selections dynamically update the displayed data,
-    allowing users to explore the survey from different perspectives.
+    **Narada University Dashboard** transforms these survey responses
+    into an interactive dashboard for exploring the university
+    destinations and academic pathways of the graduating class. Users
+    can examine the geographic distribution of university destinations,
+    analyze charts and statistics, and filter results by university,
+    country, academic field, and major.
+
+    We hope this dashboard provides a useful overview of the
+    university destinations, countries, academic fields, and majors
+    represented within the Narada School Class of 2026.
     """
 )
 
-st.write(" ")
+vertical_spacer()
+
+
+st.subheader("What You Can Explore")
+navigation_grid()
+
+
+vertical_spacer()
+
 # About the Data
 st.markdown("## About the Data")
 
 st.write(
     """
-    The information shown on this dashboard reflects responses collected
-    at the time of the survey. It represents students' reported
-    applications, plans, and admission outcomes.
+    The dashboard is based on self-reported responses collected through
+    the Class of 2026 University Survey. The dataset represents students'
+    reported university destinations and admissions information at the
+    time the survey was conducted.
 
-    An application or admission does not necessarily mean that a student
-    ultimately enrolled at that institution. Students may also have
-    applied to multiple universities.
+    Students may have applied to multiple universities, so application
+    and offer statistics describe the admissions process rather than
+    the number of enrolled students. University destination statistics,
+    however, represent the destinations reported by students in the survey.
     """
 )
 
-st.write(" ")
-# Our Goal
-st.markdown("## Our Goal")
+
+vertical_spacer()
+
+# Technology
+st.markdown("## Technology")
 
 st.write(
     """
-    Our goal is to turn our university survey into an accessible and
-    interactive way to explore the different paths students from
-    Narada School are pursuing after graduation.
-
-    We hope the dashboard provides a useful snapshot of the universities,
-    countries, and academic fields represented in our community.
+    The dashboard is developed in Python using the libraries
+    Pandas for data processing and transformation, Streamlit for the
+    application interface, and Plotly for interactive data visualizations.
+    Geographic data is processed using Geopy and OpenStreetMap-based
+    geocoding services.
     """
 )
+
+
+vertical_spacer()
 
 st.write(" ")
 # Credits
 st.markdown("## Created By")
-st.write(
-    """
-    This project was developed collaboratively by:
-    """
-)
+
+st.write("This project was developed collaboratively by:")
 
 st.markdown(
     """
-    - Devin Lin
-    - Therius Aaron Chen
-    - ChatGPT
+    - **Devin Lin**
+    - **Therius Aaron Chen**
     """
 )
+
+st.caption("AI development assistance: ChatGPT")
 
