@@ -1,0 +1,8 @@
+geopy
+pandas
+plotly
+pycountry
+ruff
+streamlit
+titlecase
+PYyaml
