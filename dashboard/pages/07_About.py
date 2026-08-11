@@ -17,7 +17,7 @@ page_header(
         """
         An interactive dashboard presenting the university destinations,
         academic fields, majors, and admission outcomes of
-        Narada School's Class of 2026.
+        Narada Senior High School's Class of 2026.
         """
     ),
 )
@@ -107,3 +107,10 @@ st.markdown(
 
 st.caption("AI development assistance: ChatGPT")
 
+st.write("Special thanks to:")
+
+st.markdown(
+    """
+    - **TBA**
+    """
+)
