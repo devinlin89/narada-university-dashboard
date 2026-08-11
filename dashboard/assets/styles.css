@@ -213,3 +213,7 @@
     font-weight: var(--weight-semibold);
     text-align: right;
 }
+
+[data-testid="stHeaderActionElements"] {
+    display: none !important;
+}
