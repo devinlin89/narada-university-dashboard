@@ -2,7 +2,7 @@ from geocoding.pipeline import GeocodingPipeline
 
 
 def main() -> None:
-    # Run the geocoding coordinate generation pipeline
+    """Run the geocoding coordinate generation pipeline."""
     GeocodingPipeline().run()
 
 

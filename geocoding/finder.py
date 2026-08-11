@@ -13,7 +13,18 @@ def find_missing_locations(
     institutions_df: pd.DataFrame,
     coordinates_df: pd.DataFrame
 ) -> pd.DataFrame:
-    # Find institutions that have not yet been geocoded
+    """Find institutions that have not yet been geocoded.
+
+    Args:
+        institutions_df (pd.DataFrame): DataFrame containing all institutions
+            that require geocoding.
+        coordinates_df (pd.DataFrame): DataFrame containing institutions that
+            have already been geocoded.
+
+    Returns:
+        pd.DataFrame: Institutions present in `institutions_df` but not in
+            `coordinates_df`, with the index reset.
+    """
 
     missing = (
         institutions_df

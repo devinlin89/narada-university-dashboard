@@ -1,5 +1,3 @@
-# config/column_names.py
-
 REQUIREMENTS_QUESTION = """Please check the box below to confirm that:
 - I am a Narada School Grade 12 student from the Class of 2026, and
 - my final post-graduation destination has been officially confirmed, and

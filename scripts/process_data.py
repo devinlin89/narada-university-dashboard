@@ -5,6 +5,7 @@ from institutions.generator import InstitutionGenerator
 
 
 def main() -> None:
+    """Run the complete data processing and generation workflow."""
     CleaningPipeline.run()
 
     for column in ALIAS_COLUMNS:

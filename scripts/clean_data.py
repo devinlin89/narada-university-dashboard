@@ -2,7 +2,7 @@ from cleaning.pipeline import CleaningPipeline
 
 
 def main() -> None:
-    # Run the data cleaning pipeline
+    """Run the data cleaning pipeline."""
     CleaningPipeline().run()
 
 

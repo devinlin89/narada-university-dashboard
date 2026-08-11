@@ -25,7 +25,17 @@ def geocode_row(
     geocoder: Nominatim,
     target: GeocodingTarget,
 ) -> dict[str, object] | None:
-    # Geocode a single institution
+    """Geocode a single institution location.
+
+    Args:
+        geocoder (Nominatim): Geocoder used to find the location.
+        target (GeocodingTarget): Institution location to geocode.
+
+    Returns:
+        dict[str, object] | None: Dictionary containing the institution,
+            campus, country, latitude, and longitude if geocoding succeeds,
+            otherwise None.
+    """
 
     coordinate: Coordinate | None = geocode(
         geocoder,
@@ -49,7 +59,17 @@ def geocode_locations(
     geocoder: Nominatim,
     locations_df: pd.DataFrame,
 ) -> pd.DataFrame:
-    # Geocode a collection of institution locations
+    """Geocode a collection of institution locations.
+
+    Args:
+        geocoder (Nominatim): Geocoder used to find the locations.
+        locations_df (pd.DataFrame): DataFrame containing institution
+            locations to geocode.
+
+    Returns:
+        pd.DataFrame: DataFrame containing successfully geocoded locations
+            and their coordinates.
+    """
 
     new_rows: list[dict[str, object]] = []
 
@@ -85,7 +105,16 @@ def update_coordinates(
     coordinates_df: pd.DataFrame,
     new_coordinates_df: pd.DataFrame,
 ) -> pd.DataFrame:
-    # Append newly geocoded locations to the coordinate cache
+    """Append newly geocoded locations to the coordinate cache.
+
+    Args:
+        coordinates_df (pd.DataFrame): Existing coordinate cache.
+        new_coordinates_df (pd.DataFrame): Newly geocoded locations.
+
+    Returns:
+        pd.DataFrame: Updated coordinate cache sorted by country, institution,
+            and campus.
+    """
 
     return pd.concat(
         [coordinates_df, new_coordinates_df],
@@ -94,7 +123,11 @@ def update_coordinates(
 
 
 def export_coordinates(df: pd.DataFrame) -> None:
-    # Export the institution coordinate dataset.
+    """Export the institution coordinate dataset.
+
+    Args:
+        df (pd.DataFrame): Coordinate dataset to export.
+    """
 
     COORDINATES_DATA.parent.mkdir(
         parents=True,
@@ -108,12 +141,14 @@ def export_coordinates(df: pd.DataFrame) -> None:
 
 
 class GeocodingPipeline(Pipeline):
-    # Generate coordinates for institutions
+    """Generate coordinates for institution locations."""
 
     logger = logger
 
     @classmethod
     def execute(cls) -> None:
+        """Find, geocode, and cache missing institution locations."""
+
         logger = cls.logger
 
         geocoder = create_geocoder()

@@ -18,7 +18,15 @@ def merge_aliases(
     alias_df: pd.DataFrame,
     todo_df: pd.DataFrame
 ) -> pd.DataFrame:
-    # Merge the existing alias DataFrame with the validated TODO alias Dataframe
+    """Merge an existing alias table with a validated TODO alias table.
+
+    Args:
+        alias_df (pd.DataFrame): Existing alias table.
+        todo_df (pd.DataFrame): Validated TODO alias table.
+
+    Returns:
+        pd.DataFrame: Merged alias table sorted by alias.
+    """
 
     return (
         pd.concat(
@@ -31,7 +39,11 @@ def merge_aliases(
 
 
 def delete_todo_file(column: str) -> None:
-    # Delete the TODO Alias file
+    """Delete the TODO alias file for a column if it exists.
+
+    Args:
+        column (str): Alias table column whose TODO file should be deleted.
+    """
 
     todo_path = TODO_DATA_DIR / f"{column}_aliases_todo.csv"
 
@@ -40,12 +52,18 @@ def delete_todo_file(column: str) -> None:
 
 
 class AliasProcessor(Pipeline):
-    # Process reviewed aliases into the reference table
+    """Process reviewed aliases and update the corresponding reference table."""
 
     logger = get_logger("aliases.pipeline")
 
     @classmethod
     def execute(cls, column: str) -> None:
+        """Process reviewed aliases for a column.
+
+        Args:
+            column (str): Alias table column to process.
+        """
+
         logger = cls.logger
 
         column = column.lower()

@@ -7,14 +7,15 @@ import yaml
 # Helper functions
 
 def _load_yaml(path: Path) -> dict:
-    # Load a YAML file
-
     with path.open("r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
 
 def _to_namespace(obj):
-    # Recursively convert dictionaries to SimpleNamespace
+    """Recursively convert dictionaries to SimpleNamespace objects.
+
+    Lists are recursively converted to preserve nested structures.
+    """
 
     if isinstance(obj, dict):
         return SimpleNamespace(
@@ -63,6 +64,17 @@ ALIAS_FILE_NAMES = vars(settings.aliases)
 
 @dataclass(frozen=True, slots=True)
 class ReferenceData:
+    """Store reference data used during data processing.
+
+    Attributes:
+        geocoding_overrides (dict[str, dict[str, str]]): Custom geocoding
+            queries for specific locations.
+        value_mappings (dict[str, str]): Mappings for normalizing data values.
+        default_values (dict[str, str]): Default values for missing data.
+        major_to_academic_field (dict[str, str]): Mapping of majors to their
+            corresponding academic fields.
+    """
+
     geocoding_overrides: dict[str, dict[str, str]]
     value_mappings: dict[str, str]
     default_values: dict[str, str]

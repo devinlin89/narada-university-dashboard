@@ -2,7 +2,7 @@ from institutions.generator import InstitutionGenerator
 
 
 def main() -> None:
-    # Generate institution tables
+    """Generate institution tables."""
     InstitutionGenerator().run()
 
 

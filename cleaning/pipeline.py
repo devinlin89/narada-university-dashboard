@@ -15,7 +15,11 @@ from config.logger import get_logger
 
 
 def export_data(df: pd.DataFrame) -> None:
-    # Save the cleaned dataset CSV file
+    """Save the cleaned dataset CSV file.
+
+    Args:
+        df (pd.DataFrame): DataFrame containing processed student dataset.
+    """
 
     PROCESSED_DATA_DIR.mkdir(parents=True, exist_ok=True)
     df.to_csv(STUDENTS_DATA, index=False)
@@ -24,7 +28,7 @@ def export_data(df: pd.DataFrame) -> None:
 # Data Cleaning Pipeline Class
 
 class CleaningPipeline(Pipeline):
-    # Run the complete student data cleaning workflow
+    """Run the complete student data cleaning workflow."""
 
     logger = get_logger("cleaning.pipeline")
 
@@ -32,6 +36,8 @@ class CleaningPipeline(Pipeline):
 
     @classmethod
     def execute(cls) -> None:
+        """Load, clean, validate, and export the student dataset."""
+
         logger = cls.logger
 
         logger.info("Loading raw dataset...")
@@ -63,7 +69,15 @@ class CleaningPipeline(Pipeline):
 
     @classmethod
     def run_stages(cls, df: pd.DataFrame) -> pd.DataFrame:
-        # Run the configured cleaning stages
+        """Run the configured cleaning stages.
+
+        Args:
+            df (pd.DataFrame): The raw or intermediate student dataset.
+
+        Returns:
+            pd.DataFrame: The cleaned student dataset
+                after all stages have been applied.
+        """
 
         for stage in cls.stages:
             cls.logger.info(stage.message)

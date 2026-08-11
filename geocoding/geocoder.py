@@ -17,7 +17,11 @@ from geocoding.models import (
 
 
 def create_geocoder() -> Nominatim:
-    # Create and configure a Nominatim geocoder
+    """Create and configure a Nominatim geocoder.
+
+    Returns:
+        Nominatim: Configured Nominatim geocoder instance.
+    """
 
     return Nominatim(
         user_agent=settings.geocoder.user_agent,
@@ -26,7 +30,19 @@ def create_geocoder() -> Nominatim:
 
 
 def build_queries(target: GeocodingTarget) -> list[str]:
-    # Build progressively broader geocoding queries.
+    """Build progressively broader geocoding queries for a target.
+
+    Queries are generated from most specific to least specific, using
+    geocoding overrides, institution aliases, campus, and country as
+    applicable. Duplicate queries are removed while preserving their order.
+
+    Args:
+        target (GeocodingTarget): Institution, campus, and country to geocode.
+
+    Returns:
+        list[str]: Ordered list of geocoding queries from most specific to
+            least specific.
+    """
 
     institution = target.institution
     campus = target.campus
@@ -78,7 +94,18 @@ def query_geocoder(
     geocoder: Nominatim,
     query: str,
 ) -> Location | None:
-    # Execute a single geocoding request while respecting the rate limit.
+    """Execute a geocoding request while respecting the configured rate limit.
+
+    The rate-limit delay is applied after every request, including requests
+    that raise an exception.
+
+    Args:
+        geocoder (Nominatim): Geocoder used to perform the request.
+        query (str): Location query to submit.
+
+    Returns:
+        Location | None: Geocoded location if one is found, otherwise None.
+    """
 
     try:
         return geocoder.geocode(query)
@@ -97,7 +124,21 @@ def geocode(
     target: GeocodingTarget,
     log: Callable[[str], object] | None = None,
 ) -> Coordinate | None:
-    # Geocode an institution using progressively broader queries.
+    """Geocode an institution using progressively broader queries.
+
+    Queries are attempted in order until a location is found. Each successful
+    result is converted to a Coordinate object.
+
+    Args:
+        geocoder (Nominatim): Geocoder used to perform the requests.
+        target (GeocodingTarget): Institution, campus, and country to geocode.
+        log (Callable[[str], object] | None): Optional callback for logging
+            search progress and results.
+
+    Returns:
+        Coordinate | None: Coordinates of the first location found, or None
+            if all queries fail to produce a result.
+    """
 
     queries = build_queries(target)
 

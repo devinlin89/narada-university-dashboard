@@ -8,7 +8,14 @@ from config.logger import get_logger
 
 
 def load_existing_alias_values(column: str) -> set[str]:
-    """Load existing aliases and canonical values for the specified column."""
+    """Load existing aliases and canonical values for a column.
+
+    Args:
+        column (str): Alias table column to load.
+
+    Returns:
+        set[str]: Set containing all existing aliases and canonical values.
+    """
 
     alias_df = load_alias_table(column)
 
@@ -26,7 +33,16 @@ def find_missing_aliases(
     column: str,
     existing_values: set[str],
 ) -> list[str]:
-    """Find values that are not yet present in the alias table."""
+    """Find values not yet present in the alias table.
+
+    Args:
+        df (pd.DataFrame): Processed dataset containing values to check.
+        column (str): Column whose values should be checked.
+        existing_values (set[str]): Existing aliases and canonical values.
+
+    Returns:
+        list[str]: Sorted list of values missing from the alias table.
+    """
 
     unique_values = (
         df[column]
@@ -46,7 +62,12 @@ def find_missing_aliases(
 
 
 def export_todo(column: str, missing: list[str]) -> None:
-    # Export the TODO alias file
+    """Export missing aliases to a TODO alias table.
+
+    Args:
+        column (str): Alias table column associated with the missing values.
+        missing (list[str]): Missing alias values to export.
+    """
 
     TODO_DATA_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -61,12 +82,18 @@ def export_todo(column: str, missing: list[str]) -> None:
 
 
 class AliasGenerator(Pipeline):
-    # Generate TODO alias tables from processed data
+    """Generate TODO alias tables from processed data."""
 
     logger = get_logger("aliases.generator")
 
     @classmethod
     def execute(cls, column: str) -> None:
+        """Generate a TODO alias table for a column.
+
+        Args:
+            column (str): Column whose missing aliases should be identified.
+        """
+
         logger = cls.logger
 
         column = column.lower()

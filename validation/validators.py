@@ -11,13 +11,27 @@ from config.config import ALIAS_FILE_NAMES
 
 
 def csv_rows(mask: pd.Series) -> list[int]:
-    # Convert a boolean mask to 1-based CSV row numbers
+    """Convert a boolean mask to 1-based CSV row numbers.
+
+    Args:
+        mask (pd.Series): Boolean Series identifying rows of interest.
+
+    Returns:
+        list[int]: CSV row numbers corresponding to the true values in the mask.
+    """
 
     return (mask[mask].index + 2).tolist()
 
 
 def validate_required_fields(df: pd.DataFrame) -> None:
-    # Ensure all required fields contain non-empty values
+    """Validate that all required fields contain non-empty values.
+
+    Args:
+        df (pd.DataFrame): DataFrame to validate.
+
+    Raises:
+        ValidationError: If any required field contains a missing or empty value.
+    """
 
     for column in REQUIRED_COLUMNS:
         missing = df[column].isna() | (df[column].astype(str).str.strip().eq(""))
@@ -35,7 +49,17 @@ def validate_column_type(
     columns: tuple[str, ...] | list[str],
     expected_type: type,
 ) -> None:
-    # Ensure all non-null values in the specified columns have the expected type
+    """Validate the types of non-null values in specified columns.
+
+    Args:
+        df (pd.DataFrame): DataFrame to validate.
+        columns (tuple[str, ...] | list[str]): Columns whose values should
+            be validated.
+        expected_type (type): Expected Python type for the column values.
+
+    Raises:
+        ValidationError: If any non-null value does not have the expected type.
+    """
 
     for column in columns:
         invalid = (
@@ -54,6 +78,16 @@ def validate_column_type(
 
 
 def validate_boolean_columns(df: pd.DataFrame) -> None:
+    """Validate that boolean columns contain only boolean values.
+
+    Args:
+        df (pd.DataFrame): DataFrame to validate.
+
+    Raises:
+        ValidationError: If any non-null value in a boolean column is not 
+            a boolean.
+    """
+
     validate_column_type(
         df,
         BOOLEAN_COLUMNS,
@@ -62,6 +96,16 @@ def validate_boolean_columns(df: pd.DataFrame) -> None:
 
 
 def validate_list_columns(df: pd.DataFrame) -> None:
+    """Validate that list-response columns contain only lists.
+
+    Args:
+        df (pd.DataFrame): DataFrame to validate.
+
+    Raises:
+        ValidationError: If any non-null value in a list-response column is
+            not a list.
+    """
+
     validate_column_type(
         df,
         LIST_RESPONSE_COLUMNS,
@@ -70,7 +114,15 @@ def validate_list_columns(df: pd.DataFrame) -> None:
 
 
 def validate_aliases(df: pd.DataFrame) -> None:
-    # Ensure no unresolved aliases remain in the cleaned dataset
+    """Validate that no unresolved aliases remain in the dataset.
+
+    Args:
+        df (pd.DataFrame): Cleaned DataFrame to validate.
+
+    Raises:
+        ValidationError: If any unresolved alias remains in an alias-managed
+            column.
+    """
 
     for column in ALIAS_FILE_NAMES:
         alias_df = load_alias_table(column)

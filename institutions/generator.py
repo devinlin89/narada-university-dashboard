@@ -7,7 +7,18 @@ from config.logger import get_logger
 
 
 def build_institutions(df: pd.DataFrame) -> pd.DataFrame:
-    # Build the institution dataset from the student dataset
+    """Build the institution dataset from the student dataset.
+
+    Each unique combination of institution, campus, and country is grouped
+    together and assigned a student count.
+
+    Args:
+        df (pd.DataFrame): Student dataset used to generate institution data.
+
+    Returns:
+        pd.DataFrame: Institution dataset containing institution, campus,
+            country, and student count columns.
+    """
 
     group_columns = ["institution", "campus", "country"]
 
@@ -21,19 +32,25 @@ def build_institutions(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def export_institutions(df: pd.DataFrame) -> None:
-    # Export the institution dataset
+    """Export the institution dataset.
+
+    Args:
+        df (pd.DataFrame): DataFrame containing institution dataset to export.
+    """
 
     INSTITUTIONS_DATA.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(INSTITUTIONS_DATA, index=False)
 
 
 class InstitutionGenerator(Pipeline):
-    # Generate the institution dataset from the student dataset
+    """Generate the institution dataset from the student dataset."""
 
     logger = get_logger("institutions.generator")
 
     @classmethod
     def execute(cls) -> None:
+        """Build and export the institution dataset."""
+
         logger = cls.logger
 
         logger.info("Loading student dataset...")

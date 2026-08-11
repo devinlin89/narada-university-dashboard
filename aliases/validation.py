@@ -4,7 +4,14 @@ from common.exceptions import ValidationError
 
 
 def validate_todo(todo_df: pd.DataFrame) -> None:
-    # Validate a TODO alias table before applying it.
+    """Validate a TODO alias table before applying it.
+
+    Args:
+        todo_df (pd.DataFrame): The TODO alias table to validate.
+
+    Raises:
+        ValidationError: If validation fails.
+    """
 
     for column in ("alias", "canonical"):
         # Check for missing values
@@ -49,7 +56,15 @@ def validate_against_alias_table(
     alias_df: pd.DataFrame,
     todo_df: pd.DataFrame,
 ) -> None:
-    # Ensure TODO aliases do not already exist.
+    """Ensure TODO aliases do not already exist.
+
+    Args:
+        alias_df (pd.DataFrame): The existing alias table.
+        todo_df (pd.DataFrame): The TODO alias table to validate.
+
+    Raises:
+        ValidationError: If one or more aliases already exist.
+    """
 
     existing = set(alias_df["alias"].astype(str))
 

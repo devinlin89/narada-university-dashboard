@@ -9,7 +9,12 @@ logger = get_logger("scripts.apply_aliases")
 
 
 def find_todo_files() -> list[str]:
-    """Find alias columns with TODO files."""
+    """Find alias columns with pending TODO files.
+
+    Returns:
+        list[str]: Alias columns with existing TODO files.
+    """
+
     return [
         column
         for column in ALIAS_COLUMNS

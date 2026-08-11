@@ -6,13 +6,21 @@ from config.logger import configure_logging
 
 
 class Pipeline(ABC):
-    # Base class for executable project pipelines
+    """Base class for executable project pipelines."""
 
     logger = None
 
     @classmethod
     def run(cls, *args, **kwargs) -> None:
-        # Execute the pipeline with common logging and timing
+        """Run the pipeline with common logging, error handling, and timing.
+
+        Args:
+            *args: Positional arguments passed to the pipeline's execute method.
+            **kwargs: Keyword arguments passed to the pipeline's execute method.
+
+        Raises:
+            NaradaError: If the pipeline fails with a known application error.
+        """
 
         configure_logging()
 
@@ -40,6 +48,14 @@ class Pipeline(ABC):
     @classmethod
     @abstractmethod
     def execute(cls, *args, **kwargs) -> None:
-        # Execute the pipeline-specific workflow
+        """Execute the pipeline-specific workflow.
+
+        Args:
+            *args: Positional arguments required by the pipeline.
+            **kwargs: Keyword arguments required by the pipeline.
+
+        Raises:
+            NotImplementedError: If the method is not implemented by a subclass.
+        """
 
         raise NotImplementedError
