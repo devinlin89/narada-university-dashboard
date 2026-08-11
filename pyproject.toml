@@ -1,3 +1,23 @@
+[project]
+name = "narada-university-dashboard"
+version = "1.0.0"
+description = "Dashboard visualizing the university destinations of Narada Senior High School's Class of 2026."
+requires-python = ">=3.14"
+dependencies = [
+    "geopy",
+    "pandas",
+    "plotly",
+    "pycountry",
+    "streamlit",
+    "titlecase",
+    "pyyaml",
+]
+
+[dependency-groups]
+dev = [
+    "ruff",
+]
+
 [tool.ruff]
 line-length = 88
 target-version = "py314"
