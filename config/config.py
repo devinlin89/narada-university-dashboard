@@ -36,7 +36,6 @@ settings = _to_namespace(
 
 # Paths
 
-# Project Root
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 # Directories
@@ -59,6 +58,7 @@ INSTITUTIONS_DATA = PROCESSED_DATA_DIR / settings.files.institutions
 COORDINATES_DATA = GEOCODING_DIR / settings.files.coordinates
 
 ALIAS_FILE_NAMES = vars(settings.aliases)
+
 
 # Reference data
 
@@ -99,7 +99,7 @@ ALIAS_COLUMNS = tuple(ALIAS_FILE_NAMES)
 
 # Scholarship types
 
-SCHOLARSHIP_TYPES: dict[str, list[str]]= _load_yaml(
+SCHOLARSHIP_TYPES: dict[str, list[str]] = _load_yaml(
     MAPPINGS_DIR / "scholarship_types.yaml"
 )
 
