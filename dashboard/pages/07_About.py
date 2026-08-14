@@ -100,8 +100,8 @@ st.write("This project was developed collaboratively by:")
 
 st.markdown(
     """
-    - **Devin Lin**
-    - **Therius Aaron Chen**
+    - **[Devin Lin](github.com/devinlin89)** - Lead Developer
+    - **[Therius Aaron Chen](github.com/Aaronchenboy)** - Dashboard Developer
     """
 )
 

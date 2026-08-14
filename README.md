@@ -275,9 +275,9 @@ Contributors must obtain the latest survey export separately before running the 
 
 ### Developers
 
-**Devin Lin** - Lead Developer (Pandas data processing pipeline, dashboard design and development, data visualization, and project maintenance)
+**[Devin Lin](https://github.com/devinlin89)** - Lead Developer (Pandas data processing pipeline, dashboard design and development, data visualization, and project maintenance)
 
-**Therius Aaron Chen** - Dashboard Developer (Streamlit frontend, map visualizations, and major-specific features)
+**[Therius Aaron Chen](https://github.com/Aaronchenboy)** - Dashboard Developer (Streamlit frontend, map visualizations, and major-specific features)
 
 ### Special Thanks
 
