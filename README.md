@@ -1,5 +1,7 @@
 # Narada Class of 2026: University Destinations Dashboard
 
+[View the Live Dashboard →](https://narada-university-dashboard.streamlit.app/)
+
 ## Project Overview
 
 An interactive data analysis and visualization dashboard showcasing the post-graduation destinations of the Narada School Class of 2026.
