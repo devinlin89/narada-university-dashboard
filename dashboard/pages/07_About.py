@@ -90,6 +90,12 @@ st.write(
     """
 )
 
+st.page_link(
+    "https://github.com/devinlin89/narada-university-dashboard",
+    label="View the source code on GitHub",
+    icon=":material/code:",
+    use_container_width=True,
+)
 
 vertical_spacer()
 
