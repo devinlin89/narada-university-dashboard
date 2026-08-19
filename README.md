@@ -169,7 +169,7 @@ The resulting datasets are written to:
 data/processed/
 ```
 
-### 3. Review new aliases
+### Step 3: Review new aliases
 
 When new institutions or other supported values appear in the dataset, they may need to be added to the project's alias tables.
 
@@ -189,7 +189,7 @@ For example:
 | ITB   | Institut Teknologi Bandung            |
 | UI    | Universitas Indonesia                 |
 
-### 4. Apply reviewed aliases
+### Step 4: Apply reviewed aliases
 
 Once the TODO files have been reviewed, apply it to the main reference tables:
 
@@ -199,7 +199,7 @@ python -m scripts.apply_aliases
 
 The process validates the TODO files, merges the aliases into the reference tables, sorts the resulting tables, and removes the processed TODO files.
 
-### 5. Re-process the dataset
+### Step 5: Re-process the dataset
 
 Run:
 
