@@ -123,3 +123,11 @@ st.markdown(
     - **Kendric Keane**
     """
 )
+
+st.write(
+    """
+    and to everyone in the **Narada School Class of 2026** for taking the time
+    to complete the survey and contribute their university destination data to
+    this project.
+    """
+)
