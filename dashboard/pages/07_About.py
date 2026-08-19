@@ -117,6 +117,9 @@ st.write("Special thanks to:")
 
 st.markdown(
     """
-    - **TBA**
+    - **Catherine Aurelia Wang**
+    - **Evelyn**
+    - **Justin Veda Dharmaja**
+    - **Kendric Keane**
     """
 )
