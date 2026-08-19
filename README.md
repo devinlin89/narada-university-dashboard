@@ -288,6 +288,8 @@ Contributors must obtain the latest survey export separately before running the 
 - **Justin Veda Dharmaja**
 - **Kendric Keane**
 
+and to everyone in the **Narada School Class of 2026** for taking the time to complete the survey and contribute their university destination data to this project.
+
 ### Acknowledgement
 
 We would like to thank the **Narada School Class of 2026** for contributing their university destination and admissions information to this project. Their participation made this dashboard possible and allowed it to provide a collective snapshot of the destinations and academic pathways represented by our graduating class.
